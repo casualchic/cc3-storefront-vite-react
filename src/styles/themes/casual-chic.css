@@ -1,0 +1,18 @@
+/* Casual Chic Boutique - Earth Tone Palette */
+/* Based on official brand guidelines */
+
+@import url('https://fonts.googleapis.com/css2?family=Big+Caslon:wght@500&display=swap');
+
+:root[data-brand="casual-chic"] {
+  /* Colors from brand guidelines */
+  --color-primary: #A3BD84;       /* Sage green - 35% */
+  --color-secondary: #CC8881;     /* Dusty rose - 15% */
+  --color-accent: #E5C77C;        /* Golden sand - 15% */
+  --color-sage: #A6A998;          /* Olive sage - 15% */
+  --color-slate: #99ADBD;         /* Slate blue - 5% */
+  --color-forest: #676B5D;        /* Deep forest - 5% */
+  --color-neutral: #FBF0E5;       /* Cream backgrounds */
+  --color-charcoal: #C4BFB9;      /* Mid gray */
+  --color-text: #1A1A1A;
+  --color-background: #FAFAF8;
+}
