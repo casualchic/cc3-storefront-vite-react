@@ -1,0 +1,219 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { searchProducts } from '@/lib/api/search';
+import ProductGrid from '@/components/react/ProductGrid';
+import SearchBar from '@/components/react/SearchBar';
+import FilterSort from '@/components/react/FilterSort';
+
+const url = new URL(Astro.request.url);
+const query = url.searchParams.get('q') || '';
+const page = parseInt(url.searchParams.get('page') || '1', 10);
+const sortBy = (url.searchParams.get('sort') || 'relevance') as any;
+const limit = 24;
+
+// Get env from platformProxy in dev, runtime in production
+const env = (Astro.locals as any).runtime?.env || Astro.locals.env;
+const brandId = Astro.locals.brand || 'casual-chic';
+
+// Search products
+let products = [];
+let total = 0;
+
+if (env?.DB && query.trim()) {
+  const result = await searchProducts({ env }, {
+    query,
+    page,
+    limit,
+    sortBy,
+    brandId
+  });
+  products = result.products;
+  total = result.total;
+}
+
+const totalPages = Math.ceil(total / limit);
+const offset = (page - 1) * limit;
+
+const pageTitle = query
+  ? `Search results for "${query}" | Shop`
+  : 'Search Products';
+const pageDescription = query
+  ? `Showing ${total} results for "${query}"`
+  : 'Search our complete product catalog';
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <div class="max-w-7xl mx-auto px-4 py-8">
+    <!-- Page Header -->
+    <div class="mb-8">
+      <nav class="mb-4 text-sm">
+        <ol class="flex items-center space-x-2 text-gray-600">
+          <li><a href="/" class="hover:text-primary">Home</a></li>
+          <li class="before:content-['/'] before:mx-2 text-gray-900 font-medium">
+            Search
+          </li>
+        </ol>
+      </nav>
+
+      <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+        {query ? `Search results for "${query}"` : 'Search Products'}
+      </h1>
+
+      <!-- Search Bar -->
+      <div class="max-w-2xl">
+        <SearchBar client:load initialQuery={query} />
+      </div>
+    </div>
+
+    {query.trim() ? (
+      <>
+        {/* Results Count and Filters */}
+        {products.length > 0 && (
+          <div class="mb-8">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-4">
+              <p class="text-sm text-gray-600">
+                Showing {products.length > 0 ? offset + 1 : 0}-{Math.min(offset + limit, total)} of {total} results
+              </p>
+              <FilterSort client:load currentSort={sortBy} />
+            </div>
+          </div>
+        )}
+
+        {/* Product Grid */}
+        {products.length > 0 ? (
+          <>
+            <ProductGrid products={products} client:load />
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div class="mt-12 flex justify-center">
+                <nav class="flex items-center gap-2">
+                  <!-- Previous Button -->
+                  {page > 1 ? (
+                    <a
+                      href={`/search?q=${encodeURIComponent(query)}&page=${page - 1}${sortBy !== 'relevance' ? `&sort=${sortBy}` : ''}`}
+                      class="px-4 py-2 rounded bg-gray-100 text-gray-900 hover:bg-primary hover:text-white transition-colors"
+                    >
+                      Previous
+                    </a>
+                  ) : (
+                    <span class="px-4 py-2 rounded bg-gray-100 text-gray-400 opacity-50 cursor-not-allowed">
+                      Previous
+                    </span>
+                  )}
+
+                  {/* Page Numbers */}
+                  {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                    const pageNum = i + 1;
+                    return (
+                      <a
+                        href={`/search?q=${encodeURIComponent(query)}&page=${pageNum}${sortBy !== 'relevance' ? `&sort=${sortBy}` : ''}`}
+                        class={`px-4 py-2 rounded transition-colors ${
+                          pageNum === page
+                            ? 'bg-primary text-white'
+                            : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
+                        }`}
+                      >
+                        {pageNum}
+                      </a>
+                    );
+                  })}
+
+                  {totalPages > 5 && (
+                    <>
+                      <span class="px-2 text-gray-600">...</span>
+                      <a
+                        href={`/search?q=${encodeURIComponent(query)}&page=${totalPages}${sortBy !== 'relevance' ? `&sort=${sortBy}` : ''}`}
+                        class={`px-4 py-2 rounded transition-colors ${
+                          totalPages === page
+                            ? 'bg-primary text-white'
+                            : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
+                        }`}
+                      >
+                        {totalPages}
+                      </a>
+                    </>
+                  )}
+
+                  <!-- Next Button -->
+                  {page < totalPages ? (
+                    <a
+                      href={`/search?q=${encodeURIComponent(query)}&page=${page + 1}${sortBy !== 'relevance' ? `&sort=${sortBy}` : ''}`}
+                      class="px-4 py-2 rounded bg-gray-100 text-gray-900 hover:bg-primary hover:text-white transition-colors"
+                    >
+                      Next
+                    </a>
+                  ) : (
+                    <span class="px-4 py-2 rounded bg-gray-100 text-gray-400 opacity-50 cursor-not-allowed">
+                      Next
+                    </span>
+                  )}
+                </nav>
+              </div>
+            )}
+          </>
+        ) : (
+          /* No Results */
+          <div class="text-center py-16">
+            <svg
+              class="mx-auto h-24 w-24 text-gray-300 mb-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
+            </svg>
+            <h2 class="text-2xl font-bold text-gray-900 mb-2">
+              No results found for "{query}"
+            </h2>
+            <p class="text-gray-600 mb-6">
+              Try searching with different keywords or browse our collections
+            </p>
+            <div class="flex justify-center gap-4">
+              <a
+                href="/shop"
+                class="inline-block bg-primary hover:bg-sage text-white font-semibold px-6 py-3 rounded-lg transition-colors"
+              >
+                Shop All Products
+              </a>
+              <a
+                href="/collections"
+                class="inline-block bg-gray-100 hover:bg-gray-200 text-gray-900 font-semibold px-6 py-3 rounded-lg transition-colors"
+              >
+                Browse Collections
+              </a>
+            </div>
+          </div>
+        )}
+      </>
+    ) : (
+      /* No Query - Show Search Prompt */
+      <div class="text-center py-16">
+        <svg
+          class="mx-auto h-24 w-24 text-gray-300 mb-4"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.5"
+            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+          />
+        </svg>
+        <h2 class="text-2xl font-bold text-gray-900 mb-2">
+          What are you looking for?
+        </h2>
+        <p class="text-gray-600">
+          Enter a search term above to find products
+        </p>
+      </div>
+    )}
+  </div>
+</BaseLayout>
