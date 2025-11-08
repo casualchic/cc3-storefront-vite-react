@@ -43,7 +43,6 @@ export async function getCategories(
 
   // Query database
   let query = 'SELECT * FROM categories';
-  const params: any[] = [];
 
   if (brandId) {
     // In a real implementation, you might have brand-specific categories
@@ -53,7 +52,7 @@ export async function getCategories(
   query += ' ORDER BY name ASC';
 
   const result = await env.DB.prepare(query).all();
-  const categories = result.results as Category[];
+  const categories = result.results as unknown as Category[];
 
   // Cache for 1 hour
   if (env.CACHE) {
@@ -158,7 +157,7 @@ export async function getCollectionProducts(
     .bind(...queryParams)
     .all();
 
-  const products = result.results as Product[];
+  const products = result.results as unknown as Product[];
 
   // Get total count
   let countQuery = `
@@ -214,7 +213,7 @@ export async function getFeaturedCollections(
     .bind(limit)
     .all();
 
-  const collections = result.results as Category[];
+  const collections = result.results as unknown as Category[];
 
   // Cache for 1 hour
   if (env.CACHE) {

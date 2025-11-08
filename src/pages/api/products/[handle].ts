@@ -18,7 +18,7 @@ export const GET: APIRoute = async ({ params, locals }) => {
     }
 
     // Get env from platformProxy in dev, runtime in production
-    const env = (locals as any).runtime?.env || locals.env;
+    const env = (locals as any).runtime?.env;
 
     // In development without bindings, return 404
     if (!env || !env.DB) {

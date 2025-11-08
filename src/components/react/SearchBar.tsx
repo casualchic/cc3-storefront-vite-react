@@ -54,7 +54,7 @@ export default function SearchBar({
       const response = await fetch(
         `/api/search?q=${encodeURIComponent(searchQuery)}&suggestions=true`
       );
-      const data = await response.json();
+      const data = await response.json() as { suggestions?: string[] };
       if (data.suggestions && data.suggestions.length > 0) {
         setSuggestions(data.suggestions);
         setIsOpen(true);

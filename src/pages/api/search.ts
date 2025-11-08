@@ -8,7 +8,7 @@ import { searchProducts, getSearchSuggestions } from '@/lib/api/search';
 
 export const GET: APIRoute = async ({ url, locals }) => {
   try {
-    const env = (locals as any).runtime?.env || locals.env;
+    const env = (locals as any).runtime?.env;
 
     if (!env?.DB) {
       return new Response(

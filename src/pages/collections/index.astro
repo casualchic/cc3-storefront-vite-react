@@ -1,13 +1,14 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getCategories } from '@/lib/api/collections';
+import type { Category } from '@/lib/db/schema';
 
 // Get env from platformProxy in dev, runtime in production
-const env = (Astro.locals as any).runtime?.env || Astro.locals.env;
+const env = (Astro.locals as any).runtime?.env;
 const brandId = Astro.locals.brand || 'casual-chic';
 
 // Fetch collections
-let collections = [];
+let collections: Category[] = [];
 if (env?.DB) {
   collections = await getCategories({ env }, brandId);
 }

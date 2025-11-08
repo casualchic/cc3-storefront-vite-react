@@ -4,6 +4,7 @@ import { searchProducts } from '@/lib/api/search';
 import ProductGrid from '@/components/react/ProductGrid';
 import SearchBar from '@/components/react/SearchBar';
 import FilterSort from '@/components/react/FilterSort';
+import type { Product } from '@/lib/db/schema';
 
 const url = new URL(Astro.request.url);
 const query = url.searchParams.get('q') || '';
@@ -12,11 +13,11 @@ const sortBy = (url.searchParams.get('sort') || 'relevance') as any;
 const limit = 24;
 
 // Get env from platformProxy in dev, runtime in production
-const env = (Astro.locals as any).runtime?.env || Astro.locals.env;
+const env = (Astro.locals as any).runtime?.env;
 const brandId = Astro.locals.brand || 'casual-chic';
 
 // Search products
-let products = [];
+let products: Product[] = [];
 let total = 0;
 
 if (env?.DB && query.trim()) {

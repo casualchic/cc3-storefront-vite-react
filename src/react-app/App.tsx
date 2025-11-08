@@ -15,17 +15,17 @@ function App() {
 		<>
 			<div>
 				<a href="https://vite.dev" target="_blank">
-					<img src={viteLogo} className="logo" alt="Vite logo" />
+					<img src={viteLogo as unknown as string} className="logo" alt="Vite logo" />
 				</a>
 				<a href="https://react.dev" target="_blank">
-					<img src={reactLogo} className="logo react" alt="React logo" />
+					<img src={reactLogo as unknown as string} className="logo react" alt="React logo" />
 				</a>
 				<a href="https://hono.dev/" target="_blank">
-					<img src={honoLogo} className="logo cloudflare" alt="Hono logo" />
+					<img src={honoLogo as unknown as string} className="logo cloudflare" alt="Hono logo" />
 				</a>
 				<a href="https://workers.cloudflare.com/" target="_blank">
 					<img
-						src={cloudflareLogo}
+						src={cloudflareLogo as unknown as string}
 						className="logo cloudflare"
 						alt="Cloudflare logo"
 					/>

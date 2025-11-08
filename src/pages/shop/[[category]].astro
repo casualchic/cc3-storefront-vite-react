@@ -4,6 +4,7 @@ import { getProducts } from '@/lib/api/products';
 import { getCollectionProducts } from '@/lib/api/collections';
 import ProductGrid from '@/components/react/ProductGrid';
 import FilterSort from '@/components/react/FilterSort';
+import type { Product, Category } from '@/lib/db/schema';
 
 const { category } = Astro.params;
 const url = new URL(Astro.request.url);
@@ -13,13 +14,13 @@ const limit = 24;
 const offset = (page - 1) * limit;
 
 // Get env from platformProxy in dev, runtime in production
-const env = (Astro.locals as any).runtime?.env || Astro.locals.env;
+const env = (Astro.locals as any).runtime?.env;
 const brandId = Astro.locals.brand || 'casual-chic';
 
 // Fetch products
-let products = [];
+let products: Product[] = [];
 let total = 0;
-let categoryData = null;
+let categoryData: Category | null = null;
 
 if (env?.DB) {
   if (category) {

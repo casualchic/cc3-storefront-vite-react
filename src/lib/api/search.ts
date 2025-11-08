@@ -122,7 +122,7 @@ export async function searchProducts(
     .bind(...queryParams, limit, offset)
     .all();
 
-  const products = result.results as Product[];
+  const products = result.results as unknown as Product[];
 
   // Get total count
   const countQuery = `
@@ -174,7 +174,7 @@ export async function getSearchSuggestions(
  * In a real implementation, this would track search analytics
  */
 export async function getPopularSearches(
-  { env }: { env: Env },
+  _runtime: { env: Env },
   limit: number = 10
 ): Promise<string[]> {
   // For now, return some common categories/product types

@@ -10,7 +10,7 @@ if (!handle) {
 }
 
 // Get env from platformProxy in dev, runtime in production
-const env = (Astro.locals as any).runtime?.env || Astro.locals.env;
+const env = (Astro.locals as any).runtime?.env;
 
 // In development without bindings, show placeholder
 let product = null;
@@ -158,7 +158,7 @@ const savings = formattedComparePrice
             handle={displayProduct.handle}
             name={displayProduct.title}
             price={displayProduct.price}
-            compareAtPrice={displayProduct.compare_at_price}
+            compareAtPrice={displayProduct.compare_at_price ?? undefined}
             image={displayProduct.thumbnail || undefined}
             brand={displayProduct.brand_id}
             inventoryQuantity={displayProduct.inventory_quantity || 0}

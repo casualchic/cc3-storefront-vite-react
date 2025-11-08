@@ -9,7 +9,7 @@ export const GET: APIRoute = async ({ request, locals }) => {
     const brandId = locals.brand || 'casual-chic';
 
     // Get env from platformProxy in dev, runtime in production
-    const env = (locals as any).runtime?.env || locals.env;
+    const env = (locals as any).runtime?.env;
 
     // In development without bindings, return mock data
     if (!env || !env.DB) {

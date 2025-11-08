@@ -8,7 +8,7 @@ import { getCategories } from '@/lib/api/collections';
 
 export const GET: APIRoute = async ({ locals }) => {
   try {
-    const env = (locals as any).runtime?.env || locals.env;
+    const env = (locals as any).runtime?.env;
 
     if (!env?.DB) {
       return new Response(

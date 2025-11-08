@@ -17,7 +17,7 @@ export const GET: APIRoute = async ({ params, url, locals }) => {
       );
     }
 
-    const env = (locals as any).runtime?.env || locals.env;
+    const env = (locals as any).runtime?.env;
 
     if (!env?.DB) {
       return new Response(

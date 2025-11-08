@@ -53,7 +53,7 @@ export async function getProducts(
     .first();
 
   const result = {
-    products: results as Product[],
+    products: results as unknown as Product[],
     total: (countResult as { total: number })?.total || 0,
   };
 
@@ -97,7 +97,7 @@ export async function getProductByHandle(
     return null;
   }
 
-  const product = result as Product;
+  const product = result as unknown as Product;
 
   // Cache result (skip if KV not available in dev)
   if (runtime.env.PRODUCT_CACHE) {
