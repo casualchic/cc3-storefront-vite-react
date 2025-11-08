@@ -16,8 +16,8 @@ export default function ProductCard({ product }: ProductCardProps) {
     ? product.compare_at_price / 100
     : null;
 
-  const hasDiscount = compareAtPriceInDollars && compareAtPriceInDollars > priceInDollars;
-  const discountPercent = hasDiscount
+  const hasDiscount = compareAtPriceInDollars !== null && compareAtPriceInDollars > priceInDollars;
+  const discountPercent = hasDiscount && compareAtPriceInDollars
     ? Math.round(((compareAtPriceInDollars - priceInDollars) / compareAtPriceInDollars) * 100)
     : 0;
 
