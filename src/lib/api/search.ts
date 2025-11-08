@@ -5,6 +5,35 @@
 
 import type { Product } from '../db/schema';
 
+/**
+ * Sanitize LIKE pattern to prevent SQL injection
+ * Escapes special SQL LIKE characters: %, _, [, ]
+ */
+function sanitizeLikePattern(input: string): string {
+  return input
+    .replace(/\\/g, '\\\\')  // Escape backslash first
+    .replace(/%/g, '\\%')    // Escape percent
+    .replace(/_/g, '\\_')    // Escape underscore
+    .replace(/\[/g, '\\[')   // Escape opening bracket
+    .replace(/\]/g, '\\]');  // Escape closing bracket
+}
+
+/**
+ * Valid sort options for search
+ */
+const VALID_SORT_OPTIONS = ['relevance', 'newest', 'price-asc', 'price-desc', 'name'] as const;
+type ValidSortOption = typeof VALID_SORT_OPTIONS[number];
+
+/**
+ * Validate and sanitize sort parameter
+ */
+function validateSortBy(sortBy: string): ValidSortOption {
+  if (VALID_SORT_OPTIONS.includes(sortBy as ValidSortOption)) {
+    return sortBy as ValidSortOption;
+  }
+  return 'relevance'; // Default fallback
+}
+
 export interface Env {
   DB: D1Database;
   CACHE?: KVNamespace;
@@ -57,7 +86,8 @@ export async function searchProducts(
     conditions.push(
       `(title LIKE ? OR description LIKE ?)`
     );
-    const searchPattern = `%${query.trim()}%`;
+    const sanitizedQuery = sanitizeLikePattern(query.trim());
+    const searchPattern = `%${sanitizedQuery}%`;
     queryParams.push(searchPattern, searchPattern);
   }
 
@@ -88,9 +118,10 @@ export async function searchProducts(
     ? `WHERE ${conditions.join(' AND ')}`
     : '';
 
-  // Determine sort order
+  // Determine sort order with whitelist validation
+  const validatedSortBy = validateSortBy(sortBy);
   let orderBy = 'created_at DESC';
-  switch (sortBy) {
+  switch (validatedSortBy) {
     case 'price-asc':
       orderBy = 'price ASC';
       break;
@@ -155,7 +186,8 @@ export async function getSearchSuggestions(
     return [];
   }
 
-  const searchPattern = `${query.trim()}%`;
+  const sanitizedQuery = sanitizeLikePattern(query.trim());
+  const searchPattern = `${sanitizedQuery}%`;
 
   const result = await env.DB.prepare(`
     SELECT DISTINCT title FROM products

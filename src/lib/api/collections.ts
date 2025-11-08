@@ -5,6 +5,35 @@
 
 import type { Product, Category } from '../db/schema';
 
+/**
+ * Sanitize LIKE pattern to prevent SQL injection
+ * Escapes special SQL LIKE characters: %, _, [, ]
+ */
+function sanitizeLikePattern(input: string): string {
+  return input
+    .replace(/\\/g, '\\\\')  // Escape backslash first
+    .replace(/%/g, '\\%')    // Escape percent
+    .replace(/_/g, '\\_')    // Escape underscore
+    .replace(/\[/g, '\\[')   // Escape opening bracket
+    .replace(/\]/g, '\\]');  // Escape closing bracket
+}
+
+/**
+ * Valid sort options for collections
+ */
+const VALID_SORT_OPTIONS = ['newest', 'price-asc', 'price-desc', 'name'] as const;
+type ValidSortOption = typeof VALID_SORT_OPTIONS[number];
+
+/**
+ * Validate and sanitize sort parameter
+ */
+function validateSortBy(sortBy: string): ValidSortOption {
+  if (VALID_SORT_OPTIONS.includes(sortBy as ValidSortOption)) {
+    return sortBy as ValidSortOption;
+  }
+  return 'newest'; // Default fallback
+}
+
 export interface Env {
   DB: D1Database;
   CACHE?: KVNamespace;
@@ -122,9 +151,10 @@ export async function getCollectionProducts(
 
   const offset = (page - 1) * limit;
 
-  // Build query based on sort
+  // Build query based on sort with whitelist validation
+  const validatedSortBy = validateSortBy(sortBy);
   let orderBy = 'created_at DESC';
-  switch (sortBy) {
+  switch (validatedSortBy) {
     case 'price-asc':
       orderBy = 'price ASC';
       break;
@@ -133,6 +163,9 @@ export async function getCollectionProducts(
       break;
     case 'name':
       orderBy = 'title ASC';
+      break;
+    case 'newest':
+      orderBy = 'created_at DESC';
       break;
   }
 
