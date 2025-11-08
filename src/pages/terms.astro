@@ -1,0 +1,149 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+const brand = Astro.locals.brand || 'casual-chic';
+const brandName = brand === 'casual-chic' ? 'Casual Chic' :
+                  brand === 'urban-edge' ? 'Urban Edge' :
+                  'Eco Threads';
+
+const pageTitle = 'Terms of Service';
+const pageDescription = 'Terms and conditions for using our website and services';
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <div class="max-w-4xl mx-auto px-4 py-12">
+    <!-- Breadcrumb -->
+    <nav class="mb-8 text-sm">
+      <ol class="flex items-center space-x-2 text-gray-600">
+        <li><a href="/" class="hover:text-primary">Home</a></li>
+        <li class="before:content-['/'] before:mx-2 text-gray-900 font-medium">
+          Terms of Service
+        </li>
+      </ol>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="mb-12">
+      <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+        Terms of Service
+      </h1>
+      <p class="text-gray-600">Last updated: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+    </div>
+
+    <!-- Content -->
+    <div class="prose prose-lg max-w-none">
+      <h2>Agreement to Terms</h2>
+      <p>
+        By accessing and using {brandName}'s website, you agree to be bound by these Terms of Service
+        and all applicable laws and regulations. If you do not agree with any of these terms, you are
+        prohibited from using this site.
+      </p>
+
+      <h2>Use License</h2>
+      <p>
+        Permission is granted to temporarily access the materials on {brandName}'s website for personal,
+        non-commercial transitory viewing only. This is the grant of a license, not a transfer of title.
+      </p>
+      <p>Under this license, you may not:</p>
+      <ul>
+        <li>Modify or copy the materials</li>
+        <li>Use the materials for any commercial purpose</li>
+        <li>Attempt to decompile or reverse engineer any software</li>
+        <li>Remove any copyright or proprietary notations</li>
+        <li>Transfer the materials to another person</li>
+      </ul>
+
+      <h2>Account Terms</h2>
+      <p>
+        When you create an account with us, you must provide accurate and complete information.
+        You are responsible for maintaining the security of your account and password.
+      </p>
+
+      <h2>Products and Pricing</h2>
+      <p>
+        We strive to display product information and pricing accurately. However, we reserve the
+        right to correct any errors and to change or update information at any time without prior notice.
+      </p>
+      <p>
+        We do not guarantee that product descriptions, colors, or other content is accurate, complete,
+        reliable, current, or error-free.
+      </p>
+
+      <h2>Orders and Payment</h2>
+      <p>
+        We reserve the right to refuse or cancel any order for any reason, including:
+      </p>
+      <ul>
+        <li>Product or service availability</li>
+        <li>Errors in product or pricing information</li>
+        <li>Suspected fraudulent transactions</li>
+      </ul>
+      <p>
+        Payment must be received before we dispatch your order. We accept major credit cards
+        and other payment methods as displayed at checkout.
+      </p>
+
+      <h2>Shipping and Delivery</h2>
+      <p>
+        We aim to process and ship orders promptly. Delivery times are estimates and not guaranteed.
+        We are not responsible for delays caused by shipping carriers or customs.
+      </p>
+
+      <h2>Returns and Refunds</h2>
+      <p>
+        Please review our Returns Policy for detailed information about returns and refunds.
+        Generally, items must be returned within 30 days of receipt in original condition.
+      </p>
+
+      <h2>Prohibited Uses</h2>
+      <p>
+        You may not use our site:
+      </p>
+      <ul>
+        <li>In any way that violates any applicable law or regulation</li>
+        <li>To impersonate or attempt to impersonate the company or another user</li>
+        <li>To engage in any automated use of the system</li>
+        <li>To interfere with or disrupt the site or servers</li>
+      </ul>
+
+      <h2>Intellectual Property</h2>
+      <p>
+        The site and its original content, features, and functionality are owned by {brandName} and
+        are protected by international copyright, trademark, and other intellectual property laws.
+      </p>
+
+      <h2>Limitation of Liability</h2>
+      <p>
+        {brandName} shall not be liable for any indirect, incidental, special, consequential, or
+        punitive damages resulting from your use of or inability to use the service.
+      </p>
+
+      <h2>Indemnification</h2>
+      <p>
+        You agree to indemnify and hold {brandName} harmless from any claims, damages, or expenses
+        arising from your violation of these Terms of Service.
+      </p>
+
+      <h2>Changes to Terms</h2>
+      <p>
+        We reserve the right to modify these terms at any time. Changes will be effective immediately
+        upon posting. Your continued use of the site constitutes acceptance of the modified terms.
+      </p>
+
+      <h2>Governing Law</h2>
+      <p>
+        These terms shall be governed by and construed in accordance with the laws of the State of
+        New York, without regard to its conflict of law provisions.
+      </p>
+
+      <h2>Contact Information</h2>
+      <p>
+        Questions about the Terms of Service should be sent to us at:
+      </p>
+      <p>
+        Email: <a href="mailto:legal@casualchic.com" class="text-primary hover:underline">legal@casualchic.com</a><br />
+        Address: 123 Fashion Street, New York, NY 10001
+      </p>
+    </div>
+  </div>
+</BaseLayout>

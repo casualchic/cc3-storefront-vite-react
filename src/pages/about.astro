@@ -1,0 +1,121 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+const brand = Astro.locals.brand || 'casual-chic';
+const brandName = brand === 'casual-chic' ? 'Casual Chic' :
+                  brand === 'urban-edge' ? 'Urban Edge' :
+                  'Eco Threads';
+
+const pageTitle = `About ${brandName}`;
+const pageDescription = `Learn about ${brandName}'s commitment to timeless fashion, quality, and sustainability`;
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <div class="max-w-4xl mx-auto px-4 py-12">
+    <!-- Breadcrumb -->
+    <nav class="mb-8 text-sm">
+      <ol class="flex items-center space-x-2 text-gray-600">
+        <li><a href="/" class="hover:text-primary">Home</a></li>
+        <li class="before:content-['/'] before:mx-2 text-gray-900 font-medium">
+          About
+        </li>
+      </ol>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="text-center mb-12">
+      <h1 class="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+        About {brandName}
+      </h1>
+      <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+        Creating timeless fashion that celebrates individuality and sustainability
+      </p>
+    </div>
+
+    <!-- Story Section -->
+    <div class="prose prose-lg max-w-none mb-12">
+      <h2 class="text-3xl font-bold text-gray-900 mb-4">Our Story</h2>
+      <p class="text-gray-700 leading-relaxed mb-4">
+        Founded with a vision to redefine modern fashion, {brandName} emerged from a simple belief:
+        style should be effortless, sustainable, and accessible to everyone. What started as a small
+        collection of carefully curated pieces has grown into a global brand that celebrates
+        individuality and conscious consumption.
+      </p>
+      <p class="text-gray-700 leading-relaxed mb-4">
+        Every garment we create tells a story—from the selection of sustainable materials to the
+        artisans who bring our designs to life. We're committed to creating pieces that not only
+        look good but also do good for our planet and the people who make them.
+      </p>
+    </div>
+
+    <!-- Values Grid -->
+    <div class="mb-12">
+      <h2 class="text-3xl font-bold text-gray-900 mb-8 text-center">Our Values</h2>
+      <div class="grid md:grid-cols-3 gap-8">
+        <!-- Quality -->
+        <div class="text-center p-6 bg-gray-50 rounded-lg">
+          <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-2">Quality Craftsmanship</h3>
+          <p class="text-gray-600">
+            Every piece is meticulously crafted with attention to detail and built to last.
+          </p>
+        </div>
+
+        <!-- Sustainability -->
+        <div class="text-center p-6 bg-gray-50 rounded-lg">
+          <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-2">Sustainability First</h3>
+          <p class="text-gray-600">
+            We're committed to eco-friendly practices and sustainable materials.
+          </p>
+        </div>
+
+        <!-- Community -->
+        <div class="text-center p-6 bg-gray-50 rounded-lg">
+          <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-2">Community Driven</h3>
+          <p class="text-gray-600">
+            Building a global community that values authenticity and creativity.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mission Statement -->
+    <div class="bg-primary text-white p-8 md:p-12 rounded-2xl mb-12 text-center">
+      <h2 class="text-3xl font-bold mb-4">Our Mission</h2>
+      <p class="text-xl opacity-90 max-w-2xl mx-auto">
+        To create fashion that empowers individuals to express their unique style while
+        contributing to a more sustainable and equitable world.
+      </p>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="text-center">
+      <h2 class="text-2xl font-bold text-gray-900 mb-4">
+        Ready to Discover Your Style?
+      </h2>
+      <p class="text-gray-600 mb-6">
+        Explore our latest collection of thoughtfully designed pieces
+      </p>
+      <a
+        href="/shop"
+        class="inline-block bg-primary hover:bg-sage text-white font-semibold px-8 py-4 rounded-lg transition-colors"
+      >
+        Shop Now
+      </a>
+    </div>
+  </div>
+</BaseLayout>

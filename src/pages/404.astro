@@ -1,0 +1,91 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+const pageTitle = '404 - Page Not Found';
+const pageDescription = 'The page you\'re looking for doesn\'t exist';
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <div class="min-h-[60vh] flex items-center justify-center px-4">
+    <div class="text-center max-w-2xl mx-auto">
+      {/* 404 Illustration */}
+      <div class="mb-8">
+        <div class="text-9xl font-bold text-primary opacity-20">404</div>
+      </div>
+
+      {/* Error Icon */}
+      <div class="mb-8">
+        <svg
+          class="mx-auto h-32 w-32 text-gray-300"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.5"
+            d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+          />
+        </svg>
+      </div>
+
+      {/* Error Message */}
+      <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+        Oops! Page Not Found
+      </h1>
+      <p class="text-xl text-gray-600 mb-8">
+        The page you're looking for doesn't exist or has been moved.
+      </p>
+
+      {/* Action Buttons */}
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a
+          href="/"
+          class="inline-block bg-primary hover:bg-sage text-white font-semibold px-8 py-4 rounded-lg transition-colors"
+        >
+          Back to Home
+        </a>
+        <a
+          href="/shop"
+          class="inline-block bg-gray-100 hover:bg-gray-200 text-gray-900 font-semibold px-8 py-4 rounded-lg transition-colors"
+        >
+          Continue Shopping
+        </a>
+      </div>
+
+      {/* Popular Links */}
+      <div class="mt-12 pt-8 border-t border-gray-200">
+        <h2 class="text-lg font-semibold text-gray-900 mb-4">
+          Looking for something specific?
+        </h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+          <a href="/shop" class="text-gray-600 hover:text-primary">
+            Shop All
+          </a>
+          <a href="/collections" class="text-gray-600 hover:text-primary">
+            Collections
+          </a>
+          <a href="/search" class="text-gray-600 hover:text-primary">
+            Search
+          </a>
+          <a href="/about" class="text-gray-600 hover:text-primary">
+            About Us
+          </a>
+          <a href="/contact" class="text-gray-600 hover:text-primary">
+            Contact
+          </a>
+          <a href="/shipping" class="text-gray-600 hover:text-primary">
+            Shipping Info
+          </a>
+          <a href="/privacy" class="text-gray-600 hover:text-primary">
+            Privacy Policy
+          </a>
+          <a href="/terms" class="text-gray-600 hover:text-primary">
+            Terms
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
