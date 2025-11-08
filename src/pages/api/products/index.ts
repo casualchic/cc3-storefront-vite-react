@@ -1,12 +1,36 @@
 import type { APIRoute } from 'astro';
 import { getProducts } from '@/lib/api/products';
+import {
+  parseNumericParam,
+  getProductsParamsSchema,
+  validateData,
+} from '@/lib/validation/schemas';
 
 export const GET: APIRoute = async ({ request, locals }) => {
   try {
     const url = new URL(request.url);
-    const limit = parseInt(url.searchParams.get('limit') || '20', 10);
-    const offset = parseInt(url.searchParams.get('offset') || '0', 10);
-    const brandId = locals.brand || 'casual-chic';
+
+    // Validate input parameters
+    const validationResult = validateData(getProductsParamsSchema, {
+      limit: parseNumericParam(url.searchParams.get('limit'), 20),
+      offset: parseNumericParam(url.searchParams.get('offset'), 0),
+      brandId: url.searchParams.get('brand') || locals.brand || 'casual-chic',
+    });
+
+    if (!validationResult.success) {
+      return new Response(
+        JSON.stringify({
+          error: 'Invalid parameters',
+          message: validationResult.error,
+        }),
+        {
+          status: 400,
+          headers: { 'Content-Type': 'application/json' }
+        }
+      );
+    }
+
+    const { limit, offset, brandId } = validationResult.data;
 
     // Get env from platformProxy in dev, runtime in production
     const env = (locals as any).runtime?.env;

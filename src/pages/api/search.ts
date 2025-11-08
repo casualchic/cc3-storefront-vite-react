@@ -5,6 +5,13 @@
 
 import type { APIRoute } from 'astro';
 import { searchProducts, getSearchSuggestions } from '@/lib/api/search';
+import {
+  parseNumericParam,
+  parseFloatParam,
+  searchProductsParamsSchema,
+  searchSuggestionsParamsSchema,
+  validateData,
+} from '@/lib/validation/schemas';
 
 export const GET: APIRoute = async ({ url, locals }) => {
   try {
@@ -24,24 +31,31 @@ export const GET: APIRoute = async ({ url, locals }) => {
       );
     }
 
-    // Parse query parameters
+    // Parse query parameters safely
     const query = url.searchParams.get('q') || '';
-    const page = parseInt(url.searchParams.get('page') || '1');
-    const limit = parseInt(url.searchParams.get('limit') || '24');
-    const sortBy = (url.searchParams.get('sort') || 'relevance') as any;
-    const brandId = url.searchParams.get('brand') || undefined;
-    const category = url.searchParams.get('category') || undefined;
-    const minPrice = url.searchParams.get('minPrice')
-      ? parseFloat(url.searchParams.get('minPrice')!)
-      : undefined;
-    const maxPrice = url.searchParams.get('maxPrice')
-      ? parseFloat(url.searchParams.get('maxPrice')!)
-      : undefined;
     const getSuggestions = url.searchParams.get('suggestions') === 'true';
 
     // Get suggestions if requested
     if (getSuggestions && query) {
-      const suggestions = await getSearchSuggestions({ env }, query);
+      const validationResult = validateData(searchSuggestionsParamsSchema, {
+        query,
+        limit: parseNumericParam(url.searchParams.get('limit'), 5),
+      });
+
+      if (!validationResult.success) {
+        return new Response(
+          JSON.stringify({
+            error: 'Invalid parameters',
+            message: validationResult.error,
+          }),
+          {
+            status: 400,
+            headers: { 'Content-Type': 'application/json' }
+          }
+        );
+      }
+
+      const suggestions = await getSearchSuggestions({ env }, validationResult.data.query, validationResult.data.limit);
       return new Response(
         JSON.stringify({ suggestions }),
         {
@@ -54,18 +68,35 @@ export const GET: APIRoute = async ({ url, locals }) => {
       );
     }
 
-    // Search products
-    const result = await searchProducts({ env }, {
+    // Validate search parameters
+    const validationResult = validateData(searchProductsParamsSchema, {
       query,
-      page,
-      limit,
-      sortBy,
-      brandId,
-      categoryHandle: category,
-      minPrice,
-      maxPrice
+      page: parseNumericParam(url.searchParams.get('page'), 1),
+      limit: parseNumericParam(url.searchParams.get('limit'), 24),
+      sortBy: url.searchParams.get('sort') || 'relevance',
+      brandId: url.searchParams.get('brand') || undefined,
+      categoryHandle: url.searchParams.get('category') || undefined,
+      minPrice: parseFloatParam(url.searchParams.get('minPrice')),
+      maxPrice: parseFloatParam(url.searchParams.get('maxPrice')),
     });
 
+    if (!validationResult.success) {
+      return new Response(
+        JSON.stringify({
+          error: 'Invalid parameters',
+          message: validationResult.error,
+        }),
+        {
+          status: 400,
+          headers: { 'Content-Type': 'application/json' }
+        }
+      );
+    }
+
+    // Search products with validated params
+    const result = await searchProducts({ env }, validationResult.data);
+
+    const { page, limit } = validationResult.data;
     return new Response(
       JSON.stringify({
         ...result,

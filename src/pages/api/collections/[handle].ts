@@ -5,6 +5,11 @@
 
 import type { APIRoute } from 'astro';
 import { getCollectionProducts } from '@/lib/api/collections';
+import {
+  parseNumericParam,
+  getCollectionProductsParamsSchema,
+  validateData,
+} from '@/lib/validation/schemas';
 
 export const GET: APIRoute = async ({ params, url, locals }) => {
   try {
@@ -16,6 +21,30 @@ export const GET: APIRoute = async ({ params, url, locals }) => {
         { status: 400, headers: { 'Content-Type': 'application/json' } }
       );
     }
+
+    // Validate input parameters
+    const validationResult = validateData(getCollectionProductsParamsSchema, {
+      handle,
+      page: parseNumericParam(url.searchParams.get('page'), 1),
+      limit: parseNumericParam(url.searchParams.get('limit'), 24),
+      sortBy: url.searchParams.get('sort') || 'newest',
+      brandId: url.searchParams.get('brand') || undefined,
+    });
+
+    if (!validationResult.success) {
+      return new Response(
+        JSON.stringify({
+          error: 'Invalid parameters',
+          message: validationResult.error,
+        }),
+        {
+          status: 400,
+          headers: { 'Content-Type': 'application/json' }
+        }
+      );
+    }
+
+    const { page, limit } = validationResult.data;
 
     const env = (locals as any).runtime?.env;
 
@@ -33,19 +62,7 @@ export const GET: APIRoute = async ({ params, url, locals }) => {
       );
     }
 
-    // Parse query parameters
-    const page = parseInt(url.searchParams.get('page') || '1');
-    const limit = parseInt(url.searchParams.get('limit') || '24');
-    const sortBy = (url.searchParams.get('sort') || 'newest') as any;
-    const brandId = url.searchParams.get('brand') || undefined;
-
-    const result = await getCollectionProducts({ env }, {
-      handle,
-      page,
-      limit,
-      sortBy,
-      brandId
-    });
+    const result = await getCollectionProducts({ env }, validationResult.data);
 
     if (!result) {
       return new Response(
