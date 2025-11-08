@@ -1,0 +1,135 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getCategories } from '@/lib/api/collections';
+
+// Get env from platformProxy in dev, runtime in production
+const env = (Astro.locals as any).runtime?.env || Astro.locals.env;
+const brandId = Astro.locals.brand || 'casual-chic';
+
+// Fetch collections
+let collections = [];
+if (env?.DB) {
+  collections = await getCategories({ env }, brandId);
+}
+
+const pageTitle = 'Collections | Shop by Category';
+const pageDescription = 'Explore our curated collections of fashion essentials';
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <div class="max-w-7xl mx-auto px-4 py-12">
+    <!-- Page Header -->
+    <div class="mb-12 text-center">
+      <nav class="mb-6 text-sm">
+        <ol class="flex items-center justify-center space-x-2 text-gray-600">
+          <li><a href="/" class="hover:text-primary">Home</a></li>
+          <li class="before:content-['/'] before:mx-2 text-gray-900 font-medium">
+            Collections
+          </li>
+        </ol>
+      </nav>
+
+      <h1 class="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+        Our Collections
+      </h1>
+
+      <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+        {pageDescription}
+      </p>
+    </div>
+
+    <!-- Collections Grid -->
+    {collections.length > 0 ? (
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {collections.map((collection) => (
+          <a
+            href={`/shop/${collection.handle}`}
+            class="group block bg-white rounded-xl overflow-hidden shadow-md hover:shadow-2xl transition-shadow duration-300"
+          >
+            {/* Collection Image Placeholder */}
+            <div class="aspect-[4/3] bg-gradient-to-br from-gray-100 to-gray-200 relative overflow-hidden">
+              <div class="absolute inset-0 flex items-center justify-center">
+                <svg
+                  class="w-24 h-24 text-gray-300 group-hover:text-gray-400 transition-colors"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.5"
+                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                  />
+                </svg>
+              </div>
+
+              {/* Overlay on hover */}
+              <div class="absolute inset-0 bg-black opacity-0 group-hover:opacity-10 transition-opacity duration-300" />
+            </div>
+
+            {/* Collection Info */}
+            <div class="p-6">
+              <h2 class="text-2xl font-bold text-gray-900 mb-2 group-hover:text-primary transition-colors">
+                {collection.name}
+              </h2>
+
+              {collection.description && (
+                <p class="text-gray-600 line-clamp-2 mb-4">
+                  {collection.description}
+                </p>
+              )}
+
+              <span class="inline-flex items-center text-primary font-semibold group-hover:gap-2 transition-all">
+                Shop Now
+                <svg
+                  class="w-5 h-5 ml-1 group-hover:ml-0 group-hover:translate-x-1 transition-transform"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                  />
+                </svg>
+              </span>
+            </div>
+          </a>
+        ))}
+      </div>
+    ) : (
+      <div class="text-center py-16">
+        <svg
+          class="mx-auto h-24 w-24 text-gray-300 mb-4"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.5"
+            d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+          />
+        </svg>
+        <h2 class="text-2xl font-bold text-gray-900 mb-2">
+          No collections yet
+        </h2>
+        <p class="text-gray-600 mb-6">
+          {env?.DB
+            ? 'Check back soon for new collections!'
+            : 'Connect your D1 database to see collections'}
+        </p>
+        <a
+          href="/shop"
+          class="inline-block bg-primary hover:bg-sage text-white font-semibold px-6 py-3 rounded-lg transition-colors"
+        >
+          Shop All Products
+        </a>
+      </div>
+    )}
+  </div>
+</BaseLayout>

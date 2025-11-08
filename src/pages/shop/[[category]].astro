@@ -1,12 +1,15 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getProducts } from '@/lib/api/products';
+import { getCollectionProducts } from '@/lib/api/collections';
 import ProductGrid from '@/components/react/ProductGrid';
+import FilterSort from '@/components/react/FilterSort';
 
 const { category } = Astro.params;
 const url = new URL(Astro.request.url);
 const page = parseInt(url.searchParams.get('page') || '1', 10);
-const limit = 12;
+const sortBy = (url.searchParams.get('sort') || 'newest') as 'newest' | 'price-asc' | 'price-desc' | 'name';
+const limit = 24;
 const offset = (page - 1) * limit;
 
 // Get env from platformProxy in dev, runtime in production
@@ -16,22 +19,41 @@ const brandId = Astro.locals.brand || 'casual-chic';
 // Fetch products
 let products = [];
 let total = 0;
+let categoryData = null;
 
 if (env?.DB) {
-  const result = await getProducts({ env }, { limit, offset, brandId });
-  products = result.products;
-  total = result.total;
+  if (category) {
+    // Fetch collection/category products
+    const result = await getCollectionProducts({ env }, {
+      handle: category,
+      page,
+      limit,
+      sortBy,
+      brandId
+    });
+
+    if (result) {
+      products = result.products;
+      total = result.totalProducts;
+      categoryData = result.category;
+    }
+  } else {
+    // Fetch all products
+    const result = await getProducts({ env }, { limit, offset, brandId });
+    products = result.products;
+    total = result.total;
+  }
 }
 
 const totalPages = Math.ceil(total / limit);
 
 // Page title and description
-const pageTitle = category
+const pageTitle = categoryData?.name || (category
   ? `${category.charAt(0).toUpperCase() + category.slice(1)} | Shop`
-  : 'Shop All Products';
-const pageDescription = category
+  : 'Shop All Products');
+const pageDescription = categoryData?.description || (category
   ? `Browse our curated collection of ${category} items`
-  : 'Discover our complete collection of modern, timeless fashion pieces';
+  : 'Discover our complete collection of modern, timeless fashion pieces');
 ---
 
 <BaseLayout title={pageTitle} description={pageDescription}>
@@ -66,23 +88,12 @@ const pageDescription = category
     </div>
 
     <!-- Products Count and Filters Row -->
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-      <p class="font-body text-sm text-charcoal">
-        Showing {products.length > 0 ? offset + 1 : 0}-{Math.min(offset + limit, total)} of {total} products
-      </p>
-
-      <!-- Sort Dropdown (placeholder for now) -->
-      <div class="flex items-center gap-4">
-        <label for="sort" class="font-body text-sm text-charcoal">Sort by:</label>
-        <select
-          id="sort"
-          class="font-body text-sm border border-charcoal rounded px-3 py-2 focus:outline-none focus:border-primary"
-        >
-          <option value="featured">Featured</option>
-          <option value="newest">Newest</option>
-          <option value="price-low">Price: Low to High</option>
-          <option value="price-high">Price: High to Low</option>
-        </select>
+    <div class="mb-8">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-4">
+        <p class="text-sm text-gray-600">
+          Showing {products.length > 0 ? offset + 1 : 0}-{Math.min(offset + limit, total)} of {total} products
+        </p>
+        <FilterSort client:load currentSort={sortBy} />
       </div>
     </div>
 
