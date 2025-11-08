@@ -2,6 +2,7 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getProductByHandle } from '@/lib/api/products';
 import AddToCartButton from '@/components/react/AddToCartButton';
+import { sanitizeProductDescription } from '@/lib/utils/sanitize';
 
 const { handle } = Astro.params;
 
@@ -12,40 +13,30 @@ if (!handle) {
 // Get env from platformProxy in dev, runtime in production
 const env = (Astro.locals as any).runtime?.env;
 
-// In development without bindings, show placeholder
-let product = null;
-if (env?.DB) {
-  product = await getProductByHandle({ env }, handle);
-}
-
-if (!product && env?.DB) {
+// Database is required in production
+if (!env?.DB) {
+  console.error('Database binding not available');
   return Astro.redirect('/404');
 }
 
-// Mock product for development without D1
-const mockProduct = {
-  id: '1',
-  title: 'Sample Product',
-  description: 'This is a placeholder product. Connect D1 database to see real products.',
-  handle: handle,
-  thumbnail: null,
-  price: 4999,
-  compare_at_price: 6999,
-  inventory_quantity: 10,
-  brand_id: 'casual-chic',
-  metadata: null,
-  created_at: new Date().toISOString(),
-  updated_at: new Date().toISOString(),
-  synced_at: new Date().toISOString(),
-};
+const product = await getProductByHandle({ env }, handle);
 
-const displayProduct = product || mockProduct;
+if (!product) {
+  return Astro.redirect('/404');
+}
+
+const displayProduct = product;
 const formattedPrice = (displayProduct.price / 100).toFixed(2);
 const formattedComparePrice = displayProduct.compare_at_price
   ? (displayProduct.compare_at_price / 100).toFixed(2)
   : null;
 const savings = formattedComparePrice
   ? ((parseFloat(formattedComparePrice) - parseFloat(formattedPrice)) / parseFloat(formattedComparePrice) * 100).toFixed(0)
+  : null;
+
+// Sanitize product description for safe HTML rendering
+const sanitizedDescription = displayProduct.description
+  ? sanitizeProductDescription(displayProduct.description)
   : null;
 ---
 
@@ -139,14 +130,12 @@ const savings = formattedComparePrice
         </div>
 
         <!-- Description -->
-        {displayProduct.description && (
+        {sanitizedDescription && (
           <div class="border-t border-neutral pt-6">
             <h2 class="font-heading text-xl font-bold text-forest mb-3">
               Description
             </h2>
-            <p class="font-body text-charcoal leading-relaxed whitespace-pre-wrap">
-              {displayProduct.description}
-            </p>
+            <div class="font-body text-charcoal leading-relaxed prose prose-sm max-w-none" set:html={sanitizedDescription} />
           </div>
         )}
 

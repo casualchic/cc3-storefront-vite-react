@@ -5,6 +5,7 @@
  */
 
 import type { MiddlewareHandler } from 'astro';
+import { RATE_LIMITS } from '@/lib/constants';
 
 interface RateLimitConfig {
   windowMs: number;  // Time window in milliseconds
@@ -13,10 +14,10 @@ interface RateLimitConfig {
 
 // Rate limit configurations for different endpoints
 const rateLimits: Record<string, RateLimitConfig> = {
-  '/api/search': { windowMs: 60000, maxRequests: 30 },  // 30 req/min
-  '/api/products': { windowMs: 60000, maxRequests: 60 }, // 60 req/min
-  '/api/collections': { windowMs: 60000, maxRequests: 60 }, // 60 req/min
-  'default': { windowMs: 60000, maxRequests: 100 }, // 100 req/min default
+  '/api/search': { windowMs: RATE_LIMITS.WINDOW_MS, maxRequests: RATE_LIMITS.SEARCH_MAX_REQUESTS },
+  '/api/products': { windowMs: RATE_LIMITS.WINDOW_MS, maxRequests: RATE_LIMITS.PRODUCTS_MAX_REQUESTS },
+  '/api/collections': { windowMs: RATE_LIMITS.WINDOW_MS, maxRequests: RATE_LIMITS.COLLECTIONS_MAX_REQUESTS },
+  'default': { windowMs: RATE_LIMITS.WINDOW_MS, maxRequests: RATE_LIMITS.DEFAULT_MAX_REQUESTS },
 };
 
 /**
@@ -78,7 +79,6 @@ export const rateLimit: MiddlewareHandler = async (context, next) => {
   }
 
   const now = Date.now();
-  const windowStart = now - config.windowMs;
   const key = `ratelimit:${clientIP}:${url.pathname}`;
 
   try {

@@ -4,18 +4,20 @@ import { getProducts } from '@/lib/api/products';
 import { getCollectionProducts } from '@/lib/api/collections';
 import ProductGrid from '@/components/react/ProductGrid';
 import FilterSort from '@/components/react/FilterSort';
+import Pagination from '@/components/react/Pagination';
+import { PAGINATION, DEFAULT_BRAND_ID } from '@/lib/constants';
 import type { Product, Category } from '@/lib/db/schema';
 
 const { category } = Astro.params;
 const url = new URL(Astro.request.url);
 const page = parseInt(url.searchParams.get('page') || '1', 10);
 const sortBy = (url.searchParams.get('sort') || 'newest') as 'newest' | 'price-asc' | 'price-desc' | 'name';
-const limit = 24;
+const limit = PAGINATION.DEFAULT_LIMIT;
 const offset = (page - 1) * limit;
 
 // Get env from platformProxy in dev, runtime in production
 const env = (Astro.locals as any).runtime?.env;
-const brandId = Astro.locals.brand || 'casual-chic';
+const brandId = Astro.locals.brand || DEFAULT_BRAND_ID;
 
 // Fetch products
 let products: Product[] = [];
@@ -104,68 +106,12 @@ const pageDescription = categoryData?.description || (category
     <!-- Pagination -->
     {totalPages > 1 && (
       <div class="mt-12 flex justify-center">
-        <nav class="flex items-center gap-2">
-          <!-- Previous Button -->
-          {page > 1 ? (
-            <a
-              href={`/shop${category ? `/${category}` : ''}?page=${page - 1}`}
-              class="px-4 py-2 rounded bg-neutral text-forest hover:bg-primary hover:text-white transition-colors font-body"
-            >
-              Previous
-            </a>
-          ) : (
-            <span class="px-4 py-2 rounded bg-neutral text-charcoal opacity-50 font-body cursor-not-allowed">
-              Previous
-            </span>
-          )}
-
-          <!-- Page Numbers -->
-          {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-            const pageNum = i + 1;
-            return (
-              <a
-                href={`/shop${category ? `/${category}` : ''}?page=${pageNum}`}
-                class={`px-4 py-2 rounded font-body transition-colors ${
-                  pageNum === page
-                    ? 'bg-primary text-white'
-                    : 'bg-neutral text-forest hover:bg-sage hover:text-white'
-                }`}
-              >
-                {pageNum}
-              </a>
-            );
-          })}
-
-          {totalPages > 5 && (
-            <>
-              <span class="px-2 text-charcoal">...</span>
-              <a
-                href={`/shop${category ? `/${category}` : ''}?page=${totalPages}`}
-                class={`px-4 py-2 rounded font-body transition-colors ${
-                  totalPages === page
-                    ? 'bg-primary text-white'
-                    : 'bg-neutral text-forest hover:bg-sage hover:text-white'
-                }`}
-              >
-                {totalPages}
-              </a>
-            </>
-          )}
-
-          <!-- Next Button -->
-          {page < totalPages ? (
-            <a
-              href={`/shop${category ? `/${category}` : ''}?page=${page + 1}`}
-              class="px-4 py-2 rounded bg-neutral text-forest hover:bg-primary hover:text-white transition-colors font-body"
-            >
-              Next
-            </a>
-          ) : (
-            <span class="px-4 py-2 rounded bg-neutral text-charcoal opacity-50 font-body cursor-not-allowed">
-              Next
-            </span>
-          )}
-        </nav>
+        <Pagination
+          client:load
+          currentPage={page}
+          totalPages={totalPages}
+          baseUrl={`/shop${category ? `/${category}` : ''}`}
+        />
       </div>
     )}
 

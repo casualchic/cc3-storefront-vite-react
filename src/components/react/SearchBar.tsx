@@ -5,6 +5,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useDebounce } from '../../lib/hooks/useDebounce';
+import { SEARCH } from '../../lib/constants';
 
 interface SearchBarProps {
   placeholder?: string;
@@ -25,16 +26,23 @@ export default function SearchBar({
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
-  const debouncedQuery = useDebounce(query, 300);
+  const debouncedQuery = useDebounce(query, SEARCH.DEBOUNCE_DELAY);
 
   // Fetch suggestions when query changes
   useEffect(() => {
-    if (showSuggestions && debouncedQuery.trim().length >= 2) {
-      fetchSuggestions(debouncedQuery);
+    const abortController = new AbortController();
+
+    if (showSuggestions && debouncedQuery.trim().length >= SEARCH.MIN_QUERY_LENGTH) {
+      fetchSuggestions(debouncedQuery, abortController.signal);
     } else {
       setSuggestions([]);
       setIsOpen(false);
     }
+
+    // Cleanup: abort pending requests when component unmounts or query changes
+    return () => {
+      abortController.abort();
+    };
   }, [debouncedQuery, showSuggestions]);
 
   // Close suggestions when clicking outside
@@ -49,10 +57,11 @@ export default function SearchBar({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const fetchSuggestions = async (searchQuery: string) => {
+  const fetchSuggestions = async (searchQuery: string, signal: AbortSignal) => {
     try {
       const response = await fetch(
-        `/api/search?q=${encodeURIComponent(searchQuery)}&suggestions=true`
+        `/api/search?q=${encodeURIComponent(searchQuery)}&suggestions=true`,
+        { signal }
       );
       const data = await response.json() as { suggestions?: string[] };
       if (data.suggestions && data.suggestions.length > 0) {
@@ -63,6 +72,10 @@ export default function SearchBar({
         setIsOpen(false);
       }
     } catch (error) {
+      // Don't update state if request was aborted
+      if (error instanceof Error && error.name === 'AbortError') {
+        return;
+      }
       console.error('Failed to fetch suggestions:', error);
       setSuggestions([]);
     }

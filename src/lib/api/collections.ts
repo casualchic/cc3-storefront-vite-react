@@ -6,19 +6,6 @@
 import type { Product, Category } from '../db/schema';
 
 /**
- * Sanitize LIKE pattern to prevent SQL injection
- * Escapes special SQL LIKE characters: %, _, [, ]
- */
-function sanitizeLikePattern(input: string): string {
-  return input
-    .replace(/\\/g, '\\\\')  // Escape backslash first
-    .replace(/%/g, '\\%')    // Escape percent
-    .replace(/_/g, '\\_')    // Escape underscore
-    .replace(/\[/g, '\\[')   // Escape opening bracket
-    .replace(/\]/g, '\\]');  // Escape closing bracket
-}
-
-/**
  * Valid sort options for collections
  */
 const VALID_SORT_OPTIONS = ['newest', 'price-asc', 'price-desc', 'name'] as const;
