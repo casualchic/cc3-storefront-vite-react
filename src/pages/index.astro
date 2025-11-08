@@ -1,0 +1,51 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Hero from '@/components/astro/Hero.astro';
+
+const brand = Astro.locals.brand || 'casual-chic';
+---
+
+<BaseLayout
+  title="Casual Chic Boutique | Modern Fashion"
+  description="Discover modern, approachable fashion with our curated collection of casual chic styles."
+>
+  <Hero
+    title="Effortlessly Chic"
+    subtitle="Discover your perfect style with our curated collection of modern, timeless pieces"
+    ctaText="Shop New Arrivals"
+    ctaLink="/shop"
+  />
+
+  <section class="py-16 px-4 max-w-7xl mx-auto">
+    <h2 class="font-heading text-4xl font-bold text-center mb-12 text-forest">
+      Featured Collections
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <!-- Placeholder for featured categories -->
+      <div class="bg-neutral rounded-lg p-8 text-center hover:shadow-lg transition-shadow">
+        <h3 class="font-heading text-2xl mb-4 text-forest">New Arrivals</h3>
+        <p class="font-body text-charcoal mb-6">Fresh styles for the season</p>
+        <a href="/shop/new-arrivals" class="text-primary hover:text-sage font-medium">
+          Explore →
+        </a>
+      </div>
+
+      <div class="bg-neutral rounded-lg p-8 text-center hover:shadow-lg transition-shadow">
+        <h3 class="font-heading text-2xl mb-4 text-forest">Best Sellers</h3>
+        <p class="font-body text-charcoal mb-6">Customer favorites</p>
+        <a href="/shop/best-sellers" class="text-primary hover:text-sage font-medium">
+          Explore →
+        </a>
+      </div>
+
+      <div class="bg-neutral rounded-lg p-8 text-center hover:shadow-lg transition-shadow">
+        <h3 class="font-heading text-2xl mb-4 text-forest">Sale</h3>
+        <p class="font-body text-charcoal mb-6">Limited time offers</p>
+        <a href="/shop/sale" class="text-primary hover:text-sage font-medium">
+          Explore →
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
