@@ -1,0 +1,46 @@
+#:schema node_modules/wrangler/config-schema.json
+name = "casual-chic-storefront"
+compatibility_date = "2025-01-08"
+compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = "./dist"
+
+[observability]
+enabled = true
+
+# NOTE: Update these IDs after creating resources via Wrangler CLI
+
+# D1 Database (shared with Payload CMS)
+# Created via: wrangler d1 create casual-chic-storefront
+[[d1_databases]]
+binding = "DB"
+database_name = "casual-chic-storefront"
+database_id = "a9501217-852e-4e7f-9380-a95459881f7b"
+
+# R2 Buckets (shared with Payload CMS)
+# Create: wrangler r2 bucket create casual-chic-media
+[[r2_buckets]]
+binding = "MEDIA"
+bucket_name = "casual-chic-media"
+
+# KV Namespaces (app-specific)
+# Create: wrangler kv:namespace create "PRODUCT_CACHE"
+[[kv_namespaces]]
+binding = "PRODUCT_CACHE"
+id = "YOUR_KV_NAMESPACE_ID_1"  # Update after creation
+
+[[kv_namespaces]]
+binding = "CATEGORY_CACHE"
+id = "YOUR_KV_NAMESPACE_ID_2"  # Update after creation
+
+[[kv_namespaces]]
+binding = "SEARCH_CACHE"
+id = "YOUR_KV_NAMESPACE_ID_3"  # Update after creation
+
+# Environment variables (non-sensitive)
+[vars]
+MEDUSA_API_URL = "https://your-instance.medusajs.com"
+PAYLOAD_API_URL = "https://cms.casualchicboutique.com"
+
+# Secrets (set via CLI):
+# wrangler secret put MEDUSA_API_KEY
+# wrangler secret put PAYLOAD_API_KEY

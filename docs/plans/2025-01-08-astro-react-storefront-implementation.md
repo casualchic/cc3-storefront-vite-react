@@ -735,7 +735,7 @@ enabled = true
 [[d1_databases]]
 binding = "DB"
 database_name = "casual-chic-storefront"
-database_id = "YOUR_D1_DATABASE_ID"  # Update after creation
+database_id = "a9501217-852e-4e7f-9380-a95459881f7b"
 
 # R2 Buckets (shared with Payload CMS)
 # Create: wrangler r2 bucket create casual-chic-media
