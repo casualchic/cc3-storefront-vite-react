@@ -10,6 +10,17 @@ declare namespace App {
   }
 }
 
+interface ImportMetaEnv {
+  readonly PUBLIC_MEDUSA_API_URL: string;
+  readonly PUBLIC_MEDUSA_PUBLISHABLE_KEY: string;
+  readonly PUBLIC_STRIPE_PUBLISHABLE_KEY: string;
+  readonly PUBLIC_GOOGLE_PLACES_API_KEY: string;
+}
+
+interface ImportMeta {
+  readonly env: ImportMetaEnv;
+}
+
 interface Env {
   DB: D1Database;
   MEDIA: R2Bucket;

@@ -1,0 +1,265 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="FAQ - Frequently Asked Questions | Casual Chic Boutique"
+  description="Find answers to common questions about ordering, shipping, returns, and more"
+>
+  <div class="max-w-4xl mx-auto px-4 py-12">
+    <!-- Breadcrumb -->
+    <nav class="mb-8 text-sm">
+      <ol class="flex items-center space-x-2 text-charcoal">
+        <li><a href="/" class="hover:text-primary">Home</a></li>
+        <li class="before:content-['/'] before:mx-2 text-forest font-medium">
+          FAQ
+        </li>
+      </ol>
+    </nav>
+
+    <h1 class="font-heading text-4xl md:text-5xl font-bold text-forest mb-4">
+      Frequently Asked Questions
+    </h1>
+    <p class="text-lg text-charcoal mb-12">
+      Quick answers to common questions about shopping with us
+    </p>
+
+    <!-- FAQ Sections -->
+    <div class="space-y-8">
+      <!-- Ordering -->
+      <section>
+        <h2 class="font-heading text-2xl font-bold text-forest mb-4">Ordering</h2>
+        <div class="space-y-4">
+          <details class="bg-neutral/20 p-6 rounded-lg">
+            <summary class="font-semibold text-forest cursor-pointer">
+              How do I place an order?
+            </summary>
+            <p class="mt-4 text-charcoal">
+              Browse our shop, add items to your cart, and proceed to checkout. You can checkout as a guest
+              or create an account for faster future orders.
+            </p>
+          </details>
+
+          <details class="bg-neutral/20 p-6 rounded-lg">
+            <summary class="font-semibold text-forest cursor-pointer">
+              Can I modify my order after placing it?
+            </summary>
+            <p class="mt-4 text-charcoal">
+              Contact us immediately at <a href="mailto:support@casualchic.com" class="text-primary hover:underline">support@casualchic.com</a>.
+              If your order hasn't shipped yet, we can modify it.
+            </p>
+          </details>
+
+          <details class="bg-neutral/20 p-6 rounded-lg">
+            <summary class="font-semibold text-forest cursor-pointer">
+              What payment methods do you accept?
+            </summary>
+            <p class="mt-4 text-charcoal">
+              We accept all major credit cards (Visa, Mastercard, American Express, Discover),
+              PayPal, Apple Pay, Google Pay, and Shop Pay.
+            </p>
+          </details>
+
+          <details class="bg-neutral/20 p-6 rounded-lg">
+            <summary class="font-semibold text-forest cursor-pointer">
+              Is my payment information secure?
+            </summary>
+            <p class="mt-4 text-charcoal">
+              Yes. All payments are processed through Stripe, a secure payment processor.
+              We never store your credit card information on our servers.
+            </p>
+          </details>
+        </div>
+      </section>
+
+      <!-- Shipping -->
+      <section>
+        <h2 class="font-heading text-2xl font-bold text-forest mb-4">Shipping</h2>
+        <div class="space-y-4">
+          <details class="bg-neutral/20 p-6 rounded-lg">
+            <summary class="font-semibold text-forest cursor-pointer">
+              How long does shipping take?
+            </summary>
+            <div class="mt-4 text-charcoal">
+              <ul class="space-y-2">
+                <li>• Standard: 3-5 business days ($4.99, free over $75)</li>
+                <li>• Express: 1-2 business days ($9.99)</li>
+                <li>• International: 7-14 business days (varies)</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="bg-neutral/20 p-6 rounded-lg">
+            <summary class="font-semibold text-forest cursor-pointer">
+              Do you ship internationally?
+            </summary>
+            <p class="mt-4 text-charcoal">
+              Yes! We ship to most countries worldwide. Shipping costs and delivery times vary by destination.
+              International customers are responsible for any customs duties or taxes.
+            </p>
+          </details>
+
+          <details class="bg-neutral/20 p-6 rounded-lg">
+            <summary class="font-semibold text-forest cursor-pointer">
+              How can I track my order?
+            </summary>
+            <p class="mt-4 text-charcoal">
+              You'll receive a tracking number via email when your order ships.
+              Click the link to track your package in real-time.
+            </p>
+          </details>
+
+          <details class="bg-neutral/20 p-6 rounded-lg">
+            <summary class="font-semibold text-forest cursor-pointer">
+              What if my order arrives damaged?
+            </summary>
+            <p class="mt-4 text-charcoal">
+              Contact us immediately with photos of the damage. We'll send a replacement or issue a full refund.
+            </p>
+          </details>
+        </div>
+      </section>
+
+      <!-- Returns & Exchanges -->
+      <section>
+        <h2 class="font-heading text-2xl font-bold text-forest mb-4">Returns & Exchanges</h2>
+        <div class="space-y-4">
+          <details class="bg-neutral/20 p-6 rounded-lg">
+            <summary class="font-semibold text-forest cursor-pointer">
+              What is your return policy?
+            </summary>
+            <p class="mt-4 text-charcoal">
+              30-day returns on unworn, unwashed items with tags attached. Returns are free for US orders.
+              <a href="/returns" class="text-primary hover:underline">View full return policy →</a>
+            </p>
+          </details>
+
+          <details class="bg-neutral/20 p-6 rounded-lg">
+            <summary class="font-semibold text-forest cursor-pointer">
+              How do I exchange an item?
+            </summary>
+            <p class="mt-4 text-charcoal">
+              Contact us to initiate an exchange. We'll send your new size or color right away,
+              and you can return the original item using our prepaid label.
+            </p>
+          </details>
+
+          <details class="bg-neutral/20 p-6 rounded-lg">
+            <summary class="font-semibold text-forest cursor-pointer">
+              When will I receive my refund?
+            </summary>
+            <p class="mt-4 text-charcoal">
+              Refunds are processed within 5-7 business days of receiving your return.
+              It may take an additional 3-5 business days for your bank to credit your account.
+            </p>
+          </details>
+        </div>
+      </section>
+
+      <!-- Sizing -->
+      <section>
+        <h2 class="font-heading text-2xl font-bold text-forest mb-4">Sizing & Fit</h2>
+        <div class="space-y-4">
+          <details class="bg-neutral/20 p-6 rounded-lg">
+            <summary class="font-semibold text-forest cursor-pointer">
+              How do I find my size?
+            </summary>
+            <p class="mt-4 text-charcoal">
+              Each product page includes a size chart. Click "Size Guide" next to the size selector.
+              If you're between sizes, we generally recommend sizing up.
+            </p>
+          </details>
+
+          <details class="bg-neutral/20 p-6 rounded-lg">
+            <summary class="font-semibold text-forest cursor-pointer">
+              Do your items run true to size?
+            </summary>
+            <p class="mt-4 text-charcoal">
+              Most items run true to size. Each product page includes fit details and model measurements
+              to help you choose the right size.
+            </p>
+          </details>
+
+          <details class="bg-neutral/20 p-6 rounded-lg">
+            <summary class="font-semibold text-forest cursor-pointer">
+              What if an item doesn't fit?
+            </summary>
+            <p class="mt-4 text-charcoal">
+              Free exchanges! Contact us and we'll send the right size immediately.
+              Return the original item using our prepaid label.
+            </p>
+          </details>
+        </div>
+      </section>
+
+      <!-- Account -->
+      <section>
+        <h2 class="font-heading text-2xl font-bold text-forest mb-4">Account</h2>
+        <div class="space-y-4">
+          <details class="bg-neutral/20 p-6 rounded-lg">
+            <summary class="font-semibold text-forest cursor-pointer">
+              Do I need an account to place an order?
+            </summary>
+            <p class="mt-4 text-charcoal">
+              No, you can checkout as a guest. However, creating an account lets you track orders,
+              save addresses, and checkout faster next time.
+            </p>
+          </details>
+
+          <details class="bg-neutral/20 p-6 rounded-lg">
+            <summary class="font-semibold text-forest cursor-pointer">
+              How do I reset my password?
+            </summary>
+            <p class="mt-4 text-charcoal">
+              Click "Forgot Password" on the login page. We'll email you a link to create a new password.
+            </p>
+          </details>
+        </div>
+      </section>
+    </div>
+
+    <!-- Still Have Questions -->
+    <section class="mt-12 bg-sage/10 p-8 rounded-lg text-center">
+      <h2 class="font-heading text-2xl font-bold text-forest mb-4">
+        Still Have Questions?
+      </h2>
+      <p class="text-charcoal mb-6">
+        Our customer service team is happy to help
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a
+          href="/contact"
+          class="inline-block bg-primary hover:bg-sage text-white px-8 py-3 rounded-lg font-semibold transition-colors"
+        >
+          Contact Us
+        </a>
+        <a
+          href="mailto:support@casualchic.com"
+          class="inline-block bg-white hover:bg-neutral/20 text-forest border border-neutral px-8 py-3 rounded-lg font-semibold transition-colors"
+        >
+          Email Support
+        </a>
+      </div>
+    </section>
+  </div>
+
+  <!-- FAQ Schema Script -->
+  <script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', () => {
+      // Add expand/collapse functionality
+      const details = document.querySelectorAll('details');
+      details.forEach((detail) => {
+        detail.addEventListener('toggle', () => {
+          if (detail.open) {
+            // Close other details
+            details.forEach((other) => {
+              if (other !== detail) {
+                other.removeAttribute('open');
+              }
+            });
+          }
+        });
+      });
+    });
+  </script>
+</BaseLayout>

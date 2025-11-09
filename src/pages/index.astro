@@ -7,42 +7,185 @@ import Hero from '@/components/astro/Hero.astro';
   title="Casual Chic Boutique | Modern Fashion"
   description="Discover modern, approachable fashion with our curated collection of casual chic styles."
 >
+  <!-- Hero Section with Lifestyle Image -->
   <Hero
     title="Effortlessly Chic"
-    subtitle="Discover your perfect style with our curated collection of modern, timeless pieces"
+    subtitle="Versatile pieces that work from morning coffee to evening drinks"
     ctaText="Shop New Arrivals"
     ctaLink="/shop"
+    backgroundImage="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=1920&h=1080&fit=crop"
   />
 
+  <!-- Featured Categories with Images -->
   <section class="py-16 px-4 max-w-7xl mx-auto">
     <h2 class="font-heading text-4xl font-bold text-center mb-12 text-forest">
-      Featured Collections
+      Shop By Category
     </h2>
 
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <!-- Dresses -->
+      <a href="/shop/dresses" class="group relative overflow-hidden rounded-lg aspect-[3/4] shadow-lg hover:shadow-xl transition-shadow">
+        <img
+          src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=600&h=800&fit=crop"
+          alt="Dresses"
+          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+        />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+        <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
+          <h3 class="font-heading text-2xl font-bold mb-2">Dresses</h3>
+          <p class="text-sm opacity-90">Elegant styles for every occasion</p>
+        </div>
+      </a>
+
+      <!-- Tops -->
+      <a href="/shop/tops" class="group relative overflow-hidden rounded-lg aspect-[3/4] shadow-lg hover:shadow-xl transition-shadow">
+        <img
+          src="https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=600&h=800&fit=crop"
+          alt="Tops"
+          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+        />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+        <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
+          <h3 class="font-heading text-2xl font-bold mb-2">Tops</h3>
+          <p class="text-sm opacity-90">Versatile pieces for any look</p>
+        </div>
+      </a>
+
+      <!-- Bottoms -->
+      <a href="/shop/bottoms" class="group relative overflow-hidden rounded-lg aspect-[3/4] shadow-lg hover:shadow-xl transition-shadow">
+        <img
+          src="https://images.unsplash.com/photo-1624206112918-f140f087f9b5?w=600&h=800&fit=crop"
+          alt="Bottoms"
+          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+        />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+        <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
+          <h3 class="font-heading text-2xl font-bold mb-2">Bottoms</h3>
+          <p class="text-sm opacity-90">Comfortable and chic</p>
+        </div>
+      </a>
+
+      <!-- Accessories -->
+      <a href="/shop/accessories" class="group relative overflow-hidden rounded-lg aspect-[3/4] shadow-lg hover:shadow-xl transition-shadow">
+        <img
+          src="https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?w=600&h=800&fit=crop"
+          alt="Accessories"
+          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+        />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+        <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
+          <h3 class="font-heading text-2xl font-bold mb-2">Accessories</h3>
+          <p class="text-sm opacity-90">Complete your look</p>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- Lifestyle Section -->
+  <section class="py-16 px-4 bg-neutral">
+    <div class="max-w-7xl mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div>
+          <h2 class="font-heading text-4xl font-bold mb-6 text-forest">
+            Modern. Timeless. You.
+          </h2>
+          <p class="font-body text-lg text-charcoal mb-6">
+            We stock pieces that work hard in your wardrobe. Each item fits well,
+            looks polished, and transitions from desk to dinner without a second thought.
+          </p>
+          <p class="font-body text-lg text-charcoal mb-8">
+            Real clothing for real life. No fuss, just great style.
+          </p>
+          <a
+            href="/shop"
+            class="inline-block bg-primary hover:bg-sage text-white font-button px-8 py-4 rounded-lg text-lg transition-colors duration-200"
+          >
+            Shop All
+          </a>
+        </div>
+        <div class="relative h-96 lg:h-[500px] rounded-lg overflow-hidden shadow-xl">
+          <img
+            src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1200&h=1000&fit=crop"
+            alt="Lifestyle"
+            class="w-full h-full object-cover"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Collections -->
+  <section class="py-16 px-4 max-w-7xl mx-auto">
+    <h2 class="font-heading text-4xl font-bold text-center mb-4 text-forest">
+      Trending Now
+    </h2>
+    <p class="text-center text-charcoal mb-12">This week's most-loved pieces</p>
+
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-      <!-- Placeholder for featured categories -->
-      <div class="bg-neutral rounded-lg p-8 text-center hover:shadow-lg transition-shadow">
-        <h3 class="font-heading text-2xl mb-4 text-forest">New Arrivals</h3>
-        <p class="font-body text-charcoal mb-6">Fresh styles for the season</p>
-        <a href="/shop/new-arrivals" class="text-primary hover:text-sage font-medium">
-          Explore →
-        </a>
+      <!-- New Arrivals -->
+      <div class="group relative overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow bg-white">
+        <div class="aspect-square overflow-hidden">
+          <img
+            src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=800&h=800&fit=crop&q=80"
+            alt="New Arrivals"
+            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          />
+        </div>
+        <div class="p-6">
+          <h3 class="font-heading text-2xl mb-2 text-forest">New Arrivals</h3>
+          <p class="font-body text-charcoal mb-4">Fresh styles just landed</p>
+          <a href="/shop?sort=newest" class="text-primary hover:text-sage font-medium inline-flex items-center">
+            Shop Now
+            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            </svg>
+          </a>
+        </div>
       </div>
 
-      <div class="bg-neutral rounded-lg p-8 text-center hover:shadow-lg transition-shadow">
-        <h3 class="font-heading text-2xl mb-4 text-forest">Best Sellers</h3>
-        <p class="font-body text-charcoal mb-6">Customer favorites</p>
-        <a href="/shop/best-sellers" class="text-primary hover:text-sage font-medium">
-          Explore →
-        </a>
+      <!-- Best Sellers -->
+      <div class="group relative overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow bg-white">
+        <div class="aspect-square overflow-hidden">
+          <img
+            src="https://images.unsplash.com/photo-1445205170230-053b83016050?w=800&h=800&fit=crop"
+            alt="Best Sellers"
+            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          />
+        </div>
+        <div class="p-6">
+          <h3 class="font-heading text-2xl mb-2 text-forest">Best Sellers</h3>
+          <p class="font-body text-charcoal mb-4">Customer favorites</p>
+          <a href="/shop?featured=true" class="text-primary hover:text-sage font-medium inline-flex items-center">
+            Shop Now
+            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            </svg>
+          </a>
+        </div>
       </div>
 
-      <div class="bg-neutral rounded-lg p-8 text-center hover:shadow-lg transition-shadow">
-        <h3 class="font-heading text-2xl mb-4 text-forest">Sale</h3>
-        <p class="font-body text-charcoal mb-6">Limited time offers</p>
-        <a href="/shop/sale" class="text-primary hover:text-sage font-medium">
-          Explore →
-        </a>
+      <!-- Sale -->
+      <div class="group relative overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow bg-white">
+        <div class="aspect-square overflow-hidden relative">
+          <img
+            src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=800&h=800&fit=crop"
+            alt="Sale"
+            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          />
+          <div class="absolute top-4 right-4 bg-red-600 text-white px-3 py-1 rounded-full text-sm font-bold">
+            Up to 50% Off
+          </div>
+        </div>
+        <div class="p-6">
+          <h3 class="font-heading text-2xl mb-2 text-forest">Sale</h3>
+          <p class="font-body text-charcoal mb-4">Limited time offers</p>
+          <a href="/shop?onSale=true" class="text-primary hover:text-sage font-medium inline-flex items-center">
+            Shop Now
+            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            </svg>
+          </a>
+        </div>
       </div>
     </div>
   </section>

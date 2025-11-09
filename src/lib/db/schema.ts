@@ -9,6 +9,7 @@ export interface Product {
   inventory_quantity: number | null;
   brand_id: string;
   metadata: Record<string, any> | null;
+  images?: Array<{ url: string; alt?: string }>;
   created_at: string;
   updated_at: string;
   synced_at: string;

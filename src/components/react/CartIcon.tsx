@@ -3,10 +3,11 @@
  * Shopping cart icon with item count badge
  */
 
-import { useCartStore } from '../../lib/stores/cart-store';
+import { useMedusaCartStore } from '../../lib/stores/medusa-cart-store';
 
 export default function CartIcon() {
-  const { totalItems, openCart } = useCartStore();
+  const { cart, openCart } = useMedusaCartStore();
+  const totalItems = cart?.items?.reduce((sum, item) => sum + item.quantity, 0) || 0;
 
   return (
     <button

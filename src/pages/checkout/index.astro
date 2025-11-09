@@ -1,0 +1,24 @@
+---
+/**
+ * Checkout Page
+ * Main checkout flow with Medusa integration
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CheckoutPage from '../../components/react/checkout/CheckoutPage';
+
+const title = 'Checkout - Casual Chic Boutique';
+const description = 'Complete your purchase securely';
+---
+
+<BaseLayout title={title} description={description}>
+  <main class="min-h-screen bg-neutral-50 py-8">
+    <CheckoutPage client:only="react" />
+  </main>
+</BaseLayout>
+
+<style>
+  /* Ensure checkout page takes full viewport */
+  main {
+    min-height: calc(100vh - 4rem);
+  }
+</style>

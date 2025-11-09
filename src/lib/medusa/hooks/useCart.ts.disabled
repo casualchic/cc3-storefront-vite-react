@@ -1,0 +1,180 @@
+/**
+ * useCart Hook
+ * React hook for cart operations with Medusa
+ */
+
+import { useState, useEffect, useCallback } from 'react';
+import type { Cart, LineItem } from '../../../lib/types/medusa';
+import { sdk, getCartId, setCartId, clearCartId } from '../client';
+
+interface UseCartReturn {
+  cart: Cart | null;
+  isLoading: boolean;
+  error: string | null;
+  addItem: (variantId: string, quantity?: number) => Promise<void>;
+  updateQuantity: (lineItemId: string, quantity: number) => Promise<void>;
+  removeItem: (lineItemId: string) => Promise<void>;
+  refreshCart: () => Promise<void>;
+  clearCart: () => void;
+}
+
+export function useCart(): UseCartReturn {
+  const [cart, setCart] = useState<Cart | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  /**
+   * Initialize or retrieve cart
+   */
+  const initializeCart = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      setError(null);
+
+      const existingCartId = getCartId();
+
+      if (existingCartId) {
+        // Try to retrieve existing cart
+        try {
+          const { cart } = await medusaClient.carts.retrieve(existingCartId);
+
+          // Check if cart is completed
+          if (cart.completed_at) {
+            // Cart was completed, create a new one
+            clearCartId();
+            const { cart: newCart } = await medusaClient.carts.create();
+            setCartId(newCart.id);
+            setCart(newCart);
+          } else {
+            setCart(cart);
+          }
+        } catch (err) {
+          // Cart not found, create new one
+          console.warn('Cart not found, creating new cart');
+          const { cart: newCart } = await medusaClient.carts.create();
+          setCartId(newCart.id);
+          setCart(newCart);
+        }
+      } else {
+        // Create new cart
+        const { cart: newCart } = await medusaClient.carts.create();
+        setCartId(newCart.id);
+        setCart(newCart);
+      }
+    } catch (err) {
+      console.error('Failed to initialize cart:', err);
+      setError('Failed to load cart');
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  /**
+   * Refresh cart data from Medusa
+   */
+  const refreshCart = useCallback(async () => {
+    const cartId = getCartId();
+    if (!cartId) return;
+
+    try {
+      const { cart } = await medusaClient.carts.retrieve(cartId);
+      setCart(cart);
+    } catch (err) {
+      console.error('Failed to refresh cart:', err);
+      setError('Failed to refresh cart');
+    }
+  }, []);
+
+  /**
+   * Add item to cart
+   */
+  const addItem = useCallback(async (variantId: string, quantity = 1) => {
+    const cartId = getCartId();
+    if (!cartId) {
+      setError('No cart found');
+      return;
+    }
+
+    try {
+      setError(null);
+      const { cart: updatedCart } = await medusaClient.carts.lineItems.create(cartId, {
+        variant_id: variantId,
+        quantity,
+      });
+      setCart(updatedCart);
+    } catch (err) {
+      console.error('Failed to add item:', err);
+      setError('Failed to add item to cart');
+      throw err;
+    }
+  }, []);
+
+  /**
+   * Update line item quantity
+   */
+  const updateQuantity = useCallback(async (lineItemId: string, quantity: number) => {
+    const cartId = getCartId();
+    if (!cartId) return;
+
+    try {
+      setError(null);
+
+      if (quantity === 0) {
+        // Remove item if quantity is 0
+        await medusaClient.carts.lineItems.delete(cartId, lineItemId);
+      } else {
+        await medusaClient.carts.lineItems.update(cartId, lineItemId, {
+          quantity,
+        });
+      }
+
+      // Refresh cart to get updated totals
+      await refreshCart();
+    } catch (err) {
+      console.error('Failed to update quantity:', err);
+      setError('Failed to update quantity');
+    }
+  }, [refreshCart]);
+
+  /**
+   * Remove item from cart
+   */
+  const removeItem = useCallback(async (lineItemId: string) => {
+    const cartId = getCartId();
+    if (!cartId) return;
+
+    try {
+      setError(null);
+      await medusaClient.carts.lineItems.delete(cartId, lineItemId);
+      await refreshCart();
+    } catch (err) {
+      console.error('Failed to remove item:', err);
+      setError('Failed to remove item');
+    }
+  }, [refreshCart]);
+
+  /**
+   * Clear cart (for after checkout)
+   */
+  const clearCart = useCallback(() => {
+    clearCartId();
+    setCart(null);
+    initializeCart();
+  }, [initializeCart]);
+
+  // Initialize cart on mount
+  useEffect(() => {
+    initializeCart();
+  }, [initializeCart]);
+
+  return {
+    cart,
+    isLoading,
+    error,
+    addItem,
+    updateQuantity,
+    removeItem,
+    refreshCart,
+    clearCart,
+  };
+}

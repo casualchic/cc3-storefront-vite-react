@@ -1,0 +1,287 @@
+/**
+ * useCheckout Hook
+ * React hook for managing checkout flow with Medusa
+ */
+
+import { useState, useCallback } from 'react';
+import type { Cart, Order, ShippingOption } from '../../../lib/types/medusa';
+import type { AddressInput } from '../../../lib/types/medusa';
+import { sdk, getCartId } from '../client';
+
+interface UseCheckoutReturn {
+  isProcessing: boolean;
+  error: string | null;
+  setEmail: (email: string) => Promise<Cart | undefined>;
+  setShippingAddress: (address: AddressInput) => Promise<Cart | undefined>;
+  setBillingAddress: (address: AddressInput) => Promise<Cart | undefined>;
+  getShippingOptions: () => Promise<ShippingOption[]>;
+  calculateShippingPrice: (optionId: string) => Promise<number | undefined>;
+  selectShippingMethod: (optionId: string) => Promise<Cart | undefined>;
+  initializePaymentSessions: () => Promise<Cart | undefined>;
+  selectPaymentProvider: (providerId: string) => Promise<Cart | undefined>;
+  completeCheckout: () => Promise<{ order?: Order; error?: string }>;
+}
+
+export function useCheckout(): UseCheckoutReturn {
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  /**
+   * Set customer email
+   */
+  const setEmail = useCallback(async (email: string) => {
+    const cartId = getCartId();
+    if (!cartId) {
+      setError('No cart found');
+      return;
+    }
+
+    try {
+      setIsProcessing(true);
+      setError(null);
+
+      const { cart } = await sdk.store.cart.update(cartId, {
+        email,
+      });
+
+      return cart;
+    } catch (err) {
+      console.error('Failed to set email:', err);
+      setError('Failed to set email');
+      throw err;
+    } finally {
+      setIsProcessing(false);
+    }
+  }, []);
+
+  /**
+   * Set shipping address
+   */
+  const setShippingAddress = useCallback(async (address: AddressInput) => {
+    const cartId = getCartId();
+    if (!cartId) {
+      setError('No cart found');
+      return;
+    }
+
+    try {
+      setIsProcessing(true);
+      setError(null);
+
+      const { cart } = await sdk.store.cart.update(cartId, {
+        shipping_address: address,
+      });
+
+      return cart;
+    } catch (err) {
+      console.error('Failed to set shipping address:', err);
+      setError('Failed to set shipping address');
+      throw err;
+    } finally {
+      setIsProcessing(false);
+    }
+  }, []);
+
+  /**
+   * Set billing address
+   */
+  const setBillingAddress = useCallback(async (address: AddressInput) => {
+    const cartId = getCartId();
+    if (!cartId) {
+      setError('No cart found');
+      return;
+    }
+
+    try {
+      setIsProcessing(true);
+      setError(null);
+
+      const { cart } = await sdk.store.cart.update(cartId, {
+        billing_address: address,
+      });
+
+      return cart;
+    } catch (err) {
+      console.error('Failed to set billing address:', err);
+      setError('Failed to set billing address');
+      throw err;
+    } finally {
+      setIsProcessing(false);
+    }
+  }, []);
+
+  /**
+   * Get available shipping options
+   */
+  const getShippingOptions = useCallback(async (): Promise<ShippingOption[]> => {
+    const cartId = getCartId();
+    if (!cartId) {
+      setError('No cart found');
+      return [];
+    }
+
+    try {
+      setIsProcessing(true);
+      setError(null);
+
+      const { shipping_options } = await sdk.store.fulfillment.listCartOptions(cartId);
+      // Cast to our ShippingOption type which omits TypeORM methods
+      return shipping_options as ShippingOption[];
+    } catch (err) {
+      console.error('Failed to get shipping options:', err);
+      setError('Failed to load shipping options');
+      return [];
+    } finally {
+      setIsProcessing(false);
+    }
+  }, []);
+
+  /**
+   * Calculate shipping price for calculated rate options
+   * Note: This is a simplified version. For real calculated rates,
+   * you'd need to fetch the specific option with pricing data.
+   */
+  const calculateShippingPrice = useCallback(async (optionId: string) => {
+    const cartId = getCartId();
+    if (!cartId) return;
+
+    try {
+      // For now, we rely on the shipping options already having prices
+      // A more robust implementation would fetch individual option details
+      return undefined;
+    } catch (err) {
+      console.error('Failed to calculate shipping price:', err);
+      return undefined;
+    }
+  }, []);
+
+  /**
+   * Select shipping method
+   */
+  const selectShippingMethod = useCallback(async (optionId: string) => {
+    const cartId = getCartId();
+    if (!cartId) {
+      setError('No cart found');
+      return;
+    }
+
+    try {
+      setIsProcessing(true);
+      setError(null);
+
+      const { cart } = await sdk.store.cart.addShippingMethod(cartId, {
+        option_id: optionId,
+      });
+
+      return cart;
+    } catch (err) {
+      console.error('Failed to select shipping method:', err);
+      setError('Failed to select shipping method');
+      throw err;
+    } finally {
+      setIsProcessing(false);
+    }
+  }, []);
+
+  /**
+   * Initialize payment sessions
+   */
+  const initializePaymentSessions = useCallback(async () => {
+    const cartId = getCartId();
+    if (!cartId) {
+      setError('No cart found');
+      return;
+    }
+
+    try {
+      setIsProcessing(true);
+      setError(null);
+
+      const { cart } = await sdk.store.cart.createPaymentSession(cartId);
+      return cart;
+    } catch (err) {
+      console.error('Failed to initialize payment sessions:', err);
+      setError('Failed to initialize payment');
+      throw err;
+    } finally {
+      setIsProcessing(false);
+    }
+  }, []);
+
+  /**
+   * Select payment provider
+   */
+  const selectPaymentProvider = useCallback(async (providerId: string) => {
+    const cartId = getCartId();
+    if (!cartId) {
+      setError('No cart found');
+      return;
+    }
+
+    try {
+      setIsProcessing(true);
+      setError(null);
+
+      const { cart } = await sdk.store.cart.setPaymentSession(cartId, {
+        provider_id: providerId,
+      });
+
+      return cart;
+    } catch (err) {
+      console.error('Failed to select payment provider:', err);
+      setError('Failed to select payment provider');
+      throw err;
+    } finally {
+      setIsProcessing(false);
+    }
+  }, []);
+
+  /**
+   * Complete checkout
+   */
+  const completeCheckout = useCallback(async () => {
+    const cartId = getCartId();
+    if (!cartId) {
+      setError('No cart found');
+      return { error: 'No cart found' };
+    }
+
+    try {
+      setIsProcessing(true);
+      setError(null);
+
+      const { type, data } = await sdk.store.cart.complete(cartId);
+
+      if (type === 'order') {
+        // Success!
+        return { order: data as Order };
+      } else {
+        // Failed - cart returned with errors
+        const errorMessage = 'Payment failed. Please try again.';
+        setError(errorMessage);
+        return { error: errorMessage };
+      }
+    } catch (err: any) {
+      console.error('Failed to complete checkout:', err);
+      const errorMessage = err?.response?.data?.message || 'Failed to complete checkout';
+      setError(errorMessage);
+      return { error: errorMessage };
+    } finally {
+      setIsProcessing(false);
+    }
+  }, []);
+
+  return {
+    isProcessing,
+    error,
+    setEmail,
+    setShippingAddress,
+    setBillingAddress,
+    getShippingOptions,
+    calculateShippingPrice,
+    selectShippingMethod,
+    initializePaymentSessions,
+    selectPaymentProvider,
+    completeCheckout,
+  };
+}

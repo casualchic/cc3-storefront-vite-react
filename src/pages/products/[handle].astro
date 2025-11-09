@@ -1,8 +1,8 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { getProductByHandle } from '@/lib/api/products';
-import AddToCartButton from '@/components/react/AddToCartButton';
-import { sanitizeProductDescription } from '@/lib/utils/sanitize';
+import { getProductByHandle, formatProductImages, getProductPriceRange } from '@/lib/medusa/products';
+import ProductDetailClient from '@/components/react/product/ProductDetailClient';
+import { mockProducts } from '@/lib/medusa/mock-data';
 
 const { handle } = Astro.params;
 
@@ -10,171 +10,344 @@ if (!handle) {
   return Astro.redirect('/404');
 }
 
-// Get env from platformProxy in dev, runtime in production
-const env = (Astro.locals as any).runtime?.env;
-
-// Database is required in production
-if (!env?.DB) {
-  console.error('Database binding not available');
-  return Astro.redirect('/404');
-}
-
-const product = await getProductByHandle({ env }, handle);
+// Fetch product from Medusa
+const product = await getProductByHandle(handle);
 
 if (!product) {
   return Astro.redirect('/404');
 }
 
-const displayProduct = product;
-const formattedPrice = (displayProduct.price / 100).toFixed(2);
-const formattedComparePrice = displayProduct.compare_at_price
-  ? (displayProduct.compare_at_price / 100).toFixed(2)
-  : null;
-const savings = formattedComparePrice
-  ? ((parseFloat(formattedComparePrice) - parseFloat(formattedPrice)) / parseFloat(formattedComparePrice) * 100).toFixed(0)
-  : null;
+// Format images for ImageGallery component
+const images = formatProductImages(product);
 
-// Sanitize product description for safe HTML rendering
-const sanitizedDescription = displayProduct.description
-  ? sanitizeProductDescription(displayProduct.description)
-  : null;
+// Get price range for display
+const priceRange = getProductPriceRange(product);
+
+// Format price for display (Medusa uses cents)
+const minPrice = (priceRange.min / 100).toFixed(2);
+const maxPrice = (priceRange.max / 100).toFixed(2);
+const showPriceRange = priceRange.min !== priceRange.max;
+
+// Get metadata for product details
+const metadata = product.metadata || {};
+
+// Get related products with smart matching
+// Priority: Same collection > Same category > Random
+const relatedProducts = (() => {
+  const allProducts = mockProducts.filter(p => p.id !== product.id);
+
+  // Try to get products from same collection
+  if (product.collection?.id) {
+    const sameCollection = allProducts.filter(
+      p => p.collection?.id === product.collection?.id
+    );
+    if (sameCollection.length >= 4) return sameCollection.slice(0, 4);
+  }
+
+  // Try to get products from same categories
+  if (product.categories && product.categories.length > 0) {
+    const productCategoryIds = product.categories.map(c => c.id);
+    const sameCategory = allProducts.filter(p =>
+      p.categories?.some(c => productCategoryIds.includes(c.id))
+    );
+    if (sameCategory.length >= 4) return sameCategory.slice(0, 4);
+
+    // Mix with random if not enough
+    if (sameCategory.length > 0) {
+      const remaining = allProducts.filter(p => !sameCategory.includes(p));
+      return [...sameCategory, ...remaining].slice(0, 4);
+    }
+  }
+
+  // Fall back to random products
+  return allProducts.slice(0, 4);
+})();
 ---
 
 <BaseLayout
-  title={`${displayProduct.title} | Casual Chic Boutique`}
-  description={displayProduct.description || `Shop ${displayProduct.title} at Casual Chic Boutique`}
-  ogImage={displayProduct.thumbnail || undefined}
+  title={`${product.title} | Casual Chic Boutique`}
+  description={product.description || `Shop ${product.title} at Casual Chic Boutique`}
+  ogImage={product.thumbnail || undefined}
 >
   <div class="max-w-7xl mx-auto px-4 py-8">
     <!-- Breadcrumb -->
     <nav class="mb-8 text-sm">
       <ol class="flex items-center space-x-2 text-charcoal">
-        <li><a href="/" class="hover:text-primary">Home</a></li>
+        <li><a href="/" class="hover:text-primary transition-colors">Home</a></li>
         <li class="before:content-['/'] before:mx-2">
-          <a href="/shop" class="hover:text-primary">Shop</a>
+          <a href="/shop" class="hover:text-primary transition-colors">Shop</a>
         </li>
+        {product.collection && (
+          <li class="before:content-['/'] before:mx-2">
+            <a href={`/collections/${product.collection.handle}`} class="hover:text-primary transition-colors">
+              {product.collection.title}
+            </a>
+          </li>
+        )}
         <li class="before:content-['/'] before:mx-2 text-forest font-medium">
-          {displayProduct.title}
+          {product.title}
         </li>
       </ol>
     </nav>
 
     <!-- Product Grid -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-      <!-- Product Images -->
-      <div class="space-y-4">
-        <div class="aspect-square bg-neutral rounded-lg overflow-hidden">
-          {displayProduct.thumbnail ? (
-            <img
-              src={displayProduct.thumbnail}
-              alt={displayProduct.title}
-              class="w-full h-full object-cover"
-            />
-          ) : (
-            <div class="w-full h-full flex items-center justify-center">
-              <div class="text-center text-charcoal">
-                <svg class="mx-auto h-24 w-24 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
-                <p class="font-body text-sm">No image available</p>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
+      <!-- React Island: Complete Product Detail with State Management -->
+      <ProductDetailClient
+        client:only="react"
+        product={product}
+        images={images}
+        initialPriceDisplay={showPriceRange ? `$${minPrice} - $${maxPrice}` : `$${minPrice}`}
+      />
+    </div>
 
-      <!-- Product Info -->
-      <div class="space-y-6">
-        <div>
-          <h1 class="font-heading text-4xl font-bold text-forest mb-4">
-            {displayProduct.title}
-          </h1>
+    <!-- Product Tabs Section -->
+    <div class="mt-16 max-w-7xl mx-auto">
+      <div id="tab-section">
+        <!-- Tab Navigation -->
+        <ul class="flex text-sm border-b gap-6 text-charcoal border-neutral">
+          <li class="-mb-px">
+            <button
+              class="inline-block py-3 px-1 font-medium hover:text-forest transition-colors"
+              data-tab="details"
+            >
+              Details
+            </button>
+          </li>
+          <li class="-mb-px">
+            <button
+              class="inline-block py-3 px-1 font-medium hover:text-forest transition-colors"
+              data-tab="shipping"
+            >
+              Shipping & Returns
+            </button>
+          </li>
+          <li class="-mb-px">
+            <button
+              class="inline-block py-3 px-1 font-medium hover:text-forest transition-colors"
+              data-tab="reviews"
+            >
+              Reviews
+            </button>
+          </li>
+        </ul>
 
-          <!-- Price -->
-          <div class="flex items-baseline gap-3 mb-6">
-            <span class="font-heading text-3xl font-bold text-primary">
-              ${formattedPrice}
-            </span>
-            {formattedComparePrice && (
-              <>
-                <span class="font-body text-xl text-charcoal line-through">
-                  ${formattedComparePrice}
-                </span>
-                <span class="font-body text-sm font-medium text-secondary bg-neutral px-3 py-1 rounded-full">
-                  Save {savings}%
-                </span>
-              </>
-            )}
-          </div>
-
-          <!-- Inventory Status -->
-          {displayProduct.inventory_quantity !== null && (
-            <div class="mb-6">
-              {displayProduct.inventory_quantity > 0 ? (
-                <p class="font-body text-sm text-sage flex items-center gap-2">
-                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                  </svg>
-                  In Stock ({displayProduct.inventory_quantity} available)
-                </p>
+        <!-- Tab Content -->
+        <div class="py-8">
+          <!-- Details Tab -->
+          <div id="details" class="tab-content">
+            <div class="prose prose-lg max-w-none">
+              {product.description && product.description.length > 200 ? (
+                <p class="text-charcoal leading-relaxed">{product.description}</p>
               ) : (
-                <p class="font-body text-sm text-secondary flex items-center gap-2">
-                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
-                  </svg>
-                  Out of Stock
+                <p class="text-charcoal leading-relaxed">
+                  A versatile wardrobe essential. This piece features quality construction with reinforced seams
+                  and durable fabric that holds its shape after repeated wear.
                 </p>
               )}
-            </div>
-          )}
-        </div>
 
-        <!-- Description -->
-        {sanitizedDescription && (
-          <div class="border-t border-neutral pt-6">
-            <h2 class="font-heading text-xl font-bold text-forest mb-3">
-              Description
-            </h2>
-            <div class="font-body text-charcoal leading-relaxed prose prose-sm max-w-none" set:html={sanitizedDescription} />
-          </div>
-        )}
-
-        <!-- Add to Cart Button -->
-        <div class="border-t border-neutral pt-6">
-          <AddToCartButton
-            client:load
-            productId={displayProduct.id}
-            handle={displayProduct.handle}
-            name={displayProduct.title}
-            price={displayProduct.price}
-            compareAtPrice={displayProduct.compare_at_price ?? undefined}
-            image={displayProduct.thumbnail || undefined}
-            brand={displayProduct.brand_id}
-            inventoryQuantity={displayProduct.inventory_quantity || 0}
-          />
-        </div>
-
-        <!-- Product Details -->
-        <div class="border-t border-neutral pt-6 space-y-4">
-          <h2 class="font-heading text-xl font-bold text-forest mb-3">
-            Product Details
-          </h2>
-          <dl class="font-body text-sm space-y-2">
-            <div class="flex justify-between">
-              <dt class="text-charcoal">SKU:</dt>
-              <dd class="text-forest font-medium">{displayProduct.id}</dd>
-            </div>
-            {displayProduct.metadata && typeof displayProduct.metadata === 'object' && (
-              Object.entries(displayProduct.metadata).map(([key, value]) => (
-                <div class="flex justify-between">
-                  <dt class="text-charcoal capitalize">{key.replace(/_/g, ' ')}:</dt>
-                  <dd class="text-forest font-medium">{String(value)}</dd>
+              {product.material && (
+                <div class="mt-6">
+                  <h3 class="font-heading text-lg font-bold text-forest mb-3">Materials & Care</h3>
+                  <ul class="list-disc pl-5 space-y-2 text-charcoal">
+                    <li>Material: {product.material}</li>
+                    <li>Machine wash cold, gentle cycle</li>
+                    <li>Tumble dry low or hang to dry</li>
+                    <li>Iron on low heat if needed</li>
+                  </ul>
                 </div>
-              ))
-            )}
-          </dl>
+              )}
+
+              {Object.keys(metadata).length > 0 && (
+                <div class="mt-6">
+                  <h3 class="font-heading text-lg font-bold text-forest mb-3">Specifications</h3>
+                  <dl class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {Object.entries(metadata).map(([key, value]) => (
+                      <div class="flex justify-between border-b border-neutral pb-2">
+                        <dt class="font-medium text-charcoal capitalize">
+                          {key.replace(/_/g, ' ')}:
+                        </dt>
+                        <dd class="text-forest">{String(value)}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <!-- Shipping Tab -->
+          <div id="shipping" class="hidden tab-content">
+            <div class="prose prose-lg max-w-none">
+              <h3 class="font-heading text-lg font-bold text-forest mb-4">Shipping Information</h3>
+              <div class="space-y-4 text-charcoal">
+                <div class="flex items-start gap-3">
+                  <svg class="w-6 h-6 text-sage flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <div>
+                    <p class="font-medium text-forest">Free Standard Shipping</p>
+                    <p class="text-sm">On orders over $75 (3-5 business days)</p>
+                  </div>
+                </div>
+                <div class="flex items-start gap-3">
+                  <svg class="w-6 h-6 text-sage flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <div>
+                    <p class="font-medium text-forest">Express Shipping</p>
+                    <p class="text-sm">$15 flat rate (1-2 business days)</p>
+                  </div>
+                </div>
+                <div class="flex items-start gap-3">
+                  <svg class="w-6 h-6 text-sage flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <div>
+                    <p class="font-medium text-forest">International Shipping</p>
+                    <p class="text-sm">Calculated at checkout (7-14 business days)</p>
+                  </div>
+                </div>
+              </div>
+
+              <h3 class="font-heading text-lg font-bold text-forest mb-4 mt-8">Returns & Exchanges</h3>
+              <div class="space-y-3 text-charcoal">
+                <p>We want you to love your purchase! If for any reason you're not completely satisfied, you may return your item within 30 days of delivery.</p>
+                <ul class="list-disc pl-5 space-y-2">
+                  <li>Items must be unworn, unwashed, and in original condition with tags attached</li>
+                  <li>Free returns on all U.S. orders</li>
+                  <li>Refunds processed within 5-7 business days of receiving return</li>
+                  <li>Exchanges available for different sizes or colors</li>
+                </ul>
+                <p class="mt-4">
+                  <a href="/returns" class="text-primary hover:text-sage underline font-medium">
+                    View full return policy →
+                  </a>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Reviews Tab -->
+          <div id="reviews" class="hidden tab-content">
+            <div class="text-center py-12">
+              <svg class="w-16 h-16 text-neutral mx-auto mb-4" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+              </svg>
+              <h3 class="font-heading text-xl font-bold text-forest mb-2">No Reviews Yet</h3>
+              <p class="text-charcoal mb-6">Be the first to share your experience with this product</p>
+              <button class="bg-primary hover:bg-sage text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                Write a Review
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
+
+    <!-- Related Products Section -->
+    <div class="mt-16 max-w-7xl mx-auto">
+      <h2 class="font-heading text-2xl font-bold text-forest mb-8">
+        You May Also Like
+      </h2>
+      {relatedProducts.length > 0 ? (
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {relatedProducts.map((relatedProduct) => {
+            const price = (relatedProduct.variants?.[0]?.calculated_price?.calculated_amount || 0) / 100;
+            const imageUrl = relatedProduct.thumbnail || relatedProduct.images?.[0]?.url || '';
+
+            return (
+              <a
+                href={`/products/${relatedProduct.handle}`}
+                class="group block bg-white rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+              >
+                {/* Product Image */}
+                <div class="aspect-square bg-neutral overflow-hidden">
+                  {imageUrl ? (
+                    <img
+                      src={imageUrl}
+                      alt={relatedProduct.title || ''}
+                      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div class="w-full h-full flex items-center justify-center">
+                      <svg class="w-16 h-16 text-charcoal" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                    </div>
+                  )}
+                </div>
+
+                {/* Product Info */}
+                <div class="p-4">
+                  <h3 class="font-heading text-lg font-semibold text-forest mb-2 group-hover:text-primary transition-colors line-clamp-2">
+                    {relatedProduct.title}
+                  </h3>
+
+                  {relatedProduct.subtitle && (
+                    <p class="font-body text-sm text-charcoal mb-2 line-clamp-1">
+                      {relatedProduct.subtitle}
+                    </p>
+                  )}
+
+                  <p class="font-heading text-xl font-bold text-primary">
+                    ${price.toFixed(2)}
+                  </p>
+                </div>
+              </a>
+            );
+          })}
+        </div>
+      ) : (
+        <div class="text-center text-charcoal py-12 bg-neutral/20 rounded-lg">
+          <p class="mb-4">No related products available</p>
+          <a href="/shop" class="text-primary hover:text-sage underline font-medium">
+            Continue Shopping →
+          </a>
+        </div>
+      )}
+    </div>
   </div>
+
+  <!-- Tab Switching Script -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const tabSection = document.querySelector("#tab-section");
+      if (!tabSection) return;
+
+      const tabs = tabSection.querySelectorAll("button[data-tab]");
+      const tabContents = tabSection.querySelectorAll(".tab-content");
+
+      if (tabs.length > 0 && tabContents.length > 0) {
+        // Set the first tab as active by default
+        tabs[0].classList.add("text-forest", "border-b-2", "border-primary");
+        tabContents[0].classList.remove("hidden");
+      }
+
+      tabs.forEach((tab) => {
+        tab.addEventListener("click", function (e) {
+          e.preventDefault();
+
+          // Remove active state from all tabs
+          tabs.forEach((t) =>
+            t.classList.remove("text-forest", "border-b-2", "border-primary")
+          );
+
+          // Add active state to clicked tab
+          tab.classList.add("text-forest", "border-b-2", "border-primary");
+
+          // Hide all tab contents
+          tabContents.forEach((content) => content.classList.add("hidden"));
+
+          // Show the corresponding content
+          const targetTab = tab.getAttribute("data-tab");
+          const targetContent = tabSection.querySelector(`#${targetTab}`);
+          if (targetContent) {
+            targetContent.classList.remove("hidden");
+          }
+        });
+      });
+    });
+  </script>
 </BaseLayout>

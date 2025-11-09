@@ -1,0 +1,83 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const url = new URL(Astro.request.url);
+const orderId = url.searchParams.get('order_id');
+---
+
+<BaseLayout title="Order Confirmed - Casual Chic Boutique">
+  <main class="min-h-screen bg-neutral-50 py-16">
+    <div class="container mx-auto px-4 max-w-2xl text-center">
+      <div class="bg-white rounded-lg shadow-sm p-8 border border-gray-200">
+        <!-- Success Icon -->
+        <div class="mb-6">
+          <svg
+            class="w-16 h-16 text-green-600 mx-auto"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+              clip-rule="evenodd"
+            />
+          </svg>
+        </div>
+
+        <h1 class="text-3xl font-bold text-gray-900 mb-4">
+          Thank You for Your Order!
+        </h1>
+
+        <p class="text-gray-600 mb-6">
+          We've received your order and will send you a confirmation email shortly.
+        </p>
+
+        {orderId && (
+          <div class="bg-gray-50 rounded-lg p-4 mb-6">
+            <p class="text-sm text-gray-500 mb-1">Order Number</p>
+            <p class="text-lg font-mono font-semibold text-gray-900">{orderId}</p>
+          </div>
+        )}
+
+        <div class="space-y-3">
+          <a
+            href="/shop"
+            class="block w-full bg-primary text-white py-3 px-6 rounded-lg font-medium hover:bg-sage transition-colors"
+          >
+            Continue Shopping
+          </a>
+          <a
+            href="/"
+            class="block w-full border border-gray-300 text-gray-700 py-3 px-6 rounded-lg font-medium hover:bg-gray-50 transition-colors"
+          >
+            Return to Home
+          </a>
+        </div>
+
+        <div class="mt-8 pt-8 border-t">
+          <h2 class="font-semibold text-gray-900 mb-2">What's Next?</h2>
+          <ul class="text-sm text-gray-600 space-y-2 text-left max-w-md mx-auto">
+            <li class="flex items-start">
+              <svg class="w-5 h-5 text-primary mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+              </svg>
+              Check your email for order confirmation
+            </li>
+            <li class="flex items-start">
+              <svg class="w-5 h-5 text-primary mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+              </svg>
+              We'll email you when your order ships
+            </li>
+            <li class="flex items-start">
+              <svg class="w-5 h-5 text-primary mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+              </svg>
+              Track your shipment with the tracking link
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </main>
+</BaseLayout>

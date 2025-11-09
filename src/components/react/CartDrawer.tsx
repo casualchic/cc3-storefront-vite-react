@@ -3,19 +3,21 @@
  * Side drawer that displays cart items and allows quantity updates
  */
 
-import { useCartStore } from '../../lib/stores/cart-store';
+import { useMedusaCartStore } from '../../lib/stores/medusa-cart-store';
 import { formatPrice } from '../../lib/utils/format';
 
 export default function CartDrawer() {
   const {
-    items,
-    totalItems,
-    subtotal,
+    cart,
     isOpen,
     closeCart,
-    updateQuantity,
-    removeItem
-  } = useCartStore();
+    updateLineItem,
+    removeLineItem
+  } = useMedusaCartStore();
+
+  const items = cart?.items || [];
+  const totalItems = items.reduce((sum: number, item: any) => sum + item.quantity, 0);
+  const subtotal = cart?.subtotal || 0;
 
   if (!isOpen) return null;
 
@@ -80,16 +82,16 @@ export default function CartDrawer() {
             </div>
           ) : (
             <div className="space-y-4">
-              {items.map((item) => (
+              {items.map((item: any) => (
                 <div
                   key={item.id}
                   className="flex gap-4 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
                 >
                   {/* Product Image */}
-                  {item.image ? (
+                  {item.thumbnail ? (
                     <img
-                      src={item.image}
-                      alt={item.name}
+                      src={item.thumbnail}
+                      alt={item.title}
                       className="w-20 h-20 object-cover rounded-md flex-shrink-0"
                     />
                   ) : (
@@ -113,28 +115,23 @@ export default function CartDrawer() {
                   {/* Product Details */}
                   <div className="flex-1 min-w-0">
                     <h3 className="font-semibold text-gray-900 truncate">
-                      {item.name}
+                      {item.title}
                     </h3>
-                    {item.variantTitle && (
+                    {item.variant?.title && item.variant.title !== 'Default' && (
                       <p className="text-sm text-gray-600 mt-1">
-                        {item.variantTitle}
+                        {item.variant.title}
                       </p>
                     )}
                     <div className="flex items-center gap-2 mt-2">
                       <span className="font-semibold text-gray-900">
-                        {formatPrice(item.price)}
+                        {formatPrice(item.unit_price || 0)}
                       </span>
-                      {item.compareAtPrice && item.compareAtPrice > item.price && (
-                        <span className="text-sm text-gray-500 line-through">
-                          {formatPrice(item.compareAtPrice)}
-                        </span>
-                      )}
                     </div>
 
                     {/* Quantity Controls */}
                     <div className="flex items-center gap-2 mt-3">
                       <button
-                        onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                        onClick={() => updateLineItem(item.id, item.quantity - 1)}
                         className="w-8 h-8 flex items-center justify-center border border-gray-300 rounded-md hover:bg-gray-200 transition-colors"
                         aria-label="Decrease quantity"
                       >
@@ -144,14 +141,14 @@ export default function CartDrawer() {
                         {item.quantity}
                       </span>
                       <button
-                        onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                        onClick={() => updateLineItem(item.id, item.quantity + 1)}
                         className="w-8 h-8 flex items-center justify-center border border-gray-300 rounded-md hover:bg-gray-200 transition-colors"
                         aria-label="Increase quantity"
                       >
                         +
                       </button>
                       <button
-                        onClick={() => removeItem(item.id)}
+                        onClick={() => removeLineItem(item.id)}
                         className="ml-auto text-sm text-red-600 hover:text-red-800 font-medium"
                       >
                         Remove
@@ -180,9 +177,12 @@ export default function CartDrawer() {
             </p>
 
             {/* Checkout Button */}
-            <button className="w-full bg-gray-900 text-white py-4 px-6 rounded-lg font-semibold hover:bg-gray-800 transition-colors">
+            <a
+              href="/checkout"
+              className="block w-full bg-gray-900 text-white py-4 px-6 rounded-lg font-semibold hover:bg-gray-800 transition-colors text-center"
+            >
               Proceed to Checkout
-            </button>
+            </a>
 
             {/* Continue Shopping */}
             <button

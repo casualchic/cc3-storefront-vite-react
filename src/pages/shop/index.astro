@@ -1,0 +1,260 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getProducts } from '@/lib/api/products';
+import ProductGrid from '@/components/react/ProductGrid';
+import FilterPills from '@/components/react/FilterPills';
+import ViewToggle from '@/components/react/ViewToggle';
+import Pagination from '@/components/react/Pagination';
+import { PAGINATION, DEFAULT_BRAND_ID } from '@/lib/constants';
+import type { Product } from '@/lib/db/schema';
+import { mockProducts } from '@/lib/medusa/mock-data';
+import { extractDynamicFilters, applyDynamicFilters } from '@/lib/utils/filters';
+
+const url = new URL(Astro.request.url);
+const page = parseInt(url.searchParams.get('page') || '1', 10);
+const sortBy = (url.searchParams.get('sort') || 'newest') as 'newest' | 'price-asc' | 'price-desc' | 'name';
+const limit = PAGINATION.DEFAULT_LIMIT;
+const offset = (page - 1) * limit;
+
+// Get filter params from URL
+const priceMin = url.searchParams.get('priceMin') ? parseFloat(url.searchParams.get('priceMin')!) : undefined;
+const priceMax = url.searchParams.get('priceMax') ? parseFloat(url.searchParams.get('priceMax')!) : undefined;
+const categories = url.searchParams.get('categories')?.split(',').filter(Boolean) || [];
+const inStock = url.searchParams.get('inStock') === 'true';
+const onSale = url.searchParams.get('onSale') === 'true';
+
+// Extract dynamic filter params (color, material, etc.) from URL
+const dynamicFilterParams: Record<string, any> = {};
+url.searchParams.forEach((value, key) => {
+  if (!['page', 'sort', 'priceMin', 'priceMax', 'categories', 'inStock', 'onSale'].includes(key)) {
+    // Parse comma-separated values for multi-select filters
+    dynamicFilterParams[key] = value.includes(',') ? value.split(',') : value;
+  }
+});
+
+// Build current filters object for passing to components
+const currentFilters = {
+  priceMin,
+  priceMax,
+  categories,
+  inStock,
+  onSale,
+  ...dynamicFilterParams,
+};
+
+// Get env from platformProxy in dev, runtime in production
+const env = (Astro.locals as any).runtime?.env;
+const brandId = Astro.locals.brand || DEFAULT_BRAND_ID;
+
+// Fetch products
+let products: Product[] = [];
+let total = 0;
+
+// Check if we should use mock data
+const USE_MOCK_DATA = !env?.DB;
+
+if (USE_MOCK_DATA) {
+  // Use mock Medusa products
+  console.log('[DEV MODE] Using mock product data for shop page');
+
+  // Convert Medusa mock products to Product schema format
+  let allProducts = mockProducts.map((p) => ({
+    id: p.id,
+    brand_id: 'casual-chic',
+    name: p.title || '',
+    title: p.title || '', // Add title field for ProductCard
+    handle: p.handle || '',
+    description: p.description || '',
+    price: p.variants?.[0]?.calculated_price?.calculated_amount || 0,
+    compare_at_price: null,
+    inventory_quantity: p.variants?.reduce((sum, v) => sum + (v.inventory_quantity || 0), 0) || 0,
+    image_url: p.thumbnail || p.images?.[0]?.url || '',
+    thumbnail: p.thumbnail || p.images?.[0]?.url || '', // Add thumbnail field for ProductCard
+    images: p.images?.map(img => img.url) || [],
+    category_id: null,
+    sku: p.variants?.[0]?.sku || '',
+    weight: p.weight || null,
+    is_featured: false,
+    status: 'active',
+    created_at: p.created_at?.toISOString() || new Date().toISOString(),
+    updated_at: p.updated_at?.toISOString() || new Date().toISOString(),
+    categories: p.categories || [],
+    collection: p.collection,
+    options: p.options, // Keep options for filtering
+    material: p.material, // Keep material for filtering
+  })) as (Product & { categories?: any[]; collection?: any; options?: any; material?: any })[];
+
+  // Apply filters
+  if (priceMin !== undefined) {
+    allProducts = allProducts.filter(p => p.price >= priceMin * 100);
+  }
+  if (priceMax !== undefined) {
+    allProducts = allProducts.filter(p => p.price <= priceMax * 100);
+  }
+  if (categories.length > 0) {
+    allProducts = allProducts.filter(p =>
+      p.categories?.some(c => categories.includes(c.id))
+    );
+  }
+  if (inStock) {
+    allProducts = allProducts.filter(p => (p.inventory_quantity || 0) > 0);
+  }
+  if (onSale) {
+    allProducts = allProducts.filter(p => p.compare_at_price !== null && p.compare_at_price > p.price);
+  }
+
+  // Apply dynamic filters (color, material, etc.)
+  allProducts = applyDynamicFilters(allProducts, dynamicFilterParams) as any[];
+
+  products = allProducts as Product[];
+  total = products.length;
+} else if (env?.DB) {
+  // Fetch all products
+  const result = await getProducts({ env }, { limit, offset, brandId });
+  products = result.products;
+  total = result.total;
+}
+
+const totalPages = Math.ceil(total / limit);
+
+// Extract dynamic filters from all products (before pagination)
+const dynamicFilters = USE_MOCK_DATA ? extractDynamicFilters(mockProducts) : [];
+
+// Extract available categories and price range for filters
+const availableCategories = USE_MOCK_DATA
+  ? Array.from(
+      new Map(
+        mockProducts
+          .flatMap(p => p.categories || [])
+          .map(c => [c.id, c])
+      ).values()
+    ).map(c => ({
+      id: c.id,
+      name: c.name || '',
+      count: mockProducts.filter(p => p.categories?.some(cat => cat.id === c.id)).length,
+    }))
+  : [];
+
+const priceRange = USE_MOCK_DATA && mockProducts.length > 0
+  ? {
+      min: Math.floor(Math.min(...mockProducts.map(p => (p.variants?.[0]?.calculated_price?.calculated_amount || 0) / 100))),
+      max: Math.ceil(Math.max(...mockProducts.map(p => (p.variants?.[0]?.calculated_price?.calculated_amount || 0) / 100))),
+    }
+  : { min: 0, max: 500 };
+
+const pageTitle = 'Shop All Products';
+const pageDescription = 'Browse our complete collection of women\'s clothing and accessories';
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <div class="max-w-7xl mx-auto px-4 py-8">
+    <!-- Page Header -->
+    <div class="mb-8">
+      <nav class="mb-4 text-sm">
+        <ol class="flex items-center space-x-2 text-charcoal">
+          <li><a href="/" class="hover:text-primary">Home</a></li>
+          <li class="before:content-['/'] before:mx-2 text-forest font-medium">
+            Shop
+          </li>
+        </ol>
+      </nav>
+
+      <h1 class="font-heading text-4xl md:text-5xl font-bold text-forest mb-4">
+        Shop All
+      </h1>
+
+      <p class="font-body text-lg text-charcoal max-w-2xl">
+        {pageDescription}
+      </p>
+    </div>
+
+    <!-- Filter Pills Row (Shopify-style) -->
+    <div class="mb-6">
+      <FilterPills
+        client:load
+        currentFilters={currentFilters}
+        availableCategories={availableCategories}
+        priceRange={priceRange}
+        dynamicFilters={dynamicFilters}
+      />
+    </div>
+
+    <!-- Item Count, Sort, and View Toggle Row -->
+    <div class="mb-8 flex flex-wrap items-center justify-between gap-4">
+      <p class="text-sm text-charcoal font-medium">
+        {total} {total === 1 ? 'item' : 'items'}
+      </p>
+
+      <div class="flex items-center gap-4">
+        {/* Sort Dropdown */}
+        <div class="flex items-center gap-2">
+          <label for="sort" class="text-sm text-charcoal font-medium">
+            Sort
+          </label>
+          <select
+            id="sort"
+            name="sort"
+            class="text-sm border border-neutral rounded-lg px-3 py-1.5 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary bg-white text-forest"
+            onchange="this.form?.submit() || (window.location.href = window.location.pathname + '?sort=' + this.value)"
+          >
+            <option value="newest" selected={sortBy === 'newest'}>Newest</option>
+            <option value="price-asc" selected={sortBy === 'price-asc'}>Price: Low to High</option>
+            <option value="price-desc" selected={sortBy === 'price-desc'}>Price: High to Low</option>
+            <option value="name" selected={sortBy === 'name'}>Name: A-Z</option>
+          </select>
+        </div>
+
+        {/* View Toggle */}
+        <ViewToggle client:load currentView="grid" />
+      </div>
+    </div>
+
+    <!-- Product Grid - React Island for interactivity -->
+    <ProductGrid products={products} client:load />
+
+    <!-- Pagination -->
+    {totalPages > 1 && (
+      <div class="mt-12 flex justify-center">
+        <Pagination
+          client:load
+          currentPage={page}
+          totalPages={totalPages}
+          baseUrl="/shop"
+        />
+      </div>
+    )}
+
+    <!-- Empty State -->
+    {products.length === 0 && (
+      <div class="text-center py-16">
+        <svg
+          class="mx-auto h-24 w-24 text-charcoal mb-4"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.5"
+            d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+          />
+        </svg>
+        <h2 class="font-heading text-2xl font-bold text-forest mb-2">
+          No products found
+        </h2>
+        <p class="font-body text-charcoal mb-6">
+          {env?.DB
+            ? 'Check back soon for new arrivals!'
+            : 'Connect your D1 database to see products'}
+        </p>
+        <a
+          href="/"
+          class="inline-block bg-primary hover:bg-sage text-white font-button px-6 py-3 rounded-lg transition-colors"
+        >
+          Back to Home
+        </a>
+      </div>
+    )}
+  </div>
+</BaseLayout>

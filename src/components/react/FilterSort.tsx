@@ -4,13 +4,25 @@
  */
 
 import { useState, useEffect } from 'react';
+import ProductFilter, { type FilterOptions } from './ProductFilter';
 
 interface FilterSortProps {
   currentSort?: string;
+  currentFilters?: FilterOptions;
+  availableCategories?: Array<{ id: string; name: string; count: number }>;
+  priceRange?: { min: number; max: number };
   onSortChange?: (sort: string) => void;
+  onFilterChange?: (filters: FilterOptions) => void;
 }
 
-export default function FilterSort({ currentSort = 'newest', onSortChange }: FilterSortProps) {
+export default function FilterSort({
+  currentSort = 'newest',
+  currentFilters = {},
+  availableCategories = [],
+  priceRange,
+  onSortChange,
+  onFilterChange,
+}: FilterSortProps) {
   const [sort, setSort] = useState(currentSort);
 
   useEffect(() => {
@@ -34,21 +46,24 @@ export default function FilterSort({ currentSort = 'newest', onSortChange }: Fil
 
   return (
     <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-      {/* Filters placeholder - can be expanded later */}
-      <div className="flex items-center gap-4">
-        {/* Add filter buttons/dropdowns here in future */}
-      </div>
+      {/* Product Filters */}
+      <ProductFilter
+        currentFilters={currentFilters}
+        availableCategories={availableCategories}
+        priceRange={priceRange}
+        onFilterChange={onFilterChange}
+      />
 
       {/* Sort Dropdown */}
       <div className="flex items-center gap-2">
-        <label htmlFor="sort" className="text-sm text-gray-700 font-medium">
+        <label htmlFor="sort" className="text-sm text-charcoal font-medium">
           Sort by:
         </label>
         <select
           id="sort"
           value={sort}
           onChange={handleSortChange}
-          className="text-sm border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary bg-white"
+          className="text-sm border-2 border-neutral rounded-lg px-4 py-2 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary bg-white text-forest"
         >
           <option value="newest">Newest</option>
           <option value="price-asc">Price: Low to High</option>
