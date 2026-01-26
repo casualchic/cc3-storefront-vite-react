@@ -8,7 +8,7 @@ export function HomePage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative min-h-[700px] flex items-center justify-center overflow-hidden bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+      <section className="relative min-h-[700px] flex items-center justify-center overflow-hidden bg-gradient-to-br from-brand-cream via-brand-light-beige to-brand-taupe/30 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
         {/* Animated Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0 bg-[linear-gradient(to_right,#00000010_1px,transparent_1px),linear-gradient(to_bottom,#00000010_1px,transparent_1px)] bg-[size:4rem_4rem]"></div>
@@ -24,10 +24,10 @@ export function HomePage() {
                   New Season Collection
                 </span>
               </div>
-              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
+              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-heading font-bold text-gray-900 dark:text-white mb-6 leading-tight">
                 Define Your
                 <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-600 to-gray-900 dark:from-gray-400 dark:to-white">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-taupe-brown to-gray-900 dark:from-brand-light-beige dark:to-white">
                   Casual Chic
                 </span>
               </h1>
@@ -108,7 +108,7 @@ export function HomePage() {
       {/* Featured Categories */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Shop by Category</h2>
+          <h2 className="text-3xl font-heading font-bold text-gray-900 dark:text-white mb-4">Shop by Category</h2>
           <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
             Explore our carefully curated collections
           </p>
@@ -134,7 +134,7 @@ export function HomePage() {
       {/* Featured Products */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 bg-gray-50 dark:bg-gray-800/50">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Featured Products</h2>
+          <h2 className="text-3xl font-heading font-bold text-gray-900 dark:text-white mb-4">Featured Products</h2>
           <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
             Handpicked favorites that define casual chic
           </p>
@@ -191,9 +191,9 @@ export function HomePage() {
       {/* Brand Story */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
         <div className="max-w-3xl mx-auto">
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">Our Story</h2>
+          <h2 className="text-3xl font-heading font-bold text-gray-900 dark:text-white mb-6">Our Story</h2>
           <p className="text-lg text-gray-600 dark:text-gray-400 mb-8">
-            At Casual Chic, we believe that great style should be effortless. Our carefully curated
+            At Casual Chic Boutique, we believe that great style should be effortless. Our carefully curated
             collections blend comfort with sophistication, offering versatile pieces that transition
             seamlessly from day to night, work to weekend.
           </p>

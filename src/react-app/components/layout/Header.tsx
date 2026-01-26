@@ -129,18 +129,18 @@ export function Header() {
   return (
     <header className={`sticky top-0 z-50 transition-all duration-300 ${
       isScrolled
-        ? 'bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-lg'
-        : 'bg-white dark:bg-gray-900'
+        ? 'bg-brand-cream/95 dark:bg-gray-900/95 backdrop-blur-md shadow-lg'
+        : 'bg-brand-cream dark:bg-gray-900'
     }`}>
         <div className="max-w-7xl mx-auto px-4">
           {/* Top Bar - Only show when not scrolled */}
           {!isScrolled && (
-            <div className="border-b border-gray-200 dark:border-gray-800">
+            <div className="border-b border-brand-taupe/30 dark:border-gray-800">
               <div className="flex items-center justify-between h-10 text-xs">
-                <div className="text-gray-600 dark:text-gray-400">
+                <div className="text-gray-700 dark:text-gray-400">
                   Free shipping on orders over $75
                 </div>
-                <div className="flex items-center space-x-4 text-gray-600 dark:text-gray-400">
+                <div className="flex items-center space-x-4 text-gray-700 dark:text-gray-400">
                   <Link to="/help" className="hover:text-gray-900 dark:hover:text-gray-100">Help</Link>
                   <Link to="/track-order" className="hover:text-gray-900 dark:hover:text-gray-100">Track Order</Link>
                 </div>
@@ -152,8 +152,17 @@ export function Header() {
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <div className="flex-shrink-0">
-              <Link to="/" className="text-2xl font-bold text-gray-900 dark:text-white">
-                CasualChic
+              <Link to="/" className="block">
+                <img
+                  src="/images/logo-dark.png"
+                  alt="Casual Chic Boutique"
+                  className="h-10 w-auto dark:hidden"
+                />
+                <img
+                  src="/images/logo-light.png"
+                  alt="Casual Chic Boutique"
+                  className="h-10 w-auto hidden dark:block"
+                />
               </Link>
             </div>
 
@@ -181,7 +190,7 @@ export function Header() {
               </Link>
               <Link
                 to="/sale"
-                className="text-sm font-medium text-red-600 hover:text-red-500 transition-colors"
+                className="text-sm font-medium text-brand-dusty-rose hover:text-brand-dusty-rose/80 transition-colors"
               >
                 Sale
               </Link>
