@@ -127,27 +127,26 @@ export function Header() {
   };
 
   return (
-    <>
-      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? 'bg-white dark:bg-gray-900 shadow-lg'
-          : 'bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm'
-      }`}>
+    <header className={`sticky top-0 z-50 transition-all duration-300 ${
+      isScrolled
+        ? 'bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-lg'
+        : 'bg-white dark:bg-gray-900'
+    }`}>
         <div className="max-w-7xl mx-auto px-4">
           {/* Top Bar - Only show when not scrolled */}
-          <div className={`transition-all duration-300 overflow-hidden ${
-            isScrolled ? 'h-0' : 'h-10'
-          }`}>
-            <div className="flex items-center justify-between h-10 text-xs">
-              <div className="text-gray-600 dark:text-gray-400">
-                Free shipping on orders over $75
-              </div>
-              <div className="flex items-center space-x-4 text-gray-600 dark:text-gray-400">
-                <Link to="/help" className="hover:text-gray-900 dark:hover:text-gray-100">Help</Link>
-                <Link to="/track-order" className="hover:text-gray-900 dark:hover:text-gray-100">Track Order</Link>
+          {!isScrolled && (
+            <div className="border-b border-gray-200 dark:border-gray-800">
+              <div className="flex items-center justify-between h-10 text-xs">
+                <div className="text-gray-600 dark:text-gray-400">
+                  Free shipping on orders over $75
+                </div>
+                <div className="flex items-center space-x-4 text-gray-600 dark:text-gray-400">
+                  <Link to="/help" className="hover:text-gray-900 dark:hover:text-gray-100">Help</Link>
+                  <Link to="/track-order" className="hover:text-gray-900 dark:hover:text-gray-100">Track Order</Link>
+                </div>
               </div>
             </div>
-          </div>
+          )}
 
           {/* Main Header */}
           <div className="flex items-center justify-between h-16">
@@ -351,13 +350,9 @@ export function Header() {
             </div>
           </div>
         )}
-      </header>
 
-      {/* Header Spacer */}
-      <div className={isScrolled ? "h-16" : "h-26"}></div>
-
-      {/* Search Modal */}
-      {isSearchOpen && (
+        {/* Search Modal */}
+        {isSearchOpen && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-start justify-center pt-20">
           <div className="bg-white dark:bg-gray-900 w-full max-w-2xl mx-4 rounded-lg shadow-2xl">
             <div className="p-4">
@@ -380,6 +375,6 @@ export function Header() {
           </div>
         </div>
       )}
-    </>
+    </header>
   );
 }
