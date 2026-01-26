@@ -20,25 +20,30 @@ export function CollectionsPage() {
               params={{ id: product.id }}
               className="group"
             >
-              <div className="relative overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800 aspect-[3/4] mb-3">
-                <div className="absolute inset-0 bg-gray-200 dark:bg-gray-700"></div>
+              <div className="relative overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800 aspect-[4/5] mb-3 transition-transform duration-300 ease-out group-hover:scale-[1.02]">
+                <div className="absolute inset-0 bg-gradient-to-b from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 group-hover:opacity-90 transition-opacity duration-300"></div>
                 {product.originalPrice && (
-                  <div className="absolute top-4 left-4 bg-red-600 text-white px-2 py-1 text-xs font-semibold rounded">
+                  <div className="absolute top-3 left-3 bg-red-600 text-white px-3 py-1 text-xs font-bold rounded shadow-lg">
                     SALE
                   </div>
                 )}
               </div>
-              <h3 className="font-medium text-gray-900 dark:text-white group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors">
+              <h3 className="font-medium text-gray-900 dark:text-white group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors duration-200 line-clamp-2">
                 {product.name}
               </h3>
-              <div className="flex items-center gap-2 mt-1">
-                <span className="text-gray-900 dark:text-white font-semibold">
+              <div className="flex items-center gap-2 mt-2">
+                <span className="text-lg font-bold text-gray-900 dark:text-white">
                   ${product.price}
                 </span>
                 {product.originalPrice && (
-                  <span className="text-gray-500 dark:text-gray-400 line-through text-sm">
-                    ${product.originalPrice}
-                  </span>
+                  <>
+                    <span className="text-sm text-gray-500 dark:text-gray-400 line-through">
+                      ${product.originalPrice}
+                    </span>
+                    <span className="text-xs font-semibold text-red-600 dark:text-red-400">
+                      {Math.round((1 - product.price / product.originalPrice) * 100)}% OFF
+                    </span>
+                  </>
                 )}
               </div>
             </Link>
