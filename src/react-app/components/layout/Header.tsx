@@ -80,7 +80,7 @@ const megaMenuCategories = {
           { name: 'New Arrivals', href: '/collections/new-arrivals' },
           { name: 'Best Sellers', href: '/collections/best-sellers' },
           { name: 'Sale', href: '/sale' },
-          { name: 'Under $50', href: '/collections/under-50' },
+          { name: 'Under $150', href: '/collections/under-50' },
           { name: 'Gift Guide', href: '/collections/gifts' },
           { name: 'Trending Now', href: '/collections/trending' },
         ]

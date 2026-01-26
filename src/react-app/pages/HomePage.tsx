@@ -8,27 +8,99 @@ export function HomePage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative h-[600px] flex items-center justify-center overflow-hidden bg-gray-100 dark:bg-gray-800">
-        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/30"></div>
+      <section className="relative min-h-[700px] flex items-center justify-center overflow-hidden bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+        {/* Animated Background Pattern */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#00000010_1px,transparent_1px),linear-gradient(to_bottom,#00000010_1px,transparent_1px)] bg-[size:4rem_4rem]"></div>
+        </div>
 
-        <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-4">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6">Casual Chic</h1>
-          <p className="text-xl md:text-2xl mb-8 font-light">
-            Discover your perfect style with our curated collection of effortlessly elegant pieces
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              to="/collections"
-              className="px-8 py-3 bg-white text-black hover:bg-gray-100 rounded-lg font-medium transition-colors"
-            >
-              Shop New Arrivals
-            </Link>
-            <Link
-              to="/sale"
-              className="px-8 py-3 border-2 border-white text-white hover:bg-white hover:text-black rounded-lg font-medium transition-colors"
-            >
-              Explore Sale
-            </Link>
+        {/* Content */}
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Left Column - Text Content */}
+            <div className="text-left">
+              <div className="inline-block mb-4 px-4 py-1.5 bg-black/5 dark:bg-white/5 rounded-full">
+                <span className="text-sm font-medium text-gray-900 dark:text-white uppercase tracking-wider">
+                  New Season Collection
+                </span>
+              </div>
+              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
+                Define Your
+                <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-600 to-gray-900 dark:from-gray-400 dark:to-white">
+                  Casual Chic
+                </span>
+              </h1>
+              <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-400 mb-8 max-w-xl leading-relaxed">
+                Discover effortlessly elegant pieces that transition seamlessly from day to night, work to weekend.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Link
+                  to="/collections/new-arrivals"
+                  className="px-8 py-4 bg-black dark:bg-white text-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-100 rounded-lg font-medium transition-all transform hover:scale-105 text-center shadow-lg"
+                >
+                  Shop New Arrivals
+                </Link>
+                <Link
+                  to="/sale"
+                  className="px-8 py-4 border-2 border-gray-900 dark:border-white text-gray-900 dark:text-white hover:bg-gray-900 hover:text-white dark:hover:bg-white dark:hover:text-black rounded-lg font-medium transition-all text-center"
+                >
+                  Explore Sale
+                </Link>
+              </div>
+
+              {/* Trust Badges */}
+              <div className="mt-12 grid grid-cols-3 gap-6 pt-8 border-t border-gray-300 dark:border-gray-700">
+                <div>
+                  <div className="text-2xl font-bold text-gray-900 dark:text-white mb-1">Free Shipping</div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400">Orders over $50</div>
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-gray-900 dark:text-white mb-1">Easy Returns</div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400">30-day policy</div>
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-gray-900 dark:text-white mb-1">Secure Pay</div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400">100% protected</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Column - Featured Image Grid */}
+            <div className="hidden lg:grid grid-cols-2 gap-4">
+              <div className="space-y-4">
+                <div className="relative overflow-hidden rounded-2xl bg-gray-200 dark:bg-gray-800 aspect-[3/4] group">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+                  <div className="absolute bottom-4 left-4 right-4">
+                    <p className="text-white font-semibold text-sm">Dresses</p>
+                  </div>
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
+                </div>
+                <div className="relative overflow-hidden rounded-2xl bg-gray-200 dark:bg-gray-800 aspect-[3/2] group">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+                  <div className="absolute bottom-4 left-4 right-4">
+                    <p className="text-white font-semibold text-sm">Accessories</p>
+                  </div>
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
+                </div>
+              </div>
+              <div className="space-y-4 pt-8">
+                <div className="relative overflow-hidden rounded-2xl bg-gray-200 dark:bg-gray-800 aspect-[3/2] group">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+                  <div className="absolute bottom-4 left-4 right-4">
+                    <p className="text-white font-semibold text-sm">Tops</p>
+                  </div>
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
+                </div>
+                <div className="relative overflow-hidden rounded-2xl bg-gray-200 dark:bg-gray-800 aspect-[3/4] group">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+                  <div className="absolute bottom-4 left-4 right-4">
+                    <p className="text-white font-semibold text-sm">Outerwear</p>
+                  </div>
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
