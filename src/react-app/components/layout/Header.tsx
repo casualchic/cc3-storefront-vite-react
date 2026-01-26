@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from '@tanstack/react-router';
 import {
   Search,
@@ -94,6 +94,7 @@ export function Header() {
   const [activeMegaMenu, setActiveMegaMenu] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const megaMenuTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const { totalItems: cartItemsCount } = useCart();
   const { totalItems: wishlistItemsCount } = useWishlist();
@@ -109,11 +110,20 @@ export function Header() {
   }, []);
 
   const handleMegaMenuEnter = (menu: string) => {
+    if (megaMenuTimeoutRef.current) {
+      clearTimeout(megaMenuTimeoutRef.current);
+      megaMenuTimeoutRef.current = null;
+    }
     setActiveMegaMenu(menu);
   };
 
   const handleMegaMenuLeave = () => {
-    setActiveMegaMenu(null);
+    if (megaMenuTimeoutRef.current) {
+      clearTimeout(megaMenuTimeoutRef.current);
+    }
+    megaMenuTimeoutRef.current = setTimeout(() => {
+      setActiveMegaMenu(null);
+    }, 300);
   };
 
   return (
@@ -285,21 +295,21 @@ export function Header() {
         {activeMegaMenu === 'women' && (
           <div
             className="absolute top-full left-0 right-0 bg-white dark:bg-gray-900 shadow-2xl border-t dark:border-gray-800"
-            onMouseEnter={() => setActiveMegaMenu('women')}
+            onMouseEnter={() => handleMegaMenuEnter('women')}
             onMouseLeave={handleMegaMenuLeave}
           >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-x-8 gap-y-10">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-8 gap-x-6 gap-y-8">
                 {/* Menu Sections */}
                 {megaMenuCategories.women.sections.map((section, index) => (
-                  <div key={index}>
-                    <h3 className="text-sm font-bold text-gray-900 dark:text-white mb-4 uppercase tracking-wider">{section.title}</h3>
-                    <ul className="space-y-3">
+                  <div key={index} className="lg:col-span-1">
+                    <h3 className="text-xs font-bold text-gray-900 dark:text-white mb-4 uppercase tracking-widest">{section.title}</h3>
+                    <ul className="space-y-2.5">
                       {section.items.map((item, itemIndex) => (
                         <li key={itemIndex}>
                           <Link
                             to={item.href}
-                            className="text-sm text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors duration-200 hover:translate-x-1 inline-block"
+                            className="text-sm text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors duration-200 block"
                           >
                             {item.name}
                           </Link>
@@ -308,6 +318,35 @@ export function Header() {
                     </ul>
                   </div>
                 ))}
+
+                {/* Featured Visual Sections */}
+                <div className="lg:col-span-2 hidden lg:grid grid-rows-2 gap-4">
+                  {/* New Arrivals Featured */}
+                  <Link
+                    to="/collections/new-arrivals"
+                    className="group relative overflow-hidden rounded-lg bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 p-6 flex flex-col justify-end h-full min-h-[180px] transition-transform duration-300 hover:scale-[1.02]"
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+                    <div className="relative z-10">
+                      <p className="text-xs font-semibold text-white/80 mb-1 uppercase tracking-wider">Just In</p>
+                      <h4 className="text-lg font-bold text-white mb-1">New Arrivals</h4>
+                      <p className="text-sm text-white/90 group-hover:underline">Shop the latest styles →</p>
+                    </div>
+                  </Link>
+
+                  {/* Sale Featured */}
+                  <Link
+                    to="/sale"
+                    className="group relative overflow-hidden rounded-lg bg-gradient-to-br from-red-50 to-red-100 dark:from-red-950 dark:to-red-900 p-6 flex flex-col justify-end h-full min-h-[180px] transition-transform duration-300 hover:scale-[1.02]"
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-t from-red-600/40 to-transparent"></div>
+                    <div className="relative z-10">
+                      <p className="text-xs font-semibold text-red-900 dark:text-red-200 mb-1 uppercase tracking-wider">Limited Time</p>
+                      <h4 className="text-lg font-bold text-red-900 dark:text-white mb-1">Sale</h4>
+                      <p className="text-sm text-red-800 dark:text-red-100 group-hover:underline">Up to 50% off →</p>
+                    </div>
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
