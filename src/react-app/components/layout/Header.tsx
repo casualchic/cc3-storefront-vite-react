@@ -17,34 +17,61 @@ import { useTheme } from '../../context/ThemeContext';
 
 const megaMenuCategories = {
   women: {
-    title: 'Women',
+    title: 'Shop',
     sections: [
       {
-        title: 'Clothing',
+        title: 'Tops',
         items: [
-          { name: 'Dresses', href: '/category/dresses' },
-          { name: 'Tops & Blouses', href: '/category/tops' },
-          { name: 'Bottoms', href: '/category/bottoms' },
-          { name: 'Outerwear', href: '/category/outerwear' },
-          { name: 'Sweaters', href: '/category/sweaters' },
+          { name: 'All Tops', href: '/category/tops' },
+          { name: 'T-Shirts & Tees', href: '/category/tshirts' },
+          { name: 'Blouses & Shirts', href: '/category/blouses' },
+          { name: 'Sweaters & Cardigans', href: '/category/sweaters' },
+          { name: 'Tank Tops & Camis', href: '/category/tanks' },
+          { name: 'Hoodies & Sweatshirts', href: '/category/hoodies' },
+        ]
+      },
+      {
+        title: 'Bottoms',
+        items: [
+          { name: 'All Bottoms', href: '/category/bottoms' },
+          { name: 'Jeans', href: '/category/jeans' },
+          { name: 'Pants & Trousers', href: '/category/pants' },
+          { name: 'Shorts', href: '/category/shorts' },
+          { name: 'Skirts', href: '/category/skirts' },
+          { name: 'Leggings', href: '/category/leggings' },
+        ]
+      },
+      {
+        title: 'Dresses',
+        items: [
+          { name: 'All Dresses', href: '/category/dresses' },
+          { name: 'Casual Dresses', href: '/category/casual-dresses' },
+          { name: 'Maxi Dresses', href: '/category/maxi-dresses' },
+          { name: 'Mini Dresses', href: '/category/mini-dresses' },
+          { name: 'Midi Dresses', href: '/category/midi-dresses' },
+          { name: 'Evening Dresses', href: '/category/evening-dresses' },
+        ]
+      },
+      {
+        title: 'Outerwear',
+        items: [
+          { name: 'All Outerwear', href: '/category/outerwear' },
+          { name: 'Jackets', href: '/category/jackets' },
+          { name: 'Coats', href: '/category/coats' },
+          { name: 'Blazers', href: '/category/blazers' },
+          { name: 'Denim Jackets', href: '/category/denim-jackets' },
+          { name: 'Vests', href: '/category/vests' },
         ]
       },
       {
         title: 'Accessories',
         items: [
-          { name: 'Bags & Purses', href: '/category/bags' },
+          { name: 'All Accessories', href: '/category/accessories' },
           { name: 'Jewelry', href: '/category/jewelry' },
+          { name: 'Bags & Purses', href: '/category/bags' },
           { name: 'Shoes', href: '/category/shoes' },
           { name: 'Belts', href: '/category/belts' },
-        ]
-      },
-      {
-        title: 'Shop by Occasion',
-        items: [
-          { name: 'Work & Office', href: '/category/work' },
-          { name: 'Weekend Casual', href: '/category/casual' },
-          { name: 'Date Night', href: '/category/date-night' },
-          { name: 'Travel Essentials', href: '/category/travel' }
+          { name: 'Hats & Scarves', href: '/category/hats-scarves' },
         ]
       },
       {
@@ -52,7 +79,10 @@ const megaMenuCategories = {
         items: [
           { name: 'New Arrivals', href: '/collections/new-arrivals' },
           { name: 'Best Sellers', href: '/collections/best-sellers' },
-          { name: 'Sale Items', href: '/sale' },
+          { name: 'Sale', href: '/sale' },
+          { name: 'Under $50', href: '/collections/under-50' },
+          { name: 'Gift Guide', href: '/collections/gifts' },
+          { name: 'Trending Now', href: '/collections/trending' },
         ]
       }
     ],
@@ -258,18 +288,18 @@ export function Header() {
             onMouseEnter={() => setActiveMegaMenu('women')}
             onMouseLeave={handleMegaMenuLeave}
           >
-            <div className="max-w-7xl mx-auto px-4 py-8">
-              <div className="grid grid-cols-4 gap-8">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-x-8 gap-y-10">
                 {/* Menu Sections */}
                 {megaMenuCategories.women.sections.map((section, index) => (
                   <div key={index}>
-                    <h3 className="font-semibold text-gray-900 dark:text-white mb-4">{section.title}</h3>
-                    <ul className="space-y-2">
+                    <h3 className="text-sm font-bold text-gray-900 dark:text-white mb-4 uppercase tracking-wider">{section.title}</h3>
+                    <ul className="space-y-3">
                       {section.items.map((item, itemIndex) => (
                         <li key={itemIndex}>
                           <Link
                             to={item.href}
-                            className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
+                            className="text-sm text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors duration-200 hover:translate-x-1 inline-block"
                           >
                             {item.name}
                           </Link>
