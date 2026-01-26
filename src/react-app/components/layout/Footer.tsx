@@ -211,7 +211,7 @@ export function Footer() {
                 <span className="text-green-600">✓</span> Secure Checkout
               </span>
               <span className="flex items-center gap-1">
-                <span className="text-blue-600">✓</span> Free Shipping Over $50
+                <span className="text-blue-600">✓</span> Free Shipping Over $75
               </span>
             </div>
           </div>

@@ -95,6 +95,7 @@ export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const megaMenuTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const megaMenuRef = useRef<HTMLDivElement>(null);
 
   const { totalItems: cartItemsCount } = useCart();
   const { totalItems: wishlistItemsCount } = useWishlist();
@@ -103,11 +104,34 @@ export function Header() {
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
+      // Close mega menu on scroll
+      if (activeMegaMenu) {
+        setActiveMegaMenu(null);
+      }
+    };
+
+    const handleClickOutside = (event: MouseEvent) => {
+      if (megaMenuRef.current && !megaMenuRef.current.contains(event.target as Node)) {
+        setActiveMegaMenu(null);
+      }
+    };
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setActiveMegaMenu(null);
+      }
     };
 
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleEscape);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, [activeMegaMenu]);
 
   const handleMegaMenuEnter = (menu: string) => {
     if (megaMenuTimeoutRef.current) {
@@ -170,6 +194,7 @@ export function Header() {
             <nav className="hidden lg:flex items-center space-x-8">
               {/* Mega Menu Trigger */}
               <div
+                ref={megaMenuRef}
                 className="relative"
                 onMouseEnter={() => handleMegaMenuEnter('women')}
                 onMouseLeave={handleMegaMenuLeave}
