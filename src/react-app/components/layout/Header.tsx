@@ -22,67 +22,67 @@ const megaMenuCategories = {
       {
         title: 'Tops',
         items: [
-          { name: 'All Tops', href: '/category/tops' },
-          { name: 'T-Shirts & Tees', href: '/category/tshirts' },
-          { name: 'Blouses & Shirts', href: '/category/blouses' },
-          { name: 'Sweaters & Cardigans', href: '/category/sweaters' },
-          { name: 'Tank Tops & Camis', href: '/category/tanks' },
-          { name: 'Hoodies & Sweatshirts', href: '/category/hoodies' },
+          { name: 'All Tops', slug: 'tops' },
+          { name: 'T-Shirts & Tees', slug: 'tshirts' },
+          { name: 'Blouses & Shirts', slug: 'blouses' },
+          { name: 'Sweaters & Cardigans', slug: 'sweaters' },
+          { name: 'Tank Tops & Camis', slug: 'tanks' },
+          { name: 'Hoodies & Sweatshirts', slug: 'hoodies' },
         ]
       },
       {
         title: 'Bottoms',
         items: [
-          { name: 'All Bottoms', href: '/category/bottoms' },
-          { name: 'Jeans', href: '/category/jeans' },
-          { name: 'Pants & Trousers', href: '/category/pants' },
-          { name: 'Shorts', href: '/category/shorts' },
-          { name: 'Skirts', href: '/category/skirts' },
-          { name: 'Leggings', href: '/category/leggings' },
+          { name: 'All Bottoms', slug: 'bottoms' },
+          { name: 'Jeans', slug: 'jeans' },
+          { name: 'Pants & Trousers', slug: 'pants' },
+          { name: 'Shorts', slug: 'shorts' },
+          { name: 'Skirts', slug: 'skirts' },
+          { name: 'Leggings', slug: 'leggings' },
         ]
       },
       {
         title: 'Dresses',
         items: [
-          { name: 'All Dresses', href: '/category/dresses' },
-          { name: 'Casual Dresses', href: '/category/casual-dresses' },
-          { name: 'Maxi Dresses', href: '/category/maxi-dresses' },
-          { name: 'Mini Dresses', href: '/category/mini-dresses' },
-          { name: 'Midi Dresses', href: '/category/midi-dresses' },
-          { name: 'Evening Dresses', href: '/category/evening-dresses' },
+          { name: 'All Dresses', slug: 'dresses' },
+          { name: 'Casual Dresses', slug: 'casual-dresses' },
+          { name: 'Maxi Dresses', slug: 'maxi-dresses' },
+          { name: 'Mini Dresses', slug: 'mini-dresses' },
+          { name: 'Midi Dresses', slug: 'midi-dresses' },
+          { name: 'Evening Dresses', slug: 'evening-dresses' },
         ]
       },
       {
         title: 'Outerwear',
         items: [
-          { name: 'All Outerwear', href: '/category/outerwear' },
-          { name: 'Jackets', href: '/category/jackets' },
-          { name: 'Coats', href: '/category/coats' },
-          { name: 'Blazers', href: '/category/blazers' },
-          { name: 'Denim Jackets', href: '/category/denim-jackets' },
-          { name: 'Vests', href: '/category/vests' },
+          { name: 'All Outerwear', slug: 'outerwear' },
+          { name: 'Jackets', slug: 'jackets' },
+          { name: 'Coats', slug: 'coats' },
+          { name: 'Blazers', slug: 'blazers' },
+          { name: 'Denim Jackets', slug: 'denim-jackets' },
+          { name: 'Vests', slug: 'vests' },
         ]
       },
       {
         title: 'Accessories',
         items: [
-          { name: 'All Accessories', href: '/category/accessories' },
-          { name: 'Jewelry', href: '/category/jewelry' },
-          { name: 'Bags & Purses', href: '/category/bags' },
-          { name: 'Shoes', href: '/category/shoes' },
-          { name: 'Belts', href: '/category/belts' },
-          { name: 'Hats & Scarves', href: '/category/hats-scarves' },
+          { name: 'All Accessories', slug: 'accessories' },
+          { name: 'Jewelry', slug: 'jewelry' },
+          { name: 'Bags & Purses', slug: 'bags' },
+          { name: 'Shoes', slug: 'shoes' },
+          { name: 'Belts', slug: 'belts' },
+          { name: 'Hats & Scarves', slug: 'hats-scarves' },
         ]
       },
       {
         title: 'Featured',
         items: [
-          { name: 'New Arrivals', href: '/collections/new-arrivals' },
-          { name: 'Best Sellers', href: '/collections/best-sellers' },
-          { name: 'Sale', href: '/sale' },
-          { name: 'Under $150', href: '/collections/under-50' },
-          { name: 'Gift Guide', href: '/collections/gifts' },
-          { name: 'Trending Now', href: '/collections/trending' },
+          { name: 'New Arrivals', to: '/collections/new-arrivals' },
+          { name: 'Best Sellers', to: '/collections/best-sellers' },
+          { name: 'Sale', to: '/sale' },
+          { name: 'Under $150', to: '/collections/under-50' },
+          { name: 'Gift Guide', to: '/collections/gifts' },
+          { name: 'Trending Now', to: '/collections/trending' },
         ]
       }
     ],
@@ -151,10 +151,8 @@ export function Header() {
   };
 
   return (
-    <header className={`sticky top-0 z-50 transition-all duration-300 ${
-      isScrolled
-        ? 'bg-brand-cream/95 dark:bg-gray-900/95 backdrop-blur-md shadow-lg'
-        : 'bg-brand-cream dark:bg-gray-900'
+    <header className={`sticky top-0 z-50 bg-brand-cream dark:bg-gray-900 transition-all duration-200 ${
+      isScrolled ? 'shadow-lg' : ''
     }`}>
         <div className="max-w-7xl mx-auto px-4">
           {/* Top Bar - Only show when not scrolled */}
@@ -340,12 +338,24 @@ export function Header() {
                     <ul className="space-y-2.5">
                       {section.items.map((item, itemIndex) => (
                         <li key={itemIndex}>
-                          <Link
-                            to={item.href}
-                            className="text-sm text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors duration-200 block"
-                          >
-                            {item.name}
-                          </Link>
+                          {(item as any).slug ? (
+                            <Link
+                              to="/category/$slug"
+                              params={{ slug: (item as any).slug }}
+                              className="text-sm text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors duration-200 block"
+                              onClick={() => setActiveMegaMenu(null)}
+                            >
+                              {item.name}
+                            </Link>
+                          ) : (
+                            <Link
+                              to={(item as any).to}
+                              className="text-sm text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors duration-200 block"
+                              onClick={() => setActiveMegaMenu(null)}
+                            >
+                              {item.name}
+                            </Link>
+                          )}
                         </li>
                       ))}
                     </ul>
@@ -358,6 +368,7 @@ export function Header() {
                   <Link
                     to="/collections/new-arrivals"
                     className="group relative overflow-hidden rounded-lg bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 p-6 flex flex-col justify-end h-full min-h-[180px] transition-transform duration-300 hover:scale-[1.02]"
+                    onClick={() => setActiveMegaMenu(null)}
                   >
                     <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
                     <div className="relative z-10">
@@ -371,6 +382,7 @@ export function Header() {
                   <Link
                     to="/sale"
                     className="group relative overflow-hidden rounded-lg bg-gradient-to-br from-red-50 to-red-100 dark:from-red-950 dark:to-red-900 p-6 flex flex-col justify-end h-full min-h-[180px] transition-transform duration-300 hover:scale-[1.02]"
+                    onClick={() => setActiveMegaMenu(null)}
                   >
                     <div className="absolute inset-0 bg-gradient-to-t from-red-600/40 to-transparent"></div>
                     <div className="relative z-10">
