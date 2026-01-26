@@ -1,6 +1,7 @@
 import { Link } from '@tanstack/react-router';
 import { products } from '../mocks/products';
 import { categories } from '../mocks/categories';
+import { ProductCard } from '../components/ProductCard';
 
 export function HomePage() {
   const featuredProducts = products.slice(0, 4);
@@ -182,44 +183,11 @@ export function HomePage() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {featuredProducts.map((product) => (
-            <Link
+            <ProductCard
               key={product.id}
-              to="/products/$id"
-              params={{ id: product.id }}
-              className="group"
-            >
-              <div className="relative overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800 aspect-[4/5] mb-3 transition-transform duration-300 ease-out group-hover:scale-[1.02]">
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="absolute inset-0 w-full h-full object-cover group-hover:opacity-90 transition-opacity duration-300"
-                  loading="lazy"
-                />
-                {product.originalPrice && (
-                  <div className="absolute top-3 left-3 bg-red-600 text-white px-3 py-1 text-xs font-bold rounded shadow-lg z-10">
-                    SALE
-                  </div>
-                )}
-              </div>
-              <h3 className="font-medium text-gray-900 dark:text-white group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors duration-200 line-clamp-2">
-                {product.name}
-              </h3>
-              <div className="flex items-center gap-2 mt-2">
-                <span className="text-lg font-bold text-gray-900 dark:text-white">
-                  ${product.price}
-                </span>
-                {product.originalPrice && (
-                  <>
-                    <span className="text-sm text-gray-500 dark:text-gray-400 line-through">
-                      ${product.originalPrice}
-                    </span>
-                    <span className="text-xs font-semibold text-red-600 dark:text-red-400">
-                      {Math.round((1 - product.price / product.originalPrice) * 100)}% OFF
-                    </span>
-                  </>
-                )}
-              </div>
-            </Link>
+              product={product}
+              badge={product.originalPrice ? { text: 'SALE', color: 'bg-red-600' } : undefined}
+            />
           ))}
         </div>
 
@@ -230,6 +198,100 @@ export function HomePage() {
           >
             View All Products
           </Link>
+        </div>
+      </section>
+
+      {/* Customer Reviews */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-heading font-bold text-gray-900 dark:text-white mb-4">What Our Customers Say</h2>
+          <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+            Real reviews from real customers
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+            <div className="flex items-center gap-1 mb-4 text-amber-500">
+              <span>★★★★★</span>
+            </div>
+            <p className="text-gray-600 dark:text-gray-400 mb-4">
+              "Absolutely love my new dress! The quality is amazing and it fits perfectly. I've received so many compliments!"
+            </p>
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-gradient-to-br from-brand-taupe to-brand-dusty-rose rounded-full"></div>
+              <div>
+                <p className="font-semibold text-gray-900 dark:text-white">Sarah M.</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">Verified Customer</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+            <div className="flex items-center gap-1 mb-4 text-amber-500">
+              <span>★★★★★</span>
+            </div>
+            <p className="text-gray-600 dark:text-gray-400 mb-4">
+              "Fast shipping and beautiful packaging! The pieces are even better in person. Will definitely be shopping here again."
+            </p>
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-gradient-to-br from-brand-sage to-brand-mustard rounded-full"></div>
+              <div>
+                <p className="font-semibold text-gray-900 dark:text-white">Emily R.</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">Verified Customer</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+            <div className="flex items-center gap-1 mb-4 text-amber-500">
+              <span>★★★★★</span>
+            </div>
+            <p className="text-gray-600 dark:text-gray-400 mb-4">
+              "The quality and style are unmatched. These pieces go from work to weekend effortlessly. So happy with my purchase!"
+            </p>
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-gradient-to-br from-brand-soft-blue to-brand-olive rounded-full"></div>
+              <div>
+                <p className="font-semibold text-gray-900 dark:text-white">Jessica L.</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">Verified Customer</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Instagram Feed */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 bg-gray-50 dark:bg-gray-800/50">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-heading font-bold text-gray-900 dark:text-white mb-4">#CasualChicStyle</h2>
+          <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+            Follow us <a href="https://instagram.com/casualchic" target="_blank" rel="noopener noreferrer" className="text-brand-dusty-rose hover:underline">@casualchic</a> for daily style inspiration
+          </p>
+        </div>
+
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="aspect-square bg-gray-200 dark:bg-gray-700 rounded-lg overflow-hidden group cursor-pointer">
+              <img
+                src={`https://images.unsplash.com/photo-${1595777457583 + i * 1000}-95e059d581b8?w=400&h=400&fit=crop`}
+                alt={`Instagram post ${i}`}
+                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                loading="lazy"
+              />
+            </div>
+          ))}
+        </div>
+
+        <div className="text-center mt-8">
+          <a
+            href="https://instagram.com/casualchic"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block px-8 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg font-medium hover:from-purple-700 hover:to-pink-700 transition-all"
+          >
+            Follow Us on Instagram
+          </a>
         </div>
       </section>
 
