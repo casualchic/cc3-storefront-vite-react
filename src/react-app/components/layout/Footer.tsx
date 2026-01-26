@@ -35,12 +35,12 @@ export function Footer() {
               <img
                 src="/images/logo-dark.png"
                 alt="Casual Chic Boutique"
-                className="h-8 w-auto dark:hidden"
+                className="h-14 w-auto dark:hidden"
               />
               <img
                 src="/images/logo-light.png"
                 alt="Casual Chic Boutique"
-                className="h-8 w-auto hidden dark:block"
+                className="h-14 w-auto hidden dark:block"
               />
             </Link>
             <p className="text-gray-700 dark:text-gray-400 text-sm mb-4 max-w-md">

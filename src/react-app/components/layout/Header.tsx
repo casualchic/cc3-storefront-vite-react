@@ -149,19 +149,19 @@ export function Header() {
           )}
 
           {/* Main Header */}
-          <div className="flex items-center justify-between h-16">
+          <div className="flex items-center justify-between h-24">
             {/* Logo */}
             <div className="flex-shrink-0">
               <Link to="/" className="block">
                 <img
                   src="/images/logo-dark.png"
                   alt="Casual Chic Boutique"
-                  className="h-10 w-auto dark:hidden"
+                  className="h-20 w-auto dark:hidden"
                 />
                 <img
                   src="/images/logo-light.png"
                   alt="Casual Chic Boutique"
-                  className="h-10 w-auto hidden dark:block"
+                  className="h-20 w-auto hidden dark:block"
                 />
               </Link>
             </div>
