@@ -51,17 +51,26 @@ export function HomePage() {
 
               {/* Trust Badges */}
               <div className="mt-12 grid grid-cols-3 gap-6 pt-8 border-t border-gray-300 dark:border-gray-700">
-                <div>
-                  <div className="text-2xl font-bold text-gray-900 dark:text-white mb-1">Free Shipping</div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">Orders over $75</div>
+                <div className="flex items-start gap-3">
+                  <div className="text-3xl">🚚</div>
+                  <div>
+                    <div className="text-lg font-bold text-gray-900 dark:text-white mb-1">Free Shipping</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">On all orders over $75</div>
+                  </div>
                 </div>
-                <div>
-                  <div className="text-2xl font-bold text-gray-900 dark:text-white mb-1">Easy Returns</div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">30-day policy</div>
+                <div className="flex items-start gap-3">
+                  <div className="text-3xl">↩️</div>
+                  <div>
+                    <div className="text-lg font-bold text-gray-900 dark:text-white mb-1">Easy Returns</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">Free returns within 30 days</div>
+                  </div>
                 </div>
-                <div>
-                  <div className="text-2xl font-bold text-gray-900 dark:text-white mb-1">Secure Pay</div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">100% protected</div>
+                <div className="flex items-start gap-3">
+                  <div className="text-3xl">🔒</div>
+                  <div>
+                    <div className="text-lg font-bold text-gray-900 dark:text-white mb-1">Secure Checkout</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">100% secure payment</div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -69,36 +78,60 @@ export function HomePage() {
             {/* Right Column - Featured Image Grid */}
             <div className="hidden lg:grid grid-cols-2 gap-4">
               <div className="space-y-4">
-                <div className="relative overflow-hidden rounded-2xl bg-gray-200 dark:bg-gray-800 aspect-[3/4] group">
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
-                  <div className="absolute bottom-4 left-4 right-4">
-                    <p className="text-white font-semibold text-sm">Dresses</p>
+                <Link to="/category/$slug" params={{ slug: 'dresses' }} className="relative overflow-hidden rounded-2xl bg-gray-200 dark:bg-gray-800 aspect-[3/4] group block">
+                  <img
+                    src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=600&h=800&fit=crop"
+                    alt="Dresses"
+                    className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10"></div>
+                  <div className="absolute bottom-4 left-4 right-4 z-20">
+                    <p className="text-white font-semibold text-lg">Dresses</p>
                   </div>
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
-                </div>
-                <div className="relative overflow-hidden rounded-2xl bg-gray-200 dark:bg-gray-800 aspect-[3/2] group">
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
-                  <div className="absolute bottom-4 left-4 right-4">
-                    <p className="text-white font-semibold text-sm">Accessories</p>
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 z-10"></div>
+                </Link>
+                <Link to="/category/$slug" params={{ slug: 'accessories' }} className="relative overflow-hidden rounded-2xl bg-gray-200 dark:bg-gray-800 aspect-[3/2] group block">
+                  <img
+                    src="https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=600&h=400&fit=crop"
+                    alt="Accessories"
+                    className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10"></div>
+                  <div className="absolute bottom-4 left-4 right-4 z-20">
+                    <p className="text-white font-semibold text-lg">Accessories</p>
                   </div>
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
-                </div>
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 z-10"></div>
+                </Link>
               </div>
               <div className="space-y-4 pt-8">
-                <div className="relative overflow-hidden rounded-2xl bg-gray-200 dark:bg-gray-800 aspect-[3/2] group">
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
-                  <div className="absolute bottom-4 left-4 right-4">
-                    <p className="text-white font-semibold text-sm">Tops</p>
+                <Link to="/category/$slug" params={{ slug: 'tops' }} className="relative overflow-hidden rounded-2xl bg-gray-200 dark:bg-gray-800 aspect-[3/2] group block">
+                  <img
+                    src="https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=600&h=400&fit=crop"
+                    alt="Tops"
+                    className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10"></div>
+                  <div className="absolute bottom-4 left-4 right-4 z-20">
+                    <p className="text-white font-semibold text-lg">Tops</p>
                   </div>
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
-                </div>
-                <div className="relative overflow-hidden rounded-2xl bg-gray-200 dark:bg-gray-800 aspect-[3/4] group">
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
-                  <div className="absolute bottom-4 left-4 right-4">
-                    <p className="text-white font-semibold text-sm">Outerwear</p>
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 z-10"></div>
+                </Link>
+                <Link to="/category/$slug" params={{ slug: 'outerwear' }} className="relative overflow-hidden rounded-2xl bg-gray-200 dark:bg-gray-800 aspect-[3/4] group block">
+                  <img
+                    src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=600&h=800&fit=crop"
+                    alt="Outerwear"
+                    className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10"></div>
+                  <div className="absolute bottom-4 left-4 right-4 z-20">
+                    <p className="text-white font-semibold text-lg">Outerwear</p>
                   </div>
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
-                </div>
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 z-10"></div>
+                </Link>
               </div>
             </div>
           </div>
@@ -122,10 +155,17 @@ export function HomePage() {
               params={{ slug: category.slug }}
               className="group relative overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800 aspect-square"
             >
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-              <div className="absolute bottom-4 left-4 right-4">
+              <img
+                src={category.image}
+                alt={category.name}
+                className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent z-10"></div>
+              <div className="absolute bottom-4 left-4 right-4 z-20">
                 <h3 className="text-white text-sm font-semibold">{category.name}</h3>
               </div>
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 z-10"></div>
             </Link>
           ))}
         </div>
