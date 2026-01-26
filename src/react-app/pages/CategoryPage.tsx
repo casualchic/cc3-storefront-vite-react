@@ -1,9 +1,9 @@
-import { useParams, Link } from 'react-router-dom';
+import { Link, useParams } from '@tanstack/react-router';
 import { products } from '../mocks/products';
 import { categories } from '../mocks/categories';
 
 export function CategoryPage() {
-  const { slug } = useParams<{ slug: string }>();
+  const { slug } = useParams({ from: '/category/$slug' });
   const category = categories.find(c => c.slug === slug);
   const categoryProducts = products.filter(p => p.category === slug);
 
@@ -32,7 +32,8 @@ export function CategoryPage() {
           {categoryProducts.map((product) => (
             <Link
               key={product.id}
-              to={`/products/${product.id}`}
+              to="/products/$id"
+              params={{ id: product.id }}
               className="group"
             >
               <div className="relative overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800 aspect-[3/4] mb-3">

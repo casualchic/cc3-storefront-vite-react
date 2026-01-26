@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from '@tanstack/react-router';
 import { products } from '../mocks/products';
 
 export function CollectionsPage() {
@@ -16,7 +16,8 @@ export function CollectionsPage() {
           {products.map((product) => (
             <Link
               key={product.id}
-              to={`/products/${product.id}`}
+              to="/products/$id"
+              params={{ id: product.id }}
               className="group"
             >
               <div className="relative overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800 aspect-[3/4] mb-3">

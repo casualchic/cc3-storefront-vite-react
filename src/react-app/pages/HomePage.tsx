@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from '@tanstack/react-router';
 import { products } from '../mocks/products';
 import { categories } from '../mocks/categories';
 
@@ -46,7 +46,8 @@ export function HomePage() {
           {categories.map((category) => (
             <Link
               key={category.id}
-              to={`/category/${category.slug}`}
+              to="/category/$slug"
+              params={{ slug: category.slug }}
               className="group relative overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800 aspect-square"
             >
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
@@ -71,7 +72,8 @@ export function HomePage() {
           {featuredProducts.map((product) => (
             <Link
               key={product.id}
-              to={`/products/${product.id}`}
+              to="/products/$id"
+              params={{ id: product.id }}
               className="group"
             >
               <div className="relative overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800 aspect-[3/4] mb-3">

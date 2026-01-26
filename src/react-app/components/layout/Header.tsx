@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '@tanstack/react-router';
 import {
   Search,
   User,
@@ -240,10 +240,10 @@ export function Header() {
                 <div className="border-t dark:border-gray-800 pt-4">
                   <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Categories</h4>
                   <div className="space-y-2 pl-4">
-                    <Link to="/category/dresses" className="block text-gray-700 dark:text-gray-300">Dresses</Link>
-                    <Link to="/category/tops" className="block text-gray-700 dark:text-gray-300">Tops</Link>
-                    <Link to="/category/outerwear" className="block text-gray-700 dark:text-gray-300">Outerwear</Link>
-                    <Link to="/category/accessories" className="block text-gray-700 dark:text-gray-300">Accessories</Link>
+                    <Link to="/category/$slug" params={{ slug: 'dresses' }} className="block text-gray-700 dark:text-gray-300">Dresses</Link>
+                    <Link to="/category/$slug" params={{ slug: 'tops' }} className="block text-gray-700 dark:text-gray-300">Tops</Link>
+                    <Link to="/category/$slug" params={{ slug: 'outerwear' }} className="block text-gray-700 dark:text-gray-300">Outerwear</Link>
+                    <Link to="/category/$slug" params={{ slug: 'accessories' }} className="block text-gray-700 dark:text-gray-300">Accessories</Link>
                   </div>
                 </div>
               </div>

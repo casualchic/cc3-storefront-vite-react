@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '@tanstack/react-router';
 import { Facebook, Instagram, Twitter, Send } from 'lucide-react';
 
 export function Footer() {
@@ -70,11 +70,11 @@ export function Footer() {
           <div>
             <h4 className="font-semibold text-black dark:text-white mb-4">Shop</h4>
             <ul className="space-y-2">
-              <li><Link to="/category/dresses" className="text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors text-sm">Dresses</Link></li>
-              <li><Link to="/category/tops" className="text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors text-sm">Tops</Link></li>
-              <li><Link to="/category/bottoms" className="text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors text-sm">Bottoms</Link></li>
-              <li><Link to="/category/outerwear" className="text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors text-sm">Outerwear</Link></li>
-              <li><Link to="/category/accessories" className="text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors text-sm">Accessories</Link></li>
+              <li><Link to="/category/$slug" params={{ slug: 'dresses' }} className="text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors text-sm">Dresses</Link></li>
+              <li><Link to="/category/$slug" params={{ slug: 'tops' }} className="text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors text-sm">Tops</Link></li>
+              <li><Link to="/category/$slug" params={{ slug: 'bottoms' }} className="text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors text-sm">Bottoms</Link></li>
+              <li><Link to="/category/$slug" params={{ slug: 'outerwear' }} className="text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors text-sm">Outerwear</Link></li>
+              <li><Link to="/category/$slug" params={{ slug: 'accessories' }} className="text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors text-sm">Accessories</Link></li>
             </ul>
           </div>
 
