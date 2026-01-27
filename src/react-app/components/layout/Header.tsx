@@ -93,6 +93,7 @@ export function Header() {
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         setActiveMegaMenu(null);
+        setIsSearchOpen(false);
       }
     };
 
@@ -317,6 +318,16 @@ export function Header() {
             className="absolute top-full left-0 right-0 bg-white dark:bg-gray-900 shadow-2xl border-t dark:border-gray-800"
             onMouseEnter={() => handleMegaMenuEnter('women')}
             onMouseLeave={handleMegaMenuLeave}
+            onFocusCapture={() => handleMegaMenuEnter('women')}
+            onBlurCapture={(event) => {
+              const next = event.relatedTarget as Node | null;
+              if (
+                !megaMenuDropdownRef.current?.contains(next) &&
+                !megaMenuRef.current?.contains(next)
+              ) {
+                handleMegaMenuLeave();
+              }
+            }}
           >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-8 gap-x-6 gap-y-8">
