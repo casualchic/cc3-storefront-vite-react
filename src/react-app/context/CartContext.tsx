@@ -15,12 +15,22 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>(() => {
-    const saved = localStorage.getItem('cart');
-    return saved ? JSON.parse(saved) : [];
+    if (typeof window === 'undefined') return [];
+    try {
+      const saved = window.localStorage.getItem('cart');
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
   });
 
   useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(items));
+    if (typeof window === 'undefined') return;
+    try {
+      window.localStorage.setItem('cart', JSON.stringify(items));
+    } catch {
+      // Ignore quota or security errors
+    }
   }, [items]);
 
   const addItem = (item: Omit<CartItem, 'id'>) => {

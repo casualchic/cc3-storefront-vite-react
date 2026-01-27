@@ -13,12 +13,22 @@ const WishlistContext = createContext<WishlistContextType | undefined>(undefined
 
 export function WishlistProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<WishlistItem[]>(() => {
-    const saved = localStorage.getItem('wishlist');
-    return saved ? JSON.parse(saved) : [];
+    if (typeof window === 'undefined') return [];
+    try {
+      const saved = window.localStorage.getItem('wishlist');
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
   });
 
   useEffect(() => {
-    localStorage.setItem('wishlist', JSON.stringify(items));
+    if (typeof window === 'undefined') return;
+    try {
+      window.localStorage.setItem('wishlist', JSON.stringify(items));
+    } catch {
+      // Ignore quota or security errors
+    }
   }, [items]);
 
   const addItem = (item: Omit<WishlistItem, 'id'>) => {

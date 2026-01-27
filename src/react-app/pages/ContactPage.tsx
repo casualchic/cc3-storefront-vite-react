@@ -1,6 +1,12 @@
 import { Mail, Phone, MapPin } from 'lucide-react';
 
 export function ContactPage() {
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Form submission logic would go here
+    // For now, just prevent the default form submission
+  };
+
   return (
     <div className="min-h-screen">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -46,7 +52,7 @@ export function ContactPage() {
 
           <div>
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Send a Message</h2>
-            <form className="space-y-4">
+            <form className="space-y-4" onSubmit={handleSubmit}>
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-gray-900 dark:text-white mb-1">
                   Name

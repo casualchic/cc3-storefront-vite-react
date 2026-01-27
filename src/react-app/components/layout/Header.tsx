@@ -15,6 +15,14 @@ import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
 import { useTheme } from '../../context/ThemeContext';
 
+type MenuItemWithSlug = { name: string; slug: string };
+type MenuItemWithTo = { name: string; to: string };
+type MenuItem = MenuItemWithSlug | MenuItemWithTo;
+
+const isSlugItem = (item: MenuItem): item is MenuItemWithSlug => {
+  return 'slug' in item;
+};
+
 const megaMenuCategories = {
   women: {
     title: 'Shop',
@@ -96,6 +104,7 @@ export function Header() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const megaMenuTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const megaMenuRef = useRef<HTMLDivElement>(null);
+  const megaMenuDropdownRef = useRef<HTMLDivElement>(null);
 
   const { totalItems: cartItemsCount } = useCart();
   const { totalItems: wishlistItemsCount } = useWishlist();
@@ -111,7 +120,11 @@ export function Header() {
     };
 
     const handleClickOutside = (event: MouseEvent) => {
-      if (megaMenuRef.current && !megaMenuRef.current.contains(event.target as Node)) {
+      const target = event.target as Node;
+      const isInsideTrigger = megaMenuRef.current?.contains(target);
+      const isInsideDropdown = megaMenuDropdownRef.current?.contains(target);
+
+      if (!isInsideTrigger && !isInsideDropdown) {
         setActiveMegaMenu(null);
       }
     };
@@ -141,6 +154,10 @@ export function Header() {
     setActiveMegaMenu(menu);
   };
 
+  const toggleMegaMenu = (menu: string) => {
+    setActiveMegaMenu(prev => (prev === menu ? null : menu));
+  };
+
   const handleMegaMenuLeave = () => {
     if (megaMenuTimeoutRef.current) {
       clearTimeout(megaMenuTimeoutRef.current);
@@ -155,20 +172,20 @@ export function Header() {
       isScrolled ? 'shadow-lg' : ''
     }`}>
         <div className="max-w-7xl mx-auto px-4">
-          {/* Top Bar - Only show when not scrolled */}
-          {!isScrolled && (
-            <div className="border-b border-brand-taupe/30 dark:border-gray-800">
-              <div className="flex items-center justify-between h-10 text-xs">
-                <div className="text-gray-700 dark:text-gray-400">
-                  Free shipping on orders over $75
-                </div>
-                <div className="flex items-center space-x-4 text-gray-700 dark:text-gray-400">
-                  <Link to="/help" className="hover:text-gray-900 dark:hover:text-gray-100">Help</Link>
-                  <Link to="/track-order" className="hover:text-gray-900 dark:hover:text-gray-100">Track Order</Link>
-                </div>
+          {/* Top Bar - Smoothly hide when scrolled */}
+          <div className={`border-b border-brand-taupe/30 dark:border-gray-800 transition-all duration-200 overflow-hidden ${
+            isScrolled ? 'max-h-0 opacity-0' : 'max-h-10 opacity-100'
+          }`}>
+            <div className="flex items-center justify-between h-10 text-xs">
+              <div className="text-gray-700 dark:text-gray-400">
+                Free shipping on orders over $75
+              </div>
+              <div className="flex items-center space-x-4 text-gray-700 dark:text-gray-400">
+                <Link to="/help" className="hover:text-gray-900 dark:hover:text-gray-100">Help</Link>
+                <Link to="/track-order" className="hover:text-gray-900 dark:hover:text-gray-100">Track Order</Link>
               </div>
             </div>
-          )}
+          </div>
 
           {/* Main Header */}
           <div className="flex items-center justify-between h-24">
@@ -198,6 +215,13 @@ export function Header() {
                 onMouseLeave={handleMegaMenuLeave}
               >
                 <button
+                  type="button"
+                  onClick={() => toggleMegaMenu('women')}
+                  onFocus={() => handleMegaMenuEnter('women')}
+                  onBlur={handleMegaMenuLeave}
+                  aria-haspopup="menu"
+                  aria-expanded={activeMegaMenu === 'women'}
+                  aria-controls="mega-menu-women"
                   className="flex items-center space-x-1 py-2 text-sm font-medium text-gray-900 dark:text-gray-100 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
                 >
                   <span>Shop</span>
@@ -325,6 +349,8 @@ export function Header() {
         {/* Mega Menu */}
         {activeMegaMenu === 'women' && (
           <div
+            id="mega-menu-women"
+            ref={megaMenuDropdownRef}
             className="absolute top-full left-0 right-0 bg-white dark:bg-gray-900 shadow-2xl border-t dark:border-gray-800"
             onMouseEnter={() => handleMegaMenuEnter('women')}
             onMouseLeave={handleMegaMenuLeave}
@@ -338,10 +364,10 @@ export function Header() {
                     <ul className="space-y-2.5">
                       {section.items.map((item, itemIndex) => (
                         <li key={itemIndex}>
-                          {(item as any).slug ? (
+                          {isSlugItem(item) ? (
                             <Link
                               to="/category/$slug"
-                              params={{ slug: (item as any).slug }}
+                              params={{ slug: item.slug }}
                               className="text-sm text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors duration-200 block"
                               onClick={() => setActiveMegaMenu(null)}
                             >
@@ -349,7 +375,7 @@ export function Header() {
                             </Link>
                           ) : (
                             <Link
-                              to={(item as any).to}
+                              to={item.to}
                               className="text-sm text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors duration-200 block"
                               onClick={() => setActiveMegaMenu(null)}
                             >

@@ -1,10 +1,26 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from '@tanstack/react-router';
 import { Facebook, Instagram, Twitter, Send, Mail, MapPin, Phone } from 'lucide-react';
 
 export function Footer() {
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const resetTimerRef = useRef<number | null>(null);
+
+  const scheduleReset = () => {
+    if (resetTimerRef.current !== null) {
+      window.clearTimeout(resetTimerRef.current);
+    }
+    resetTimerRef.current = window.setTimeout(() => setStatus('idle'), 3000);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (resetTimerRef.current !== null) {
+        window.clearTimeout(resetTimerRef.current);
+      }
+    };
+  }, []);
 
   const handleNewsletterSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -13,14 +29,14 @@ export function Footer() {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       setStatus('error');
-      setTimeout(() => setStatus('idle'), 3000);
+      scheduleReset();
       return;
     }
 
     // Simulate API call
     setStatus('success');
     setEmail('');
-    setTimeout(() => setStatus('idle'), 3000);
+    scheduleReset();
   };
 
   const currentYear = new Date().getFullYear();

@@ -3,6 +3,7 @@ import { Link } from '@tanstack/react-router';
 import { Heart, Eye } from 'lucide-react';
 import { useWishlist } from '../context/WishlistContext';
 import { Product } from '../types';
+import { QuickViewModal } from './QuickViewModal';
 
 interface ProductCardProps {
   product: Product;
@@ -15,6 +16,7 @@ interface ProductCardProps {
 export function ProductCard({ product, badge }: ProductCardProps) {
   const { addItem, removeItem, isInWishlist } = useWishlist();
   const [isHovered, setIsHovered] = useState(false);
+  const [showQuickView, setShowQuickView] = useState(false);
   const inWishlist = isInWishlist(product.id);
 
   const handleWishlistClick = (e: React.MouseEvent) => {
@@ -36,8 +38,7 @@ export function ProductCard({ product, badge }: ProductCardProps) {
   const handleQuickView = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    // TODO: Open quick view modal
-    console.log('Quick view:', product.id);
+    setShowQuickView(true);
   };
 
   return (
@@ -131,6 +132,13 @@ export function ProductCard({ product, badge }: ProductCardProps) {
           </div>
         )}
       </div>
+
+      {/* Quick View Modal */}
+      <QuickViewModal
+        product={product}
+        isOpen={showQuickView}
+        onClose={() => setShowQuickView(false)}
+      />
     </Link>
   );
 }

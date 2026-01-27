@@ -261,6 +261,120 @@ export function HomePage() {
         </div>
       </section>
 
+      {/* Ambassador Spotlight */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 bg-gradient-to-br from-brand-light-beige/30 to-brand-cream dark:from-gray-800 dark:to-gray-900">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-heading font-bold text-gray-900 dark:text-white mb-4">Our Style Ambassadors</h2>
+          <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+            Meet the inspiring women who embody the Casual Chic lifestyle
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Ambassador 1 */}
+          <div className="group bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+            <div className="aspect-[4/5] bg-gray-200 dark:bg-gray-700 overflow-hidden">
+              <img
+                src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&h=750&fit=crop"
+                alt="Emma Thompson"
+                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                loading="lazy"
+              />
+            </div>
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-3">
+                <div>
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white">Emma Thompson</h3>
+                  <p className="text-sm text-brand-dusty-rose font-medium">Fashion Influencer</p>
+                </div>
+                <a
+                  href="https://instagram.com/emmathompson"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-brand-dusty-rose hover:text-brand-taupe-brown transition-colors"
+                  aria-label="Follow Emma on Instagram"
+                >
+                  <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                  </svg>
+                </a>
+              </div>
+              <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                "Casual Chic pieces are my everyday staples. They're effortlessly elegant and transition seamlessly from coffee meetings to evening events."
+              </p>
+            </div>
+          </div>
+
+          {/* Ambassador 2 */}
+          <div className="group bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+            <div className="aspect-[4/5] bg-gray-200 dark:bg-gray-700 overflow-hidden">
+              <img
+                src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=600&h=750&fit=crop"
+                alt="Maya Patel"
+                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                loading="lazy"
+              />
+            </div>
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-3">
+                <div>
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white">Maya Patel</h3>
+                  <p className="text-sm text-brand-dusty-rose font-medium">Lifestyle Blogger</p>
+                </div>
+                <a
+                  href="https://instagram.com/mayapatel"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-brand-dusty-rose hover:text-brand-taupe-brown transition-colors"
+                  aria-label="Follow Maya on Instagram"
+                >
+                  <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                  </svg>
+                </a>
+              </div>
+              <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                "I love how these pieces celebrate individual style while maintaining that polished, sophisticated aesthetic I'm known for."
+              </p>
+            </div>
+          </div>
+
+          {/* Ambassador 3 */}
+          <div className="group bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+            <div className="aspect-[4/5] bg-gray-200 dark:bg-gray-700 overflow-hidden">
+              <img
+                src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&h=750&fit=crop"
+                alt="Sophie Chen"
+                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                loading="lazy"
+              />
+            </div>
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-3">
+                <div>
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white">Sophie Chen</h3>
+                  <p className="text-sm text-brand-dusty-rose font-medium">Style Creator</p>
+                </div>
+                <a
+                  href="https://instagram.com/sophiechen"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-brand-dusty-rose hover:text-brand-taupe-brown transition-colors"
+                  aria-label="Follow Sophie on Instagram"
+                >
+                  <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                  </svg>
+                </a>
+              </div>
+              <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                "The quality and timeless design make Casual Chic my go-to recommendation for anyone building a versatile wardrobe."
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Instagram Feed */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 bg-gray-50 dark:bg-gray-800/50">
         <div className="text-center mb-12">

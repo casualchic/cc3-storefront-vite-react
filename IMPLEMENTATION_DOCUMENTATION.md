@@ -157,7 +157,7 @@ Uses React Router v6 with nested routing:
 #### ContactPage
 - Contact information (email, phone, address)
 - Contact form (name, email, message)
-- Form validation
+- Form validation (not yet implemented - basic form handler prevents page reload)
 
 ## Styling
 
