@@ -1,5 +1,6 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
+import { sign, verify } from "hono/jwt";
 
 const app = new Hono<{ Bindings: Env }>();
 
@@ -17,18 +18,36 @@ const MOCK_USERS = [
 	},
 ];
 
-// Helper to generate a simple token
-function generateToken(userId: string): string {
-	return `token_${userId}_${Date.now()}`;
+// JWT configuration
+const JWT_EXPIRATION = 60 * 60 * 24 * 7; // 7 days in seconds
+
+// Helper to get JWT secret from environment
+function getJwtSecret(c: any): string {
+	const secret = c.env?.JWT_SECRET;
+	if (!secret) {
+		throw new Error("JWT_SECRET environment variable is not configured");
+	}
+	return secret;
 }
 
-// Helper to verify token and extract user ID
-function verifyToken(token: string): string | null {
-	if (!token || !token.startsWith("token_")) {
+// Helper to generate a JWT token
+async function generateToken(userId: string, secret: string): Promise<string> {
+	const payload = {
+		sub: userId,
+		exp: Math.floor(Date.now() / 1000) + JWT_EXPIRATION,
+		iat: Math.floor(Date.now() / 1000),
+	};
+	return await sign(payload, secret);
+}
+
+// Helper to verify JWT token and extract user ID
+async function verifyToken(token: string, secret: string): Promise<string | null> {
+	try {
+		const payload = await verify(token, secret);
+		return payload.sub as string;
+	} catch {
 		return null;
 	}
-	const parts = token.split("_");
-	return parts[1] || null;
 }
 
 // Test endpoint
@@ -36,9 +55,22 @@ app.get("/api/", (c) => c.json({ name: "Cloudflare" }));
 
 // Login endpoint
 app.post("/api/auth/login", async (c) => {
-	try {
-		const { email, password } = await c.req.json();
+	let body: any;
 
+	// Parse and validate request body
+	try {
+		body = await c.req.json();
+	} catch {
+		return c.json({ message: "Invalid request body" }, 400);
+	}
+
+	// Validate required fields
+	const { email, password } = body;
+	if (!email || !password || typeof email !== "string" || typeof password !== "string") {
+		return c.json({ message: "Email and password are required" }, 400);
+	}
+
+	try {
 		// Find user
 		const user = MOCK_USERS.find(
 			(u) => u.email === email && u.password === password
@@ -48,8 +80,9 @@ app.post("/api/auth/login", async (c) => {
 			return c.json({ message: "Invalid credentials" }, 401);
 		}
 
-		// Generate token
-		const token = generateToken(user.id);
+		// Get JWT secret and generate token
+		const secret = getJwtSecret(c);
+		const token = await generateToken(user.id, secret);
 
 		// Return user data (without password) and token
 		const { password: _, ...userWithoutPassword } = user;
@@ -59,6 +92,10 @@ app.post("/api/auth/login", async (c) => {
 			token,
 		});
 	} catch (error) {
+		// Check if it's a JWT_SECRET configuration error
+		if (error instanceof Error && error.message.includes("JWT_SECRET")) {
+			return c.json({ message: "Server configuration error" }, 500);
+		}
 		return c.json({ message: "Login failed" }, 500);
 	}
 });
@@ -73,7 +110,8 @@ app.get("/api/customer/profile", async (c) => {
 		}
 
 		const token = authHeader.substring(7);
-		const userId = verifyToken(token);
+		const secret = getJwtSecret(c);
+		const userId = await verifyToken(token, secret);
 
 		if (!userId) {
 			return c.json({ message: "Invalid token" }, 401);

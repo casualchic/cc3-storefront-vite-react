@@ -1,26 +1,33 @@
 // src/react-app/routes/login.tsx
 
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
-import { useState, type FormEvent } from 'react';
+import { useState, useEffect, type FormEvent } from 'react';
 import { useAuth } from '../context/AuthContext';
 
 export const Route = createFileRoute('/login')({
 	component: LoginPage,
+	validateSearch: (search: Record<string, unknown>) => {
+		return {
+			redirect: (search.redirect as string) || '/account/profile',
+		};
+	},
 });
 
 function LoginPage() {
 	const { login, isAuthenticated } = useAuth();
 	const navigate = useNavigate();
+	const { redirect } = Route.useSearch();
 	const [email, setEmail] = useState('demo@example.com');
 	const [password, setPassword] = useState('demo123');
 	const [error, setError] = useState('');
 	const [isSubmitting, setIsSubmitting] = useState(false);
 
 	// Redirect if already authenticated
-	if (isAuthenticated) {
-		navigate({ to: '/account/profile' });
-		return null;
-	}
+	useEffect(() => {
+		if (isAuthenticated) {
+			navigate({ to: redirect });
+		}
+	}, [isAuthenticated, navigate, redirect]);
 
 	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -29,8 +36,8 @@ function LoginPage() {
 
 		try {
 			await login({ email, password });
-			// Navigate to account after successful login
-			navigate({ to: '/account/profile' });
+			// Navigate to redirect destination after successful login
+			navigate({ to: redirect });
 		} catch (err) {
 			setError(err instanceof Error ? err.message : 'Login failed');
 		} finally {

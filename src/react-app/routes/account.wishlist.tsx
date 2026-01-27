@@ -46,7 +46,7 @@ function WishlistPage() {
 									alt={item.name}
 									className="w-full h-full object-cover"
 								/>
-								<button className="absolute top-2 right-2 p-2 bg-white rounded-full shadow-md hover:bg-gray-50">
+								<button type="button" className="absolute top-2 right-2 p-2 bg-white rounded-full shadow-md hover:bg-gray-50" aria-label="Remove from wishlist">
 									<Heart className="w-5 h-5 text-red-500 fill-red-500" />
 								</button>
 							</div>
@@ -54,7 +54,7 @@ function WishlistPage() {
 								<h3 className="font-semibold text-gray-900 mb-1">{item.name}</h3>
 								<p className="text-lg font-bold text-gray-900 mb-2">{item.price}</p>
 								{item.inStock ? (
-									<button className="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition text-sm">
+									<button type="button" className="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition text-sm">
 										Add to Cart
 									</button>
 								) : (

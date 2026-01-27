@@ -46,11 +46,11 @@ function ProfilePage() {
 				<div>
 					<h2 className="text-lg font-semibold text-gray-900 mb-4">Account Settings</h2>
 					<div className="space-y-2">
-						<button className="text-blue-600 hover:text-blue-700 text-sm font-medium">
+						<button type="button" className="text-blue-600 hover:text-blue-700 text-sm font-medium">
 							Change Password
 						</button>
 						<br />
-						<button className="text-blue-600 hover:text-blue-700 text-sm font-medium">
+						<button type="button" className="text-blue-600 hover:text-blue-700 text-sm font-medium">
 							Update Email
 						</button>
 					</div>

@@ -40,7 +40,7 @@ This document describes the Account Layout implementation with authentication gu
 
 ### File Structure
 
-```
+```text
 src/
 ├── react-app/
 │   ├── context/
@@ -136,7 +136,7 @@ Authenticates user credentials and returns token.
 Fetches authenticated user profile.
 
 **Headers:**
-```
+```http
 Authorization: Bearer {token}
 ```
 
@@ -157,8 +157,8 @@ Invalidates user session (currently a placeholder).
 
 For testing purposes, the following demo account is available:
 
-- **Email**: demo@example.com
-- **Password**: demo123
+- **Email**: `demo@example.com`
+- **Password**: `demo123`
 
 ## User Flow
 
