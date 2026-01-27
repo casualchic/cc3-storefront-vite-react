@@ -24,14 +24,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run TypeScript check
-        run: npx tsc -b
-
       - name: Run ESLint
         run: npm run lint
         continue-on-error: true  # Allow warnings but fail on errors
 
-      - name: Build application
+      - name: Build application (includes TypeScript check)
         run: npm run build
 
       - name: Check for security vulnerabilities (production only)
