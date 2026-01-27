@@ -28,58 +28,19 @@ const megaMenuCategories = {
     title: 'Shop',
     sections: [
       {
-        title: 'Tops',
+        title: 'Clothing',
         items: [
-          { name: 'All Tops', slug: 'tops' },
-          { name: 'T-Shirts & Tees', slug: 'tshirts' },
-          { name: 'Blouses & Shirts', slug: 'blouses' },
-          { name: 'Sweaters & Cardigans', slug: 'sweaters' },
-          { name: 'Tank Tops & Camis', slug: 'tanks' },
-          { name: 'Hoodies & Sweatshirts', slug: 'hoodies' },
-        ]
-      },
-      {
-        title: 'Bottoms',
-        items: [
-          { name: 'All Bottoms', slug: 'bottoms' },
-          { name: 'Jeans', slug: 'jeans' },
-          { name: 'Pants & Trousers', slug: 'pants' },
-          { name: 'Shorts', slug: 'shorts' },
-          { name: 'Skirts', slug: 'skirts' },
-          { name: 'Leggings', slug: 'leggings' },
-        ]
-      },
-      {
-        title: 'Dresses',
-        items: [
-          { name: 'All Dresses', slug: 'dresses' },
-          { name: 'Casual Dresses', slug: 'casual-dresses' },
-          { name: 'Maxi Dresses', slug: 'maxi-dresses' },
-          { name: 'Mini Dresses', slug: 'mini-dresses' },
-          { name: 'Midi Dresses', slug: 'midi-dresses' },
-          { name: 'Evening Dresses', slug: 'evening-dresses' },
-        ]
-      },
-      {
-        title: 'Outerwear',
-        items: [
-          { name: 'All Outerwear', slug: 'outerwear' },
-          { name: 'Jackets', slug: 'jackets' },
-          { name: 'Coats', slug: 'coats' },
-          { name: 'Blazers', slug: 'blazers' },
-          { name: 'Denim Jackets', slug: 'denim-jackets' },
-          { name: 'Vests', slug: 'vests' },
+          { name: 'Tops', slug: 'tops' },
+          { name: 'Sweaters', slug: 'sweaters' },
+          { name: 'Bottoms', slug: 'bottoms' },
+          { name: 'Dresses', slug: 'dresses' },
+          { name: 'Outerwear', slug: 'outerwear' },
         ]
       },
       {
         title: 'Accessories',
         items: [
           { name: 'All Accessories', slug: 'accessories' },
-          { name: 'Jewelry', slug: 'jewelry' },
-          { name: 'Bags & Purses', slug: 'bags' },
-          { name: 'Shoes', slug: 'shoes' },
-          { name: 'Belts', slug: 'belts' },
-          { name: 'Hats & Scarves', slug: 'hats-scarves' },
         ]
       },
       {
@@ -335,8 +296,10 @@ export function Header() {
                 <div className="border-t dark:border-gray-800 pt-4">
                   <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Categories</h4>
                   <div className="space-y-2 pl-4">
-                    <Link to="/category/$slug" params={{ slug: 'dresses' }} className="block text-gray-700 dark:text-gray-300" onClick={() => setIsMobileMenuOpen(false)}>Dresses</Link>
                     <Link to="/category/$slug" params={{ slug: 'tops' }} className="block text-gray-700 dark:text-gray-300" onClick={() => setIsMobileMenuOpen(false)}>Tops</Link>
+                    <Link to="/category/$slug" params={{ slug: 'sweaters' }} className="block text-gray-700 dark:text-gray-300" onClick={() => setIsMobileMenuOpen(false)}>Sweaters</Link>
+                    <Link to="/category/$slug" params={{ slug: 'bottoms' }} className="block text-gray-700 dark:text-gray-300" onClick={() => setIsMobileMenuOpen(false)}>Bottoms</Link>
+                    <Link to="/category/$slug" params={{ slug: 'dresses' }} className="block text-gray-700 dark:text-gray-300" onClick={() => setIsMobileMenuOpen(false)}>Dresses</Link>
                     <Link to="/category/$slug" params={{ slug: 'outerwear' }} className="block text-gray-700 dark:text-gray-300" onClick={() => setIsMobileMenuOpen(false)}>Outerwear</Link>
                     <Link to="/category/$slug" params={{ slug: 'accessories' }} className="block text-gray-700 dark:text-gray-300" onClick={() => setIsMobileMenuOpen(false)}>Accessories</Link>
                   </div>
@@ -425,7 +388,12 @@ export function Header() {
 
         {/* Search Modal */}
         {isSearchOpen && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-start justify-center pt-20">
+        <div
+          className="fixed inset-0 bg-black/50 z-50 flex items-start justify-center pt-20"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Search"
+        >
           <div className="bg-white dark:bg-gray-900 w-full max-w-2xl mx-4 rounded-lg shadow-2xl">
             <div className="p-4">
               <div className="flex items-center space-x-2">
@@ -439,6 +407,7 @@ export function Header() {
                 <button
                   onClick={() => setIsSearchOpen(false)}
                   className="text-gray-400 hover:text-gray-600"
+                  aria-label="Close search"
                 >
                   <X className="w-5 h-5" />
                 </button>
