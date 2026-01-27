@@ -13,13 +13,18 @@
 		"publish": true
 	},
 	"dependencies": {
+		"@tanstack/react-query": "^5.90.20",
+		"@tanstack/react-router": "^1.157.16",
 		"hono": "4.8.2",
+		"lucide-react": "^0.563.0",
 		"react": "19.0.0",
 		"react-dom": "19.0.0"
 	},
 	"devDependencies": {
 		"@cloudflare/vite-plugin": "1.7.5",
 		"@eslint/js": "9.29.0",
+		"@tanstack/router-devtools": "^1.157.16",
+		"@tanstack/router-plugin": "^1.157.16",
 		"@types/node": "24.0.4",
 		"@types/react": "19.0.10",
 		"@types/react-dom": "19.0.4",
