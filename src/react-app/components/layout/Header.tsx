@@ -277,7 +277,8 @@ export function Header() {
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 className="lg:hidden text-gray-900 dark:text-gray-100 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
-                aria-label="Menu"
+                aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+                aria-expanded={isMobileMenuOpen}
               >
                 {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
               </button>
@@ -404,8 +405,12 @@ export function Header() {
           role="dialog"
           aria-modal="true"
           aria-label="Search"
+          onClick={() => setIsSearchOpen(false)}
         >
-          <div className="bg-white dark:bg-gray-900 w-full max-w-2xl mx-4 rounded-lg shadow-2xl">
+          <div
+            className="bg-white dark:bg-gray-900 w-full max-w-2xl mx-4 rounded-lg shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="p-4">
               <div className="flex items-center space-x-2">
                 <Search className="w-5 h-5 text-gray-400" />
