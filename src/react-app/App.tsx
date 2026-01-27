@@ -3,8 +3,10 @@
 import { RouterProvider, createRouter } from '@tanstack/react-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from './context/AuthContext';
+import { CartProvider } from './context/CartContext';
+import { WishlistProvider } from './context/WishlistContext';
+import { ThemeProvider } from './context/ThemeContext';
 import { routeTree } from './routeTree.gen';
-import './App.css';
 
 // Create a new router instance
 const router = createRouter({ routeTree });
@@ -29,9 +31,15 @@ const queryClient = new QueryClient({
 function App() {
 	return (
 		<QueryClientProvider client={queryClient}>
-			<AuthProvider>
-				<RouterProvider router={router} />
-			</AuthProvider>
+			<ThemeProvider>
+				<AuthProvider>
+					<CartProvider>
+						<WishlistProvider>
+							<RouterProvider router={router} />
+						</WishlistProvider>
+					</CartProvider>
+				</AuthProvider>
+			</ThemeProvider>
 		</QueryClientProvider>
 	);
 }
