@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { createFileRoute, Link } from '@tanstack/react-router';
 import { Heart, Truck, RotateCcw, Shield, Minus, Plus } from 'lucide-react';
 import { products } from '../mocks/products';
@@ -16,13 +16,27 @@ function ProductDetailPage() {
   const [selectedSize, setSelectedSize] = useState<string>('');
   const [selectedColor, setSelectedColor] = useState<string>('');
   const [quantity, setQuantity] = useState(1);
+  const [error, setError] = useState<string>('');
 
   const { addItem: addToCart } = useCart();
   const { addItem: addToWishlist, isInWishlist, removeItem: removeFromWishlist } = useWishlist();
 
+  // Reset state when product changes
+  useEffect(() => {
+    setSelectedSize('');
+    setSelectedColor('');
+    setQuantity(1);
+    setError('');
+  }, [id]);
+
   const inWishlist = product ? isInWishlist(product.id) : false;
 
   const relatedProducts = products.filter(p => p.id !== id && p.category === product?.category).slice(0, 4);
+
+  // Check if all required selections are made
+  const isAddToCartDisabled =
+    (product.sizes && product.sizes.length > 0 && !selectedSize) ||
+    (product.colors && product.colors.length > 0 && !selectedColor);
 
   if (!product) {
     return (
@@ -36,6 +50,19 @@ function ProductDetailPage() {
   }
 
   const handleAddToCart = () => {
+    // Validate required selections
+    if (product.sizes && product.sizes.length > 0 && !selectedSize) {
+      setError('Please select a size');
+      return;
+    }
+    if (product.colors && product.colors.length > 0 && !selectedColor) {
+      setError('Please select a color');
+      return;
+    }
+
+    // Clear any previous errors
+    setError('');
+
     addToCart({
       productId: product.id,
       name: product.name,
@@ -201,23 +228,35 @@ function ProductDetailPage() {
             </div>
 
             {/* Action Buttons */}
-            <div className="flex gap-4 mb-8">
-              <button
-                onClick={handleAddToCart}
-                className="flex-1 px-8 py-4 bg-black dark:bg-white text-white dark:text-black rounded-lg font-medium hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors"
-              >
-                Add to Cart
-              </button>
-              <button
-                onClick={handleWishlistToggle}
-                className={`px-6 py-4 rounded-lg border-2 transition-all ${
-                  inWishlist
-                    ? 'border-red-500 bg-red-500 text-white'
-                    : 'border-gray-300 dark:border-gray-700 hover:border-gray-900 dark:hover:border-white'
-                }`}
-              >
-                <Heart className={`w-6 h-6 ${inWishlist ? 'fill-current' : ''}`} />
-              </button>
+            <div className="mb-8">
+              <div className="flex gap-4 mb-2">
+                <button
+                  onClick={handleAddToCart}
+                  disabled={isAddToCartDisabled}
+                  className={`flex-1 px-8 py-4 rounded-lg font-medium transition-colors ${
+                    isAddToCartDisabled
+                      ? 'bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed'
+                      : 'bg-black dark:bg-white text-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-100'
+                  }`}
+                >
+                  Add to Cart
+                </button>
+                <button
+                  onClick={handleWishlistToggle}
+                  className={`px-6 py-4 rounded-lg border-2 transition-all ${
+                    inWishlist
+                      ? 'border-red-500 bg-red-500 text-white'
+                      : 'border-gray-300 dark:border-gray-700 hover:border-gray-900 dark:hover:border-white'
+                  }`}
+                >
+                  <Heart className={`w-6 h-6 ${inWishlist ? 'fill-current' : ''}`} />
+                </button>
+              </div>
+              {error && (
+                <p className="text-sm text-red-600 dark:text-red-400">
+                  {error}
+                </p>
+              )}
             </div>
 
             {/* Product Features */}

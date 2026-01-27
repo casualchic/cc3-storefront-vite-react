@@ -26,7 +26,6 @@ jobs:
 
       - name: Run ESLint
         run: npm run lint
-        continue-on-error: true  # Allow warnings but fail on errors
 
       - name: Build application (includes TypeScript check)
         run: npm run build

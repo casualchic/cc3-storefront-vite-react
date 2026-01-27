@@ -181,7 +181,10 @@ function FAQPage() {
                       className="border border-gray-200 dark:border-gray-800 rounded-lg overflow-hidden"
                     >
                       <button
+                        id={`faq-button-${globalIndex}`}
                         onClick={() => setOpenIndex(isOpen ? null : globalIndex)}
+                        aria-expanded={isOpen}
+                        aria-controls={`faq-panel-${globalIndex}`}
                         className="w-full px-6 py-4 text-left flex items-start justify-between gap-4 hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors"
                       >
                         <span className="font-medium text-gray-900 dark:text-white pr-4">
@@ -194,7 +197,12 @@ function FAQPage() {
                         )}
                       </button>
                       {isOpen && (
-                        <div className="px-6 py-4 bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800">
+                        <div
+                          id={`faq-panel-${globalIndex}`}
+                          role="region"
+                          aria-labelledby={`faq-button-${globalIndex}`}
+                          className="px-6 py-4 bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800"
+                        >
                           <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
                             {item.answer}
                           </p>

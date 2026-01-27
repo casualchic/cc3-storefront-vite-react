@@ -6,7 +6,7 @@ This document provides comprehensive documentation for the Casual Chic Boutique 
 
 ## Project Structure
 
-```
+```text
 src/react-app/
 ├── components/
 │   ├── layout/
@@ -26,7 +26,7 @@ src/react-app/
 │   ├── AboutPage.tsx        # About us page
 │   └── ContactPage.tsx      # Contact form and information
 ├── routes/
-│   └── RootLayout.tsx       # Root layout with header/footer
+│   └── __root.tsx           # Root layout with header/footer
 ├── mocks/
 │   ├── products.ts          # Mock product data
 │   └── categories.ts        # Mock category data
@@ -67,18 +67,26 @@ Manages dark/light mode with localStorage persistence:
 
 ### Routing
 
-Uses React Router v6 with nested routing:
+Uses TanStack Router with file-based routing:
 
 ```tsx
-<Route path="/" element={<RootLayout />}>
-  <Route index element={<HomePage />} />
-  <Route path="collections" element={<CollectionsPage />} />
-  <Route path="category/:slug" element={<CategoryPage />} />
-  <Route path="sale" element={<SalePage />} />
-  <Route path="about" element={<AboutPage />} />
-  <Route path="contact" element={<ContactPage />} />
-</Route>
+// Root route with layout
+createRootRoute({
+  component: RootLayout  // Header/Footer wrapper
+})
+
+// Page routes created from files
+createFileRoute('/')()                    // HomePage
+createFileRoute('/collections')()         // CollectionsPage
+createFileRoute('/collections/under-50')() // Under50Page
+createFileRoute('/category/$slug')()      // CategoryPage (dynamic)
+createFileRoute('/products/$id')()        // ProductDetailPage (dynamic)
+createFileRoute('/sale')()                // SalePage
+createFileRoute('/about')()               // AboutPage
+createFileRoute('/contact')()             // ContactPage
 ```
+
+Route files are automatically discovered from `src/react-app/routes/` and compiled into a route tree.
 
 ## Components
 

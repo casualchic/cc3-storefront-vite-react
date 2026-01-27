@@ -88,7 +88,7 @@ const megaMenuCategories = {
           { name: 'New Arrivals', to: '/collections/new-arrivals' },
           { name: 'Best Sellers', to: '/collections/best-sellers' },
           { name: 'Sale', to: '/sale' },
-          { name: 'Under $150', to: '/collections/under-50' },
+          { name: 'Under $50', to: '/collections/under-50' },
           { name: 'Gift Guide', to: '/collections/gifts' },
           { name: 'Trending Now', to: '/collections/trending' },
         ]
@@ -326,19 +326,19 @@ export function Header() {
           {isMobileMenuOpen && (
             <div className="lg:hidden bg-white dark:bg-gray-900 border-t dark:border-gray-800">
               <div className="py-4 space-y-4">
-                <Link to="/collections" className="block text-gray-900 dark:text-gray-100 hover:text-gray-700 dark:hover:text-gray-300">Collections</Link>
-                <Link to="/sale" className="block text-red-600 hover:text-red-500">Sale</Link>
-                <Link to="/about" className="block text-gray-900 dark:text-gray-100 hover:text-gray-700 dark:hover:text-gray-300">About</Link>
-                <Link to="/contact" className="block text-gray-900 dark:text-gray-100 hover:text-gray-700 dark:hover:text-gray-300">Contact</Link>
+                <Link to="/collections" className="block text-gray-900 dark:text-gray-100 hover:text-gray-700 dark:hover:text-gray-300" onClick={() => setIsMobileMenuOpen(false)}>Collections</Link>
+                <Link to="/sale" className="block text-red-600 hover:text-red-500" onClick={() => setIsMobileMenuOpen(false)}>Sale</Link>
+                <Link to="/about" className="block text-gray-900 dark:text-gray-100 hover:text-gray-700 dark:hover:text-gray-300" onClick={() => setIsMobileMenuOpen(false)}>About</Link>
+                <Link to="/contact" className="block text-gray-900 dark:text-gray-100 hover:text-gray-700 dark:hover:text-gray-300" onClick={() => setIsMobileMenuOpen(false)}>Contact</Link>
 
                 {/* Mobile Categories */}
                 <div className="border-t dark:border-gray-800 pt-4">
                   <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Categories</h4>
                   <div className="space-y-2 pl-4">
-                    <Link to="/category/$slug" params={{ slug: 'dresses' }} className="block text-gray-700 dark:text-gray-300">Dresses</Link>
-                    <Link to="/category/$slug" params={{ slug: 'tops' }} className="block text-gray-700 dark:text-gray-300">Tops</Link>
-                    <Link to="/category/$slug" params={{ slug: 'outerwear' }} className="block text-gray-700 dark:text-gray-300">Outerwear</Link>
-                    <Link to="/category/$slug" params={{ slug: 'accessories' }} className="block text-gray-700 dark:text-gray-300">Accessories</Link>
+                    <Link to="/category/$slug" params={{ slug: 'dresses' }} className="block text-gray-700 dark:text-gray-300" onClick={() => setIsMobileMenuOpen(false)}>Dresses</Link>
+                    <Link to="/category/$slug" params={{ slug: 'tops' }} className="block text-gray-700 dark:text-gray-300" onClick={() => setIsMobileMenuOpen(false)}>Tops</Link>
+                    <Link to="/category/$slug" params={{ slug: 'outerwear' }} className="block text-gray-700 dark:text-gray-300" onClick={() => setIsMobileMenuOpen(false)}>Outerwear</Link>
+                    <Link to="/category/$slug" params={{ slug: 'accessories' }} className="block text-gray-700 dark:text-gray-300" onClick={() => setIsMobileMenuOpen(false)}>Accessories</Link>
                   </div>
                 </div>
               </div>

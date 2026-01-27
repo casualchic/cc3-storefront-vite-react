@@ -4,7 +4,7 @@ import { WishlistItem } from '../types';
 interface WishlistContextType {
   items: WishlistItem[];
   addItem: (item: Omit<WishlistItem, 'id'>) => void;
-  removeItem: (id: string) => void;
+  removeItem: (productId: string) => void;
   isInWishlist: (productId: string) => boolean;
   totalItems: number;
 }
@@ -39,8 +39,8 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
     });
   };
 
-  const removeItem = (id: string) => {
-    setItems(prev => prev.filter(item => item.id !== id));
+  const removeItem = (productId: string) => {
+    setItems(prev => prev.filter(item => item.productId !== productId));
   };
 
   const isInWishlist = (productId: string) => {
