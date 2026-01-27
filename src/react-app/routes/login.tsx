@@ -7,8 +7,28 @@ import { useAuth } from '../context/AuthContext';
 export const Route = createFileRoute('/login')({
 	component: LoginPage,
 	validateSearch: (search: Record<string, unknown>) => {
+		const rawRedirect = search.redirect as string;
+		let sanitizedRedirect = '/account/profile';
+
+		if (rawRedirect) {
+			try {
+				// Try parsing as absolute URL to extract pathname
+				const url = new URL(rawRedirect, window.location.origin);
+				// Only allow same-origin redirects
+				if (url.origin === window.location.origin) {
+					sanitizedRedirect = `${url.pathname}${url.search}${url.hash}`;
+				}
+			} catch {
+				// Not a valid absolute URL, treat as relative path
+				// Only allow paths starting with '/' but not '//' (protocol-relative URLs)
+				if (rawRedirect.startsWith('/') && !rawRedirect.startsWith('//')) {
+					sanitizedRedirect = rawRedirect;
+				}
+			}
+		}
+
 		return {
-			redirect: (search.redirect as string) || '/account/profile',
+			redirect: sanitizedRedirect,
 		};
 	},
 });
@@ -36,7 +56,7 @@ function LoginPage() {
 
 		try {
 			await login({ email, password });
-			// Navigate to redirect destination after successful login
+			// Navigate to sanitized redirect destination after successful login
 			navigate({ to: redirect });
 		} catch (err) {
 			setError(err instanceof Error ? err.message : 'Login failed');

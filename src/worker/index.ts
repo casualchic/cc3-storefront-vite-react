@@ -5,7 +5,12 @@ import { sign, verify } from "hono/jwt";
 const app = new Hono<{ Bindings: Env }>();
 
 // Enable CORS for API requests
-app.use("/api/*", cors());
+app.use(
+	"/api/*",
+	cors({
+		allowHeaders: ["Content-Type", "Authorization"],
+	})
+);
 
 // Mock user database (in production, use a real database)
 const MOCK_USERS = [
