@@ -2,6 +2,9 @@
 	"name": "cc3-storefront-vite-react",
 	"description": "A template for building a React application with Vite, Hono, and Cloudflare Workers",
 	"private": true,
+	"engines": {
+		"node": ">=20.19"
+	},
 	"cloudflare": {
 		"label": "Vite React Template",
 		"products": [
@@ -42,7 +45,7 @@
 	},
 	"scripts": {
 		"build": "vite build",
-		"build:analyze": "npm run build && open dist/stats.html",
+		"build:analyze": "npm run build && node scripts/open-file.js dist/stats.html",
 		"cf-typegen": "wrangler types",
 		"check": "vite build && wrangler deploy --dry-run",
 		"deploy": "wrangler deploy",

@@ -7,7 +7,7 @@ import { Footer } from '../components/layout/Footer';
 
 // Lazy load devtools only in development to exclude from production bundle
 const TanStackRouterDevtools =
-	process.env.NODE_ENV === 'production'
+	import.meta.env.PROD
 		? () => null
 		: lazy(() =>
 				import('@tanstack/router-devtools').then((res) => ({
@@ -23,7 +23,7 @@ export const Route = createRootRoute({
 				<Outlet />
 			</main>
 			<Footer />
-			{process.env.NODE_ENV === 'development' && (
+			{import.meta.env.DEV && (
 				<Suspense fallback={null}>
 					<TanStackRouterDevtools />
 				</Suspense>
