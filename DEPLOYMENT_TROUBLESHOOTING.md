@@ -23,8 +23,8 @@ When Cloudflare builds your Worker, it needs access to the `JWT_SECRET` environm
 ### 3. **Check Build Logs**
 
 Click the "View logs" link in the PR comment to see the detailed error:
-```
-https://dash.cloudflare.com/?to=/b6c2c7eb3eff6bd0829e3effc585d3f2/workers/services/view/cc3-storefront-vite-react/production/builds/32aaa7b9-9b67-491c-b42b-5dd6c3e48146
+```text
+https://dash.cloudflare.com/?to=/<account-id>/workers/services/view/cc3-storefront-vite-react/production/builds/<build-id>
 ```
 
 Common errors:
@@ -101,7 +101,7 @@ After deploying, test the authentication:
 
 ```bash
 # Test login endpoint
-curl -X POST https://cc3-storefront-vite-react.YOUR-SUBDOMAIN.workers.dev/api/auth/login \
+curl -X POST https://cc3-storefront-vite-react.<your-subdomain>.workers.dev/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email":"demo@example.com","password":"demo123"}'
 

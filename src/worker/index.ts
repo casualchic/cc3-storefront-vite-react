@@ -138,9 +138,21 @@ app.get("/api/customer/profile", async (c) => {
 	}
 });
 
-// Logout endpoint (for future use)
+// Logout endpoint
 app.post("/api/auth/logout", async (c) => {
-	// In a real app, you would invalidate the token here
+	// SECURITY LIMITATION: JWT tokens remain valid until expiration (7 days)
+	// even after logout. The client removes the token from localStorage,
+	// but the token itself is not invalidated server-side.
+	//
+	// For production, implement one of these solutions:
+	// 1. Token Blacklist with KV: Store logged-out tokens in Cloudflare KV
+	//    and check against blacklist in verifyToken()
+	// 2. Shorter Expiration: Reduce JWT_EXPIRATION to 1-2 hours and
+	//    implement refresh tokens with longer expiration
+	// 3. Token Versioning: Add version field to user records, increment
+	//    on logout, and verify version matches in verifyToken()
+	//
+	// Current behavior: Client-side logout only (removes token from browser)
 	return c.json({ message: "Logged out successfully" });
 });
 

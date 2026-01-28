@@ -5,53 +5,28 @@ import { products } from '../mocks/products';
 import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
 import { ProductCard } from '../components/ProductCard';
+import { Product } from '../types';
 
 export const Route = createFileRoute('/products/$id')({
   component: ProductDetailPage,
 });
 
-function ProductDetailPage() {
-  const { id } = Route.useParams();
-  const product = products.find(p => p.id === id);
-
-  // Track which product ID this state belongs to, reset when ID changes
-  const [stateProductId, setStateProductId] = useState(id);
+// Product form component that remounts when product ID changes via key prop
+function ProductForm({ product }: { product: Product }) {
   const [selectedSize, setSelectedSize] = useState<string>('');
   const [selectedColor, setSelectedColor] = useState<string>('');
   const [quantity, setQuantity] = useState(1);
   const [error, setError] = useState<string>('');
 
-  // Reset state when navigating to a different product (using render-time check)
-  if (stateProductId !== id) {
-    setStateProductId(id);
-    setSelectedSize('');
-    setSelectedColor('');
-    setQuantity(1);
-    setError('');
-  }
-
   const { addItem: addToCart } = useCart();
   const { addItem: addToWishlist, isInWishlist, removeItem: removeFromWishlist } = useWishlist();
 
-  const inWishlist = product ? isInWishlist(product.id) : false;
-
-  const relatedProducts = products.filter(p => p.id !== id && p.category === product?.category).slice(0, 4);
+  const inWishlist = isInWishlist(product.id);
 
   // Check if all required selections are made
   const isAddToCartDisabled =
     (product.sizes && product.sizes.length > 0 && !selectedSize) ||
     (product.colors && product.colors.length > 0 && !selectedColor);
-
-  if (!product) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Product not found</h1>
-          <Link to="/" className="text-brand-dusty-rose hover:underline">Return to home</Link>
-        </div>
-      </div>
-    );
-  }
 
   const handleAddToCart = () => {
     // Validate required selections
@@ -92,7 +67,7 @@ function ProductDetailPage() {
   };
 
   return (
-    <div className="min-h-screen">
+    <>
       {/* Breadcrumbs */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
@@ -280,23 +255,48 @@ function ProductDetailPage() {
             </div>
           </div>
         </div>
-
-        {/* Related Products */}
-        {relatedProducts.length > 0 && (
-          <div className="mt-16">
-            <h2 className="text-3xl font-heading font-bold text-gray-900 dark:text-white mb-8">You May Also Like</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {relatedProducts.map((relatedProduct) => (
-                <ProductCard
-                  key={relatedProduct.id}
-                  product={relatedProduct}
-                  badge={relatedProduct.originalPrice ? { text: 'SALE', color: 'bg-red-600' } : undefined}
-                />
-              ))}
-            </div>
-          </div>
-        )}
       </div>
+    </>
+  );
+}
+
+function ProductDetailPage() {
+  const { id } = Route.useParams();
+  const product = products.find(p => p.id === id);
+
+  const relatedProducts = products.filter(p => p.id !== id && p.category === product?.category).slice(0, 4);
+
+  if (!product) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Product not found</h1>
+          <Link to="/" className="text-brand-dusty-rose hover:underline">Return to home</Link>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen">
+      {/* Key forces remount when product ID changes, resetting all state */}
+      <ProductForm key={id} product={product} />
+
+      {/* Related Products */}
+      {relatedProducts.length > 0 && (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16 pb-8">
+          <h2 className="text-3xl font-heading font-bold text-gray-900 dark:text-white mb-8">You May Also Like</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {relatedProducts.map((relatedProduct) => (
+              <ProductCard
+                key={relatedProduct.id}
+                product={relatedProduct}
+                badge={relatedProduct.originalPrice ? { text: 'SALE', color: 'bg-red-600' } : undefined}
+              />
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
