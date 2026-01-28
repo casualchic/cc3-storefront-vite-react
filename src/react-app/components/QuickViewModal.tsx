@@ -21,15 +21,6 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
 
   const inWishlist = product ? isInWishlist(product.id) : false;
 
-  // Reset state when modal opens with new product
-  useEffect(() => {
-    if (isOpen && product) {
-      setSelectedSize('');
-      setSelectedColor('');
-      setQuantity(1);
-    }
-  }, [isOpen, product]);
-
   // Close on Escape key
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {

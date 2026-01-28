@@ -135,8 +135,9 @@ export function ProductCard({ product, badge }: ProductCardProps) {
         </div>
       </Link>
 
-      {/* Quick View Modal */}
+      {/* Quick View Modal - key prop resets state when product changes */}
       <QuickViewModal
+        key={product.id}
         product={product}
         isOpen={showQuickView}
         onClose={() => setShowQuickView(false)}

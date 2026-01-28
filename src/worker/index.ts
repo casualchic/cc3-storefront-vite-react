@@ -27,7 +27,7 @@ const MOCK_USERS = [
 const JWT_EXPIRATION = 60 * 60 * 24 * 7; // 7 days in seconds
 
 // Helper to get JWT secret from environment
-function getJwtSecret(c: any): string {
+function getJwtSecret(c: { env?: { JWT_SECRET?: string } }): string {
 	const secret = c.env?.JWT_SECRET;
 	if (!secret) {
 		throw new Error("JWT_SECRET environment variable is not configured");
@@ -60,7 +60,7 @@ app.get("/api/", (c) => c.json({ name: "Cloudflare" }));
 
 // Login endpoint
 app.post("/api/auth/login", async (c) => {
-	let body: any;
+	let body: { email?: unknown; password?: unknown };
 
 	// Parse and validate request body
 	try {
@@ -90,7 +90,8 @@ app.post("/api/auth/login", async (c) => {
 		const token = await generateToken(user.id, secret);
 
 		// Return user data (without password) and token
-		const { password: _, ...userWithoutPassword } = user;
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		const { password: _password, ...userWithoutPassword } = user;
 
 		return c.json({
 			user: userWithoutPassword,
@@ -128,10 +129,11 @@ app.get("/api/customer/profile", async (c) => {
 			return c.json({ message: "User not found" }, 404);
 		}
 
-		const { password: _, ...userWithoutPassword } = user;
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		const { password: _password, ...userWithoutPassword } = user;
 
 		return c.json(userWithoutPassword);
-	} catch (error) {
+	} catch {
 		return c.json({ message: "Failed to fetch profile" }, 500);
 	}
 });

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { createFileRoute, Link } from '@tanstack/react-router';
 import { Heart, Truck, RotateCcw, Shield, Minus, Plus } from 'lucide-react';
 import { products } from '../mocks/products';
@@ -13,21 +13,25 @@ export const Route = createFileRoute('/products/$id')({
 function ProductDetailPage() {
   const { id } = Route.useParams();
   const product = products.find(p => p.id === id);
+
+  // Track which product ID this state belongs to, reset when ID changes
+  const [stateProductId, setStateProductId] = useState(id);
   const [selectedSize, setSelectedSize] = useState<string>('');
   const [selectedColor, setSelectedColor] = useState<string>('');
   const [quantity, setQuantity] = useState(1);
   const [error, setError] = useState<string>('');
 
-  const { addItem: addToCart } = useCart();
-  const { addItem: addToWishlist, isInWishlist, removeItem: removeFromWishlist } = useWishlist();
-
-  // Reset state when product changes
-  useEffect(() => {
+  // Reset state when navigating to a different product (using render-time check)
+  if (stateProductId !== id) {
+    setStateProductId(id);
     setSelectedSize('');
     setSelectedColor('');
     setQuantity(1);
     setError('');
-  }, [id]);
+  }
+
+  const { addItem: addToCart } = useCart();
+  const { addItem: addToWishlist, isInWishlist, removeItem: removeFromWishlist } = useWishlist();
 
   const inWishlist = product ? isInWishlist(product.id) : false;
 
