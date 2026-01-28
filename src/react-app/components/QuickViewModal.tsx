@@ -82,7 +82,7 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs"
       onClick={handleBackdropClick}
     >
       {/* Modal Container */}
@@ -98,7 +98,7 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-6 md:p-8">
           {/* Product Image */}
-          <div className="aspect-[4/5] bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
+          <div className="aspect-4/5 bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
             <img
               src={product.image}
               alt={product.name}
@@ -134,7 +134,7 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
                   <span className="text-lg text-gray-500 dark:text-gray-400 line-through">
                     ${product.originalPrice}
                   </span>
-                  <span className="px-2 py-1 bg-red-100 dark:bg-red-900 text-red-600 dark:text-red-300 text-xs font-semibold rounded">
+                  <span className="px-2 py-1 bg-red-100 dark:bg-red-900 text-red-600 dark:text-red-300 text-xs font-semibold rounded-sm">
                     {Math.round((1 - product.price / product.originalPrice) * 100)}% OFF
                   </span>
                 </>

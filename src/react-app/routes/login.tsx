@@ -71,12 +71,12 @@ function LoginPage() {
 				<h1 className="text-3xl font-bold text-gray-900 mb-6">Login</h1>
 
 				{error && (
-					<div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-4">
+					<div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-sm mb-4">
 						{error}
 					</div>
 				)}
 
-				<div className="bg-blue-50 border border-blue-200 text-blue-700 px-4 py-3 rounded mb-4 text-sm">
+				<div className="bg-blue-50 border border-blue-200 text-blue-700 px-4 py-3 rounded-sm mb-4 text-sm">
 					<p className="font-semibold">Demo Credentials:</p>
 					<p>Email: demo@example.com</p>
 					<p>Password: demo123</p>
@@ -93,7 +93,7 @@ function LoginPage() {
 							value={email}
 							onChange={(e) => setEmail(e.target.value)}
 							required
-							className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+							className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-hidden focus:ring-2 focus:ring-blue-500"
 						/>
 					</div>
 
@@ -107,7 +107,7 @@ function LoginPage() {
 							value={password}
 							onChange={(e) => setPassword(e.target.value)}
 							required
-							className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+							className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-hidden focus:ring-2 focus:ring-blue-500"
 						/>
 					</div>
 

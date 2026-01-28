@@ -1,8 +1,44 @@
-@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&display=swap')
+layer(base);
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@source '../**/*.{js,ts,jsx,tsx}';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --font-heading: Libre Baskerville, Georgia, Times New Roman, serif;
+  --font-body: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif;
+
+  --color-brand-cream: #efe9e5;
+  --color-brand-light-beige: #e2d6d1;
+  --color-brand-taupe: #b6a59d;
+  --color-brand-dusty-rose: #cc8b81;
+  --color-brand-taupe-brown: #a18d84;
+  --color-brand-sage: #a6af99;
+  --color-brand-mustard: #d2c76c;
+  --color-brand-soft-blue: #94a9c9;
+  --color-brand-olive: #8e9b8d;
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
 
 :root {
   /* Casual Chic Brand Colors */

@@ -154,7 +154,7 @@ export function Header() {
           {/* Main Header */}
           <div className="flex items-center justify-between h-24">
             {/* Logo */}
-            <div className="flex-shrink-0">
+            <div className="shrink-0">
               <Link to="/" className="block">
                 <img
                   src="/images/logo-dark.png"
@@ -371,10 +371,10 @@ export function Header() {
                   {/* New Arrivals Featured */}
                   <Link
                     to="/collections/new-arrivals"
-                    className="group relative overflow-hidden rounded-lg bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 p-6 flex flex-col justify-end h-full min-h-[180px] transition-transform duration-300 hover:scale-[1.02]"
+                    className="group relative overflow-hidden rounded-lg bg-linear-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 p-6 flex flex-col justify-end h-full min-h-[180px] transition-transform duration-300 hover:scale-[1.02]"
                     onClick={() => setActiveMegaMenu(null)}
                   >
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+                    <div className="absolute inset-0 bg-linear-to-t from-black/40 to-transparent"></div>
                     <div className="relative z-10">
                       <p className="text-xs font-semibold text-white/80 mb-1 uppercase tracking-wider">Just In</p>
                       <h4 className="text-lg font-bold text-white mb-1">New Arrivals</h4>
@@ -385,10 +385,10 @@ export function Header() {
                   {/* Sale Featured */}
                   <Link
                     to="/sale"
-                    className="group relative overflow-hidden rounded-lg bg-gradient-to-br from-red-50 to-red-100 dark:from-red-950 dark:to-red-900 p-6 flex flex-col justify-end h-full min-h-[180px] transition-transform duration-300 hover:scale-[1.02]"
+                    className="group relative overflow-hidden rounded-lg bg-linear-to-br from-red-50 to-red-100 dark:from-red-950 dark:to-red-900 p-6 flex flex-col justify-end h-full min-h-[180px] transition-transform duration-300 hover:scale-[1.02]"
                     onClick={() => setActiveMegaMenu(null)}
                   >
-                    <div className="absolute inset-0 bg-gradient-to-t from-red-600/40 to-transparent"></div>
+                    <div className="absolute inset-0 bg-linear-to-t from-red-600/40 to-transparent"></div>
                     <div className="relative z-10">
                       <p className="text-xs font-semibold text-red-900 dark:text-red-200 mb-1 uppercase tracking-wider">Limited Time</p>
                       <h4 className="text-lg font-bold text-red-900 dark:text-white mb-1">Sale</h4>
@@ -420,7 +420,7 @@ export function Header() {
                 <input
                   type="text"
                   placeholder="Search for products..."
-                  className="flex-1 outline-none text-gray-900 dark:text-white bg-transparent"
+                  className="flex-1 outline-hidden text-gray-900 dark:text-white bg-transparent"
                   autoFocus
                 />
                 <button

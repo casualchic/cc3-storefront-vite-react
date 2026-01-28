@@ -51,7 +51,7 @@ export function ProductCard({ product, badge }: ProductCardProps) {
         onMouseLeave={() => setIsHovered(false)}
       >
         {/* Product Image Container */}
-        <div className="relative overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800 aspect-[4/5] mb-3 transition-transform duration-300 ease-out group-hover:scale-[1.02]">
+        <div className="relative overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800 aspect-4/5 mb-3 transition-transform duration-300 ease-out group-hover:scale-[1.02]">
           <img
             src={product.image}
             alt={product.name}
@@ -61,7 +61,7 @@ export function ProductCard({ product, badge }: ProductCardProps) {
 
           {/* Badge (SALE, NEW, etc.) */}
           {badge && (
-            <div className={`absolute top-3 left-3 ${badge.color} text-white px-3 py-1 text-xs font-bold rounded shadow-lg z-10`}>
+            <div className={`absolute top-3 left-3 ${badge.color} text-white px-3 py-1 text-xs font-bold rounded-sm shadow-lg z-10`}>
               {badge.text}
             </div>
           )}

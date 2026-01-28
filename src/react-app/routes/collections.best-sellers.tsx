@@ -31,14 +31,14 @@ function BestSellersPage() {
               params={{ id: product.id }}
               className="group"
             >
-              <div className="relative overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800 aspect-[4/5] mb-3 transition-transform duration-300 ease-out group-hover:scale-[1.02]">
+              <div className="relative overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800 aspect-4/5 mb-3 transition-transform duration-300 ease-out group-hover:scale-[1.02]">
                 <img
                   src={product.image}
                   alt={product.name}
                   className="absolute inset-0 w-full h-full object-cover group-hover:opacity-90 transition-opacity duration-300"
                   loading="lazy"
                 />
-                <div className="absolute top-3 left-3 bg-amber-500 text-white px-3 py-1 text-xs font-bold rounded shadow-lg z-10">
+                <div className="absolute top-3 left-3 bg-amber-500 text-white px-3 py-1 text-xs font-bold rounded-sm shadow-lg z-10">
                   BESTSELLER
                 </div>
               </div>

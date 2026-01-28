@@ -41,8 +41,8 @@ function AccountLayout() {
 		<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 			<div className="flex flex-col md:flex-row gap-8">
 				{/* Sidebar */}
-				<aside className="md:w-64 flex-shrink-0">
-					<div className="bg-white rounded-lg shadow-sm p-6">
+				<aside className="md:w-64 shrink-0">
+					<div className="bg-white rounded-lg shadow-xs p-6">
 						<div className="mb-6">
 							<h2 className="text-lg font-semibold text-gray-900 mb-1">
 								Welcome back, {user.firstName}!
@@ -82,7 +82,7 @@ function AccountLayout() {
 				</aside>
 
 				{/* Main Content */}
-				<main className="flex-1 bg-white rounded-lg shadow-sm p-6">
+				<main className="flex-1 bg-white rounded-lg shadow-xs p-6">
 					<Outlet />
 				</main>
 			</div>

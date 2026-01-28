@@ -109,7 +109,7 @@ function ProductDetailPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Product Images */}
           <div className="space-y-4">
-            <div className="aspect-[4/5] bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
+            <div className="aspect-4/5 bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
               <img
                 src={product.image}
                 alt={product.name}
@@ -144,7 +144,7 @@ function ProductDetailPage() {
                   <span className="text-xl text-gray-500 dark:text-gray-400 line-through">
                     ${product.originalPrice}
                   </span>
-                  <span className="px-3 py-1 bg-red-100 dark:bg-red-900 text-red-600 dark:text-red-300 text-sm font-semibold rounded">
+                  <span className="px-3 py-1 bg-red-100 dark:bg-red-900 text-red-600 dark:text-red-300 text-sm font-semibold rounded-sm">
                     {Math.round((1 - product.price / product.originalPrice) * 100)}% OFF
                   </span>
                 </>

@@ -156,7 +156,7 @@ export function Footer() {
         {/* Newsletter Section */}
         <div className="pt-8 border-t border-gray-200 dark:border-gray-800">
           <div className="max-w-2xl mx-auto">
-            <div className="bg-white dark:bg-gray-900 rounded-2xl p-8 shadow-sm border border-gray-200 dark:border-gray-800">
+            <div className="bg-white dark:bg-gray-900 rounded-2xl p-8 shadow-xs border border-gray-200 dark:border-gray-800">
               <div className="text-center mb-6">
                 <h3 className="text-2xl font-bold text-black dark:text-white mb-2">Join Our Style Community</h3>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
@@ -169,7 +169,7 @@ export function Footer() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email address"
-                  className="flex-1 px-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
+                  className="flex-1 px-4 py-3 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-hidden focus:ring-2 focus:ring-black dark:focus:ring-white bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
                   required
                 />
                 <button
@@ -207,16 +207,16 @@ export function Footer() {
               <div className="flex items-center gap-4">
                 {/* Payment Icons */}
                 <div className="flex items-center gap-2 text-gray-400">
-                  <div className="w-10 h-7 bg-gray-200 dark:bg-gray-800 rounded flex items-center justify-center text-xs font-semibold">
+                  <div className="w-10 h-7 bg-gray-200 dark:bg-gray-800 rounded-sm flex items-center justify-center text-xs font-semibold">
                     VISA
                   </div>
-                  <div className="w-10 h-7 bg-gray-200 dark:bg-gray-800 rounded flex items-center justify-center text-xs font-semibold">
+                  <div className="w-10 h-7 bg-gray-200 dark:bg-gray-800 rounded-sm flex items-center justify-center text-xs font-semibold">
                     MC
                   </div>
-                  <div className="w-10 h-7 bg-gray-200 dark:bg-gray-800 rounded flex items-center justify-center text-xs font-semibold">
+                  <div className="w-10 h-7 bg-gray-200 dark:bg-gray-800 rounded-sm flex items-center justify-center text-xs font-semibold">
                     AMEX
                   </div>
-                  <div className="w-10 h-7 bg-gray-200 dark:bg-gray-800 rounded flex items-center justify-center text-xs font-semibold">
+                  <div className="w-10 h-7 bg-gray-200 dark:bg-gray-800 rounded-sm flex items-center justify-center text-xs font-semibold">
                     PAY
                   </div>
                 </div>

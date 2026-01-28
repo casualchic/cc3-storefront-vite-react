@@ -21,21 +21,21 @@ function ReturnsPage() {
 
         {/* Key Features */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-          <div className="bg-gradient-to-br from-brand-light-beige/30 to-brand-cream dark:from-gray-800 dark:to-gray-900 rounded-xl p-6 text-center">
+          <div className="bg-linear-to-br from-brand-light-beige/30 to-brand-cream dark:from-gray-800 dark:to-gray-900 rounded-xl p-6 text-center">
             <div className="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-4">
               <RotateCcw className="w-6 h-6 text-green-600 dark:text-green-400" />
             </div>
             <h3 className="font-bold text-gray-900 dark:text-white mb-2">30-Day Returns</h3>
             <p className="text-sm text-gray-600 dark:text-gray-400">Free & easy returns</p>
           </div>
-          <div className="bg-gradient-to-br from-brand-light-beige/30 to-brand-cream dark:from-gray-800 dark:to-gray-900 rounded-xl p-6 text-center">
+          <div className="bg-linear-to-br from-brand-light-beige/30 to-brand-cream dark:from-gray-800 dark:to-gray-900 rounded-xl p-6 text-center">
             <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mx-auto mb-4">
               <Package className="w-6 h-6 text-blue-600 dark:text-blue-400" />
             </div>
             <h3 className="font-bold text-gray-900 dark:text-white mb-2">Free Return Shipping</h3>
             <p className="text-sm text-gray-600 dark:text-gray-400">Prepaid labels included</p>
           </div>
-          <div className="bg-gradient-to-br from-brand-light-beige/30 to-brand-cream dark:from-gray-800 dark:to-gray-900 rounded-xl p-6 text-center">
+          <div className="bg-linear-to-br from-brand-light-beige/30 to-brand-cream dark:from-gray-800 dark:to-gray-900 rounded-xl p-6 text-center">
             <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center mx-auto mb-4">
               <Check className="w-6 h-6 text-purple-600 dark:text-purple-400" />
             </div>
@@ -50,23 +50,23 @@ function ReturnsPage() {
           <div className="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg p-6">
             <ul className="space-y-3 text-gray-600 dark:text-gray-400">
               <li className="flex items-start gap-3">
-                <Check className="w-5 h-5 text-green-600 dark:text-green-400 mt-1 flex-shrink-0" />
+                <Check className="w-5 h-5 text-green-600 dark:text-green-400 mt-1 shrink-0" />
                 <span>Returns accepted within <strong>30 days</strong> of delivery</span>
               </li>
               <li className="flex items-start gap-3">
-                <Check className="w-5 h-5 text-green-600 dark:text-green-400 mt-1 flex-shrink-0" />
+                <Check className="w-5 h-5 text-green-600 dark:text-green-400 mt-1 shrink-0" />
                 <span>Items must be unworn, unwashed, and in original condition with tags attached</span>
               </li>
               <li className="flex items-start gap-3">
-                <Check className="w-5 h-5 text-green-600 dark:text-green-400 mt-1 flex-shrink-0" />
+                <Check className="w-5 h-5 text-green-600 dark:text-green-400 mt-1 shrink-0" />
                 <span>Free return shipping with prepaid labels (US only)</span>
               </li>
               <li className="flex items-start gap-3">
-                <Check className="w-5 h-5 text-green-600 dark:text-green-400 mt-1 flex-shrink-0" />
+                <Check className="w-5 h-5 text-green-600 dark:text-green-400 mt-1 shrink-0" />
                 <span>Refunds processed within 5-7 business days of receipt</span>
               </li>
               <li className="flex items-start gap-3">
-                <Check className="w-5 h-5 text-green-600 dark:text-green-400 mt-1 flex-shrink-0" />
+                <Check className="w-5 h-5 text-green-600 dark:text-green-400 mt-1 shrink-0" />
                 <span>Sale and clearance items are eligible for returns</span>
               </li>
             </ul>
@@ -79,23 +79,23 @@ function ReturnsPage() {
           <div className="bg-red-50 dark:bg-red-900/10 border border-red-200 dark:border-red-800 rounded-lg p-6">
             <ul className="space-y-3 text-gray-600 dark:text-gray-400">
               <li className="flex items-start gap-3">
-                <X className="w-5 h-5 text-red-600 dark:text-red-400 mt-1 flex-shrink-0" />
+                <X className="w-5 h-5 text-red-600 dark:text-red-400 mt-1 shrink-0" />
                 <span>Items without original tags or packaging</span>
               </li>
               <li className="flex items-start gap-3">
-                <X className="w-5 h-5 text-red-600 dark:text-red-400 mt-1 flex-shrink-0" />
+                <X className="w-5 h-5 text-red-600 dark:text-red-400 mt-1 shrink-0" />
                 <span>Worn, washed, or altered items</span>
               </li>
               <li className="flex items-start gap-3">
-                <X className="w-5 h-5 text-red-600 dark:text-red-400 mt-1 flex-shrink-0" />
+                <X className="w-5 h-5 text-red-600 dark:text-red-400 mt-1 shrink-0" />
                 <span>Intimates, swimwear, and earrings (for hygiene reasons)</span>
               </li>
               <li className="flex items-start gap-3">
-                <X className="w-5 h-5 text-red-600 dark:text-red-400 mt-1 flex-shrink-0" />
+                <X className="w-5 h-5 text-red-600 dark:text-red-400 mt-1 shrink-0" />
                 <span>Final sale items (clearly marked on product pages)</span>
               </li>
               <li className="flex items-start gap-3">
-                <X className="w-5 h-5 text-red-600 dark:text-red-400 mt-1 flex-shrink-0" />
+                <X className="w-5 h-5 text-red-600 dark:text-red-400 mt-1 shrink-0" />
                 <span>Gift cards and digital products</span>
               </li>
             </ul>
@@ -108,7 +108,7 @@ function ReturnsPage() {
           <div className="space-y-6">
             {/* Step 1 */}
             <div className="flex items-start gap-4">
-              <div className="w-10 h-10 bg-brand-dusty-rose rounded-full flex items-center justify-center flex-shrink-0 text-white font-bold">
+              <div className="w-10 h-10 bg-brand-dusty-rose rounded-full flex items-center justify-center shrink-0 text-white font-bold">
                 1
               </div>
               <div>
@@ -121,7 +121,7 @@ function ReturnsPage() {
 
             {/* Step 2 */}
             <div className="flex items-start gap-4">
-              <div className="w-10 h-10 bg-brand-dusty-rose rounded-full flex items-center justify-center flex-shrink-0 text-white font-bold">
+              <div className="w-10 h-10 bg-brand-dusty-rose rounded-full flex items-center justify-center shrink-0 text-white font-bold">
                 2
               </div>
               <div>
@@ -134,7 +134,7 @@ function ReturnsPage() {
 
             {/* Step 3 */}
             <div className="flex items-start gap-4">
-              <div className="w-10 h-10 bg-brand-dusty-rose rounded-full flex items-center justify-center flex-shrink-0 text-white font-bold">
+              <div className="w-10 h-10 bg-brand-dusty-rose rounded-full flex items-center justify-center shrink-0 text-white font-bold">
                 3
               </div>
               <div>
@@ -147,7 +147,7 @@ function ReturnsPage() {
 
             {/* Step 4 */}
             <div className="flex items-start gap-4">
-              <div className="w-10 h-10 bg-brand-dusty-rose rounded-full flex items-center justify-center flex-shrink-0 text-white font-bold">
+              <div className="w-10 h-10 bg-brand-dusty-rose rounded-full flex items-center justify-center shrink-0 text-white font-bold">
                 4
               </div>
               <div>
@@ -163,7 +163,7 @@ function ReturnsPage() {
         {/* Exchanges */}
         <section className="mb-12">
           <h2 className="text-2xl font-heading font-bold text-gray-900 dark:text-white mb-6">Exchanges</h2>
-          <div className="bg-gradient-to-br from-brand-light-beige/30 to-brand-cream dark:from-gray-800 dark:to-gray-900 rounded-lg p-6">
+          <div className="bg-linear-to-br from-brand-light-beige/30 to-brand-cream dark:from-gray-800 dark:to-gray-900 rounded-lg p-6">
             <p className="text-gray-600 dark:text-gray-400 mb-4">
               Need a different size or color? We\'ve got you covered! When starting your return, select "Exchange" and choose your preferred option.
             </p>
@@ -241,7 +241,7 @@ function ReturnsPage() {
         </section>
 
         {/* Contact CTA */}
-        <div className="text-center bg-gradient-to-br from-brand-light-beige/30 to-brand-cream dark:from-gray-800 dark:to-gray-900 rounded-2xl p-8">
+        <div className="text-center bg-linear-to-br from-brand-light-beige/30 to-brand-cream dark:from-gray-800 dark:to-gray-900 rounded-2xl p-8">
           <div className="w-16 h-16 bg-brand-dusty-rose/20 rounded-full flex items-center justify-center mx-auto mb-4">
             <Mail className="w-8 h-8 text-brand-dusty-rose" />
           </div>

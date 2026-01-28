@@ -47,7 +47,7 @@ function AddressesPage() {
 							<div className="flex justify-between items-start mb-2">
 								<h3 className="font-semibold text-gray-900">{address.label}</h3>
 								{address.isDefault && (
-									<span className="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded">
+									<span className="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-sm">
 										Default
 									</span>
 								)}
