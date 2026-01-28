@@ -24,7 +24,7 @@
 		"tailwindcss": "^3.4.19"
 	},
 	"devDependencies": {
-		"@cloudflare/vite-plugin": "1.7.5",
+		"@cloudflare/vite-plugin": "^1.22.0",
 		"@eslint/js": "9.29.0",
 		"@tanstack/router-plugin": "^1.157.16",
 		"@types/node": "24.0.4",
