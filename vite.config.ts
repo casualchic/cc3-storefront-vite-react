@@ -11,6 +11,9 @@ export default defineConfig({
 			generatedRouteTree: './src/react-app/routeTree.gen.ts',
 		}),
 		react(),
-		cloudflare(),
+		cloudflare({
+			// Exclude .dev.vars from being copied to dist
+			persistState: false,
+		}),
 	],
 });
