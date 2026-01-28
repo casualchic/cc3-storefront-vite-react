@@ -1,9 +1,19 @@
 // src/react-app/routes/__root.tsx
 
 import { createRootRoute, Outlet } from '@tanstack/react-router';
-import { TanStackRouterDevtools } from '@tanstack/router-devtools';
+import { lazy, Suspense } from 'react';
 import { Header } from '../components/layout/Header';
 import { Footer } from '../components/layout/Footer';
+
+// Lazy load devtools only in development to exclude from production bundle
+const TanStackRouterDevtools =
+	process.env.NODE_ENV === 'production'
+		? () => null
+		: lazy(() =>
+				import('@tanstack/router-devtools').then((res) => ({
+					default: res.TanStackRouterDevtools,
+				}))
+			);
 
 export const Route = createRootRoute({
 	component: () => (
@@ -13,7 +23,11 @@ export const Route = createRootRoute({
 				<Outlet />
 			</main>
 			<Footer />
-			{process.env.NODE_ENV === 'development' && <TanStackRouterDevtools />}
+			{process.env.NODE_ENV === 'development' && (
+				<Suspense fallback={null}>
+					<TanStackRouterDevtools />
+				</Suspense>
+			)}
 		</div>
 	),
 });
