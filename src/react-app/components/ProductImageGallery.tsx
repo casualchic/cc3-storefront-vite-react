@@ -63,8 +63,8 @@ export function ProductImageGallery(props: ProductImageGalleryAllProps) {
 
   const { isSwiping, swipeOffset } = useSwipeGestures(
     containerRef,
-    handleSwipeLeft,
-    handleSwipeRight
+    enableSwipe ? handleSwipeLeft : () => {},
+    enableSwipe ? handleSwipeRight : () => {}
   );
 
   const handleThumbnailClick = (index: number) => {
