@@ -19,6 +19,34 @@ interface ProductCardProps {
   };
 }
 
+function getStockStatusConfig(product: Product): {
+  badge: { text: string; className: string } | null;
+  showQuickAdd: boolean;
+} {
+  const stockStatus = product.stockStatus || (product.inStock ? 'in-stock' : 'out-of-stock');
+
+  switch (stockStatus) {
+    case 'out-of-stock':
+      return {
+        badge: { text: 'Out of Stock', className: 'bg-gray-500' },
+        showQuickAdd: false,
+      };
+    case 'low-stock':
+      return {
+        badge: { text: 'Low Stock', className: 'bg-amber-500' },
+        showQuickAdd: true,
+      };
+    case 'in-stock':
+    default:
+      return {
+        badge: product.stockCount && product.stockCount > 100
+          ? { text: 'In Stock', className: 'bg-green-500' }
+          : null,
+        showQuickAdd: true,
+      };
+  }
+}
+
 export function ProductCard({ product, badge }: ProductCardProps) {
   const { addItem, removeItem, isInWishlist } = useWishlist();
   const [isHovered, setIsHovered] = useState(false);
