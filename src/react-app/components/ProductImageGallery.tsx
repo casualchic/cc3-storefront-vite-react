@@ -80,24 +80,80 @@ export function ProductImageGallery(props: ProductImageGalleryAllProps) {
   };
 
   return (
-    <div className="space-y-4" ref={containerRef}>
-      {/* Main Image */}
-      <div className="relative aspect-[4/5] bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden group" ref={mainImageRef}>
-        <img
-          src={displayMedia[selectedMediaIndex].url}
-          alt={displayMedia[selectedMediaIndex].alt || `${productName} - Image ${selectedMediaIndex + 1}`}
-          className="w-full h-full object-cover"
-          loading="eager"
-        />
+    <div className="space-y-4">
+      {/* Video Schema for SEO */}
+      {currentMedia.type === 'video' && currentMedia.schema && (
+        <VideoSchema schema={currentMedia.schema} />
+      )}
 
-        {/* Zoom Button */}
-        <button
-          onClick={handleZoomOpen}
-          className="absolute top-4 right-4 p-2 bg-white dark:bg-gray-900 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-gray-100 dark:hover:bg-gray-800"
-          aria-label="Zoom image"
-        >
-          <ZoomIn className="w-5 h-5 text-gray-900 dark:text-white" />
-        </button>
+      {/* Main Media */}
+      <div
+        ref={containerRef}
+        className="relative aspect-[4/5] bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden group touch-pan-y"
+        style={{
+          transform: isSwiping ? `translateX(${swipeOffset}px)` : undefined,
+          transition: isSwiping ? 'none' : 'transform 300ms ease-out',
+        }}
+      >
+        {currentMedia.type === 'image' ? (
+          <div className="relative w-full h-full">
+            <OptimizedImage
+              ref={mainImageRef as any}
+              src={currentMedia.url}
+              alt={currentMedia.alt || `${productName} - Image ${selectedMediaIndex + 1}`}
+              sizes="(min-width: 1024px) 600px, 100vw"
+              loading="eager"
+              className={`w-full h-full object-cover transition-transform duration-150 ${
+                isZooming ? 'cursor-zoom-in' : ''
+              }`}
+              style={isZooming ? zoomStyle : undefined}
+            />
+
+            {/* Hover zoom hint */}
+            {isZooming && (
+              <div className="absolute top-4 left-4 px-3 py-1 bg-black/70 text-white text-sm rounded-full animate-fade-in">
+                Click to open fullscreen
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className="relative w-full h-full">
+            <img
+              src={currentMedia.thumbnailUrl || currentMedia.poster || currentMedia.url}
+              alt={currentMedia.alt || `${productName} - Video ${selectedMediaIndex + 1}`}
+              className="w-full h-full object-cover"
+            />
+
+            {/* Play icon overlay */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <button
+                onClick={handleZoomOpen}
+                className="p-4 bg-white/90 dark:bg-gray-900/90 rounded-full shadow-lg hover:bg-white dark:hover:bg-gray-900 transition-all hover:scale-110"
+                aria-label="Play video"
+              >
+                <Play className="w-8 h-8 text-gray-900 dark:text-white" fill="currentColor" />
+              </button>
+            </div>
+
+            {/* Duration badge */}
+            {currentMedia.duration && (
+              <div className="absolute bottom-4 left-4 px-2 py-1 bg-black/70 text-white text-sm rounded">
+                {formatDurationDisplay(currentMedia.duration)}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Zoom Button (images only) */}
+        {currentMedia.type === 'image' && (
+          <button
+            onClick={handleZoomOpen}
+            className="absolute top-4 right-4 p-2 bg-white dark:bg-gray-900 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-gray-100 dark:hover:bg-gray-800"
+            aria-label="Zoom image"
+          >
+            <ZoomIn className="w-5 h-5 text-gray-900 dark:text-white" />
+          </button>
+        )}
 
         {/* Navigation Arrows (only show if multiple media items) */}
         {displayMedia.length > 1 && (
