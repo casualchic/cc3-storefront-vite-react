@@ -126,7 +126,11 @@ function ProductList() {
 - Buttons have descriptive text for screen readers
 - Images have descriptive alt text
 - Focus states for keyboard navigation
-- Color contrast meets WCAG AA standards
+- **Color contrast ratios (WCAG AA requires ≥4.5:1 for normal text)**:
+  - ✅ Dark mode: gray-400 text achieves 5.78:1–6.99:1 (passes)
+  - ✅ Light mode: gray-500 on white achieves 4.83:1 (passes)
+  - ⚠️ Light mode: gray-500 on gray-100 achieves 4.39:1 (fails - below 4.5:1 minimum)
+  - **Recommendation**: Use gray-600 token instead of gray-500 for text on gray-100 backgrounds to ensure WCAG AA compliance
 
 ## Performance
 
