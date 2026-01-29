@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from '@tanstack/react-router';
-import { Heart, Eye } from 'lucide-react';
+import { Heart, Eye, ShoppingCart } from 'lucide-react';
+import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
 import { Product } from '../types';
 import { QuickViewModal } from './QuickViewModal';
@@ -71,25 +72,78 @@ function getStockStatusConfig(product: Product): {
   }
 }
 
-export function ProductCard({ product, badge }: ProductCardProps) {
-  const { addItem, removeItem, isInWishlist } = useWishlist();
+export function ProductCard({
+  product,
+  viewMode = 'grid',
+  showQuickAdd = true,
+  showWishlist = true,
+  aspectRatio = '4/5',
+  onAddToCart,
+  onWishlistToggle,
+  badge
+}: ProductCardProps) {
+  const { addItem } = useCart();
+  const { addItem: addToWishlist, removeItem: removeFromWishlist, isInWishlist } = useWishlist();
   const [isHovered, setIsHovered] = useState(false);
   const [showQuickView, setShowQuickView] = useState(false);
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
   const inWishlist = isInWishlist(product.id);
+  const stockConfig = getStockStatusConfig(product);
 
   const handleWishlistClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
 
-    if (inWishlist) {
-      removeItem(product.id);
+    if (onWishlistToggle) {
+      onWishlistToggle(product.id);
     } else {
-      addItem({
-        productId: product.id,
-        name: product.name,
-        price: product.price,
-        image: product.image,
-      });
+      if (inWishlist) {
+        removeFromWishlist(product.id);
+      } else {
+        addToWishlist({
+          productId: product.id,
+          name: product.name,
+          price: product.price,
+          image: product.image,
+        });
+      }
+    }
+  };
+
+  const handleQuickAdd = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!stockConfig.showQuickAdd) return;
+
+    setIsAddingToCart(true);
+
+    try {
+      // Get default variant or first available variant
+      const variantId = product.defaultVariantId || product.variants?.[0]?.id;
+      const variant = product.variants?.find(v => v.id === variantId);
+
+      // Call custom callback if provided
+      if (onAddToCart) {
+        onAddToCart(variantId || product.id);
+      } else {
+        // Default behavior: add to cart with first size/color
+        addItem({
+          productId: product.id,
+          name: product.name,
+          price: variant?.price || product.price,
+          quantity: 1,
+          size: variant?.size || product.sizes?.[0] || 'One Size',
+          color: variant?.color || product.colors?.[0] || 'Default',
+          image: product.image,
+        });
+      }
+
+      // Success feedback
+      setTimeout(() => setIsAddingToCart(false), 1000);
+    } catch (error) {
+      console.error('Failed to add to cart:', error);
+      setIsAddingToCart(false);
     }
   };
 
