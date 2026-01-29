@@ -40,7 +40,13 @@ function renderWithProviders(ui: React.ReactElement) {
   const indexRoute = createRoute({
     getParentRoute: () => rootRoute,
     path: '/',
-    component: () => ui,
+    component: () => (
+      <CartProvider>
+        <WishlistProvider>
+          {ui}
+        </WishlistProvider>
+      </CartProvider>
+    ),
   });
 
   const router = createRouter({
@@ -51,13 +57,7 @@ function renderWithProviders(ui: React.ReactElement) {
   });
 
   return render(
-    <RouterProvider router={router}>
-      <CartProvider>
-        <WishlistProvider>
-          {ui}
-        </WishlistProvider>
-      </CartProvider>
-    </RouterProvider>
+    <RouterProvider router={router} />
   );
 }
 
