@@ -6,12 +6,6 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom',
-    setupFiles: './src/react-app/components/__tests__/setup.ts',
-    css: true,
-  },
-  resolve: {
-    alias: {
-      '@': '/src/react-app',
-    },
+    setupFiles: './src/react-app/test/setup.ts',
   },
 });
