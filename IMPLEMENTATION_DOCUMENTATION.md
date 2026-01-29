@@ -157,6 +157,37 @@ Route files are automatically discovered from `src/react-app/routes/` and compil
 - Only shows products with `originalPrice`
 - Displays discount percentage
 
+#### ProductDetailPage
+**Location:** `src/react-app/routes/products.$id.tsx`
+
+**Features:**
+- Image gallery with zoom capability
+- Variant selection (size, color with swatches)
+- Quantity selector with +/- buttons
+- Add to Cart with optimistic UI and loading state
+- Dynamic price display based on selected variant
+- Stock status indicator (in-stock, low-stock, out-of-stock)
+- Collapsible product description (supports HTML)
+- Size guide modal with measurement charts
+- Shipping estimate calculator
+- Product reviews section with star ratings
+- "Complete the Look" related products section
+- Recently viewed products tracking and display
+- Share buttons (Facebook, Twitter, Email, Copy Link)
+- "Notify When Available" for out-of-stock items
+- SEO metadata and JSON-LD structured data
+- TanStack Query for data caching (5-minute staleTime)
+- Analytics tracking for product views
+
+**Components Used:**
+- ProductImageGallery: Image carousel with zoom
+- ProductDescription: Collapsible HTML-safe description
+- ProductReviews: Review list, ratings, write review form
+- SizeGuideModal: Size chart with measurements
+- ShareButtons: Social media sharing dropdown
+- NotifyWhenAvailable: Email notification signup
+- ShippingEstimate: ZIP code-based delivery estimates
+
 #### AboutPage
 - Company mission and values
 - Brand story
@@ -324,45 +355,150 @@ npm run test
 - CSS Grid and Flexbox for layouts
 - CSS custom properties for theming
 
+## Product Detail Page Components
+
+### ProductImageGallery
+**Location:** `src/react-app/components/ProductImageGallery.tsx`
+
+**Features:**
+- Multi-image carousel with thumbnail navigation
+- Zoom modal for full-screen image viewing
+- Keyboard navigation in zoom mode
+- Image counter display
+- Responsive thumbnail grid
+- Smooth transitions and animations
+
+### ProductDescription
+**Location:** `src/react-app/components/ProductDescription.tsx`
+
+**Features:**
+- Collapsible accordion-style section
+- HTML content support (sanitized with dangerouslySetInnerHTML)
+- Smooth expand/collapse animations
+- Accessible ARIA attributes
+
+### ProductReviews
+**Location:** `src/react-app/components/ProductReviews.tsx`
+
+**Features:**
+- Star rating display with average and count
+- Review list with pagination (show more/less)
+- Sort options (recent, helpful, highest, lowest rating)
+- Write review form with star rating selector
+- Verified purchase badges
+- Helpful button with counts
+- Mock data for demonstration
+
+### SizeGuideModal
+**Location:** `src/react-app/components/SizeGuideModal.tsx`
+
+**Features:**
+- Category-specific size charts (tops, bottoms, dresses, general)
+- Measurement table with responsive design
+- "How to Measure" instructions
+- Fit tips and sizing advice
+- Modal overlay with click-outside to close
+
+### ShareButtons
+**Location:** `src/react-app/components/ShareButtons.tsx`
+
+**Features:**
+- Dropdown menu with share options
+- Facebook, Twitter, Email sharing
+- Copy link to clipboard with success feedback
+- Clean popup windows for social sharing
+
+### NotifyWhenAvailable
+**Location:** `src/react-app/components/NotifyWhenAvailable.tsx`
+
+**Features:**
+- Email notification signup for out-of-stock products
+- Includes selected size and color in notification
+- Form validation and error handling
+- Success state with confirmation message
+- Privacy disclaimer
+- Expandable/collapsible UI
+
+### ShippingEstimate
+**Location:** `src/react-app/components/ShippingEstimate.tsx`
+
+**Features:**
+- ZIP code-based shipping calculator
+- Standard and express shipping estimates
+- Date-based delivery projections
+- Form validation
+- Clean results display
+
 ## Future Enhancements
 
 ### High Priority
-1. Product detail page with size/color selection
+1. ✅ Product detail page with size/color selection (COMPLETED)
 2. Functional shopping cart page with checkout
 3. User authentication and account management
 4. Search functionality with product filtering
 5. Wishlist page view
 
 ### Medium Priority
-1. Product reviews and ratings display
-2. Related products and recommendations
+1. ✅ Product reviews and ratings display (COMPLETED)
+2. ✅ Related products and recommendations (COMPLETED)
 3. Quick view modal for products
-4. Size chart modal
-5. Loading states and error handling
+4. ✅ Size chart modal (COMPLETED)
+5. ✅ Loading states and error handling (COMPLETED)
 
 ### Low Priority
-1. Product zoom on hover/click
-2. Recently viewed products
+1. ✅ Product zoom on hover/click (COMPLETED)
+2. ✅ Recently viewed products (COMPLETED)
 3. Compare products feature
 4. Gift card support
 5. Multi-currency support
 
+## Testing
+
+### Test Framework
+- **Vitest**: Modern, fast test runner for Vite projects
+- **@testing-library/react**: React component testing utilities
+- **@testing-library/jest-dom**: Custom matchers for DOM assertions
+- **jsdom**: Browser environment simulation
+
+### Running Tests
+```bash
+npm test              # Run all tests once
+npm run test:watch    # Run tests in watch mode
+npm run test:ui       # Run tests with UI interface
+```
+
+### Test Coverage
+Comprehensive tests for:
+- ProductImageGallery: Navigation, zoom, thumbnails
+- ProductReviews: Display, sorting, review form
+- SizeGuideModal: Category selection, measurements, modal behavior
+- NotifyWhenAvailable: Form validation, submission, success states
+- ProductCard: Rendering, badges, hover effects
+
+### Test Files
+Located in: `src/react-app/components/__tests__/`
+- `ProductImageGallery.test.tsx`
+- `ProductReviews.test.tsx`
+- `SizeGuideModal.test.tsx`
+- `NotifyWhenAvailable.test.tsx`
+- `ProductCard.test.tsx`
+
 ## Known Limitations
 
 1. **Mock Data**: Currently using hardcoded mock data for products and categories
-2. **No Backend Integration**: Cart and wishlist only persist in localStorage
-3. **No Product Images**: Using placeholder background colors
-4. **No Search**: Search button opens empty modal
-5. **No Authentication**: User account is placeholder only
-6. **No Checkout**: Cart doesn't have checkout flow
+2. **No Backend Integration**: Cart and wishlist only persist in localStorage, reviews are mocked
+3. **No Search**: Search button opens empty modal
+4. **No Authentication**: User account is placeholder only
+5. **No Checkout**: Cart doesn't have checkout flow
+6. **Analytics**: Console-only tracking (needs real analytics integration)
+7. **Email Notifications**: Simulated (needs backend email service)
 
 ## Linear Issue Tracking
 
-**Issue:** CCB-1082 - Implement Root Layout Component with Header/Footer
+### CCB-1082: Root Layout Component with Header/Footer
+**Status:** ✅ Completed
 
-**Status:** In Progress
-
-**Acceptance Criteria Met:**
+**Acceptance Criteria:**
 - ✅ Root layout component implemented
 - ✅ Header with logo, navigation, search, cart, wishlist
 - ✅ Footer with navigation, social icons, newsletter
@@ -370,8 +506,39 @@ npm run test
 - ✅ Sticky header on scroll
 - ✅ Responsive design across breakpoints
 - ✅ Dark mode support
-- ⏳ Mega menu (structure in place, needs refinement)
+- ✅ Mega menu implementation
 - ⏳ Search functionality (modal opens, needs implementation)
+
+### CCB-1087: ProductDetail Page Component
+**Status:** ✅ Completed
+
+**Core Features Implemented:**
+- ✅ Image gallery with zoom capability
+- ✅ Variant selector (size, color with swatches)
+- ✅ Quantity selector with +/- buttons
+- ✅ Add to Cart button with loading state and optimistic UI
+- ✅ Dynamic price display based on selected variant
+
+**Content Sections Implemented:**
+- ✅ Product description (collapsible, supports HTML)
+- ✅ Size guide modal with measurement chart
+- ✅ Shipping estimate display
+- ✅ Product reviews section (stars, list, write review)
+
+**Cross-Sell Implemented:**
+- ✅ Related products: "Complete the Look" section
+- ✅ Recently viewed products (last 4-6)
+
+**Additional Features Implemented:**
+- ✅ Share buttons (Facebook, Twitter, Email, Copy Link)
+- ✅ "Notify when available" for out-of-stock items
+
+**Technical Requirements Implemented:**
+- ✅ Optimistic UI for cart add
+- ✅ Cache product data with 5-minute staleTime (TanStack Query)
+- ✅ Track product view for analytics
+- ✅ SEO with meta tags and JSON-LD structured data
+- ✅ Comprehensive test coverage
 
 ## Deployment
 
@@ -394,6 +561,34 @@ For questions or issues:
 
 ---
 
-**Last Updated:** January 26, 2026
-**Version:** 1.0.0
+**Last Updated:** January 29, 2026
+**Version:** 2.0.0
 **Author:** Development Team
+
+## Changelog
+
+### Version 2.0.0 (January 29, 2026)
+- ✅ Implemented comprehensive ProductDetail page component (CCB-1087)
+- ✅ Added ProductImageGallery with zoom functionality
+- ✅ Created ProductDescription collapsible component
+- ✅ Built ProductReviews with ratings and review submission
+- ✅ Implemented SizeGuideModal with category-specific charts
+- ✅ Added ShareButtons for social media sharing
+- ✅ Created NotifyWhenAvailable for out-of-stock notifications
+- ✅ Built ShippingEstimate calculator
+- ✅ Integrated TanStack Query for data caching
+- ✅ Added SEO metadata and JSON-LD structured data
+- ✅ Implemented analytics tracking hooks
+- ✅ Added optimistic UI for cart operations
+- ✅ Created comprehensive test suite with Vitest
+- ✅ Recently viewed products tracking
+- ✅ Dynamic variant-based pricing
+
+### Version 1.0.0 (January 26, 2026)
+- ✅ Initial release with root layout, header, and footer
+- ✅ Basic routing with TanStack Router
+- ✅ ProductGrid with infinite scroll
+- ✅ ProductCard with enhanced features
+- ✅ Cart and wishlist context
+- ✅ Dark mode support
+- ✅ Responsive design system
