@@ -12,6 +12,21 @@ export interface Product {
   inStock: boolean;
   rating?: number;
   reviews?: number;
+  colorSwatches?: { name: string; hex: string }[];
+  stockStatus?: 'in-stock' | 'low-stock' | 'out-of-stock';
+  stockCount?: number;
+  variants?: ProductVariant[];
+  defaultVariantId?: string;
+}
+
+export interface ProductVariant {
+  id: string;
+  productId: string;
+  size?: string;
+  color?: string;
+  sku: string;
+  stockCount: number;
+  price?: number; // Optional override price
 }
 
 export interface CartItem {
