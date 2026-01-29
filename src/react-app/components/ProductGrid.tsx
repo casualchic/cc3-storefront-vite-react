@@ -144,11 +144,9 @@ export function ProductGrid({
             <ProductCard
               key={product.id}
               product={product}
-              badge={
-                product.originalPrice
-                  ? { text: 'SALE', color: 'bg-red-600' }
-                  : undefined
-              }
+              viewMode={viewMode}
+              showQuickAdd={true}
+              showWishlist={true}
             />
           ))}
         </div>
@@ -225,82 +223,12 @@ export function ProductGrid({
 // List view product card
 function ProductCardList({ product }: { product: Product }) {
   return (
-    <div className="flex gap-6 bg-white dark:bg-gray-900 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-800 hover:shadow-lg transition-shadow">
-      {/* Image */}
-      <div className="w-48 flex-shrink-0">
-        <img
-          src={product.image}
-          alt={product.name}
-          className="w-full h-64 object-cover"
-          loading="lazy"
-        />
-      </div>
-
-      {/* Details */}
-      <div className="flex-1 py-4 pr-4">
-        <div className="flex items-start justify-between mb-2">
-          <div>
-            <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-1">
-              {product.name}
-            </h3>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
-              {product.category}
-            </p>
-          </div>
-          {product.originalPrice && (
-            <span className="bg-red-600 text-white px-3 py-1 text-xs font-bold rounded">
-              SALE
-            </span>
-          )}
-        </div>
-
-        {product.description && (
-          <p className="text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">
-            {product.description}
-          </p>
-        )}
-
-        {/* Size & Color Info */}
-        <div className="flex items-center gap-4 mb-4 text-sm text-gray-500 dark:text-gray-400">
-          {product.colors && product.colors.length > 0 && (
-            <span>
-              {product.colors.length} color{product.colors.length > 1 ? 's' : ''}
-            </span>
-          )}
-          {product.sizes && product.sizes.length > 0 && (
-            <span>
-              {product.sizes.length} size{product.sizes.length > 1 ? 's' : ''}
-            </span>
-          )}
-        </div>
-
-        {/* Price */}
-        <div className="flex items-center gap-3 mb-4">
-          <span className="text-2xl font-bold text-gray-900 dark:text-white">
-            ${product.price}
-          </span>
-          {product.originalPrice && (
-            <>
-              <span className="text-lg text-gray-500 dark:text-gray-400 line-through">
-                ${product.originalPrice}
-              </span>
-              <span className="text-sm font-semibold text-red-600 dark:text-red-400">
-                {Math.round((1 - product.price / product.originalPrice) * 100)}% OFF
-              </span>
-            </>
-          )}
-        </div>
-
-        {/* Rating */}
-        {product.rating && product.reviews && (
-          <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-            <span className="text-amber-500">★</span>
-            <span>{product.rating}</span>
-            <span>({product.reviews} reviews)</span>
-          </div>
-        )}
-      </div>
-    </div>
+    <ProductCard
+      product={product}
+      viewMode="list"
+      showQuickAdd={true}
+      showWishlist={true}
+    />
   );
 }
 
