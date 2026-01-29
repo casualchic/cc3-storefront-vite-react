@@ -176,7 +176,7 @@ function ProductDetailPage() {
 
       // Show success feedback (could use a toast notification)
       setTimeout(() => setIsAddingToCart(false), 500);
-    } catch (err) {
+    } catch {
       // Rollback on error
       setError('Failed to add to cart. Please try again.');
       setIsAddingToCart(false);

@@ -1,0 +1,16 @@
+# Files to exclude from Cloudflare Workers deployment
+.dev.vars
+.dev.vars.*
+.env
+.env.*
+!.env.example
+node_modules/
+src/
+.git/
+.gitignore
+*.md
+!README.md
+tsconfig.json
+package.json
+package-lock.json
+vite.config.ts

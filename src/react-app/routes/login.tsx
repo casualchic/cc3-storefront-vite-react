@@ -1,0 +1,125 @@
+// src/react-app/routes/login.tsx
+
+import { createFileRoute, useNavigate } from '@tanstack/react-router';
+import { useState, useEffect, type FormEvent } from 'react';
+import { useAuth } from '../context/AuthContext';
+
+export const Route = createFileRoute('/login')({
+	component: LoginPage,
+	validateSearch: (search: Record<string, unknown>) => {
+		const rawRedirect = search.redirect as string;
+		let sanitizedRedirect = '/account/profile';
+
+		if (rawRedirect) {
+			try {
+				// Try parsing as absolute URL to extract pathname
+				const url = new URL(rawRedirect, window.location.origin);
+				// Only allow same-origin redirects
+				if (url.origin === window.location.origin) {
+					sanitizedRedirect = `${url.pathname}${url.search}${url.hash}`;
+				}
+			} catch {
+				// Not a valid absolute URL, treat as relative path
+				// Only allow paths starting with '/' but not '//' (protocol-relative URLs)
+				if (rawRedirect.startsWith('/') && !rawRedirect.startsWith('//')) {
+					sanitizedRedirect = rawRedirect;
+				}
+			}
+		}
+
+		return {
+			redirect: sanitizedRedirect,
+		};
+	},
+});
+
+function LoginPage() {
+	const { login, isAuthenticated } = useAuth();
+	const navigate = useNavigate();
+	const { redirect } = Route.useSearch();
+	const [email, setEmail] = useState('demo@example.com');
+	const [password, setPassword] = useState('demo123');
+	const [error, setError] = useState('');
+	const [isSubmitting, setIsSubmitting] = useState(false);
+
+	// Redirect if already authenticated
+	useEffect(() => {
+		if (isAuthenticated) {
+			navigate({ to: redirect });
+		}
+	}, [isAuthenticated, navigate, redirect]);
+
+	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		setError('');
+		setIsSubmitting(true);
+
+		try {
+			await login({ email, password });
+			// Navigate to sanitized redirect destination after successful login
+			navigate({ to: redirect });
+		} catch (err) {
+			setError(err instanceof Error ? err.message : 'Login failed');
+		} finally {
+			setIsSubmitting(false);
+		}
+	};
+
+	return (
+		<div className="max-w-md mx-auto px-4 py-12">
+			<div className="bg-white p-8 rounded-lg shadow-md">
+				<h1 className="text-3xl font-bold text-gray-900 mb-6">Login</h1>
+
+				{error && (
+					<div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-sm mb-4">
+						{error}
+					</div>
+				)}
+
+				<div className="bg-blue-50 border border-blue-200 text-blue-700 px-4 py-3 rounded-sm mb-4 text-sm">
+					<p className="font-semibold">Demo Credentials:</p>
+					<p>Email: demo@example.com</p>
+					<p>Password: demo123</p>
+				</div>
+
+				<form onSubmit={handleSubmit} className="space-y-4">
+					<div>
+						<label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+							Email
+						</label>
+						<input
+							type="email"
+							id="email"
+							value={email}
+							onChange={(e) => setEmail(e.target.value)}
+							required
+							className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+						/>
+					</div>
+
+					<div>
+						<label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+							Password
+						</label>
+						<input
+							type="password"
+							id="password"
+							value={password}
+							onChange={(e) => setPassword(e.target.value)}
+							required
+							className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-hidden focus:ring-2 focus:ring-blue-500"
+						/>
+					</div>
+
+					<button
+						type="submit"
+						disabled={isSubmitting}
+						className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition"
+					>
+						{isSubmitting ? 'Logging in...' : 'Login'}
+					</button>
+				</form>
+			</div>
+		</div>
+	);
+}

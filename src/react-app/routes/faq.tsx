@@ -191,9 +191,9 @@ function FAQPage() {
                           {item.question}
                         </span>
                         {isOpen ? (
-                          <ChevronUp className="w-5 h-5 text-gray-500 dark:text-gray-400 flex-shrink-0 mt-0.5" />
+                          <ChevronUp className="w-5 h-5 text-gray-500 dark:text-gray-400 shrink-0 mt-0.5" />
                         ) : (
-                          <ChevronDown className="w-5 h-5 text-gray-500 dark:text-gray-400 flex-shrink-0 mt-0.5" />
+                          <ChevronDown className="w-5 h-5 text-gray-500 dark:text-gray-400 shrink-0 mt-0.5" />
                         )}
                       </button>
                       {isOpen && (
@@ -216,7 +216,7 @@ function FAQPage() {
         ))}
 
         {/* Contact CTA */}
-        <div className="mt-16 text-center bg-gradient-to-br from-brand-light-beige/30 to-brand-cream dark:from-gray-800 dark:to-gray-900 rounded-2xl p-8">
+        <div className="mt-16 text-center bg-linear-to-br from-brand-light-beige/30 to-brand-cream dark:from-gray-800 dark:to-gray-900 rounded-2xl p-8">
           <h3 className="text-2xl font-heading font-bold text-gray-900 dark:text-white mb-3">
             Still have questions?
           </h3>

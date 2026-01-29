@@ -9,10 +9,10 @@ export function HomePage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative min-h-[700px] flex items-center justify-center overflow-hidden bg-gradient-to-br from-brand-cream via-brand-light-beige to-brand-taupe/30 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+      <section className="relative min-h-[700px] flex items-center justify-center overflow-hidden bg-linear-to-br from-brand-cream via-brand-light-beige to-brand-taupe/30 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
         {/* Animated Background Pattern */}
         <div className="absolute inset-0 opacity-10">
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#00000010_1px,transparent_1px),linear-gradient(to_bottom,#00000010_1px,transparent_1px)] bg-[size:4rem_4rem]"></div>
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#00000010_1px,transparent_1px),linear-gradient(to_bottom,#00000010_1px,transparent_1px)] bg-size-[4rem_4rem]"></div>
         </div>
 
         {/* Content */}
@@ -28,7 +28,7 @@ export function HomePage() {
               <h1 className="text-5xl sm:text-6xl lg:text-7xl font-heading font-bold text-gray-900 dark:text-white mb-6 leading-tight">
                 Define Your
                 <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-taupe-brown to-gray-900 dark:from-brand-light-beige dark:to-white">
+                <span className="text-transparent bg-clip-text bg-linear-to-r from-brand-taupe-brown to-gray-900 dark:from-brand-light-beige dark:to-white">
                   Casual Chic
                 </span>
               </h1>
@@ -79,27 +79,27 @@ export function HomePage() {
             {/* Right Column - Featured Image Grid */}
             <div className="hidden lg:grid grid-cols-2 gap-4">
               <div className="space-y-4">
-                <Link to="/category/$slug" params={{ slug: 'dresses' }} className="relative overflow-hidden rounded-2xl bg-gray-200 dark:bg-gray-800 aspect-[3/4] group block">
+                <Link to="/category/$slug" params={{ slug: 'dresses' }} className="relative overflow-hidden rounded-2xl bg-gray-200 dark:bg-gray-800 aspect-3/4 group block">
                   <img
                     src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=600&h=800&fit=crop"
                     alt="Dresses"
                     className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10"></div>
+                  <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent z-10"></div>
                   <div className="absolute bottom-4 left-4 right-4 z-20">
                     <p className="text-white font-semibold text-lg">Dresses</p>
                   </div>
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 z-10"></div>
                 </Link>
-                <Link to="/category/$slug" params={{ slug: 'accessories' }} className="relative overflow-hidden rounded-2xl bg-gray-200 dark:bg-gray-800 aspect-[3/2] group block">
+                <Link to="/category/$slug" params={{ slug: 'accessories' }} className="relative overflow-hidden rounded-2xl bg-gray-200 dark:bg-gray-800 aspect-3/2 group block">
                   <img
                     src="https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=600&h=400&fit=crop"
                     alt="Accessories"
                     className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10"></div>
+                  <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent z-10"></div>
                   <div className="absolute bottom-4 left-4 right-4 z-20">
                     <p className="text-white font-semibold text-lg">Accessories</p>
                   </div>
@@ -107,27 +107,27 @@ export function HomePage() {
                 </Link>
               </div>
               <div className="space-y-4 pt-8">
-                <Link to="/category/$slug" params={{ slug: 'tops' }} className="relative overflow-hidden rounded-2xl bg-gray-200 dark:bg-gray-800 aspect-[3/2] group block">
+                <Link to="/category/$slug" params={{ slug: 'tops' }} className="relative overflow-hidden rounded-2xl bg-gray-200 dark:bg-gray-800 aspect-3/2 group block">
                   <img
                     src="https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=600&h=400&fit=crop"
                     alt="Tops"
                     className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10"></div>
+                  <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent z-10"></div>
                   <div className="absolute bottom-4 left-4 right-4 z-20">
                     <p className="text-white font-semibold text-lg">Tops</p>
                   </div>
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 z-10"></div>
                 </Link>
-                <Link to="/category/$slug" params={{ slug: 'outerwear' }} className="relative overflow-hidden rounded-2xl bg-gray-200 dark:bg-gray-800 aspect-[3/4] group block">
+                <Link to="/category/$slug" params={{ slug: 'outerwear' }} className="relative overflow-hidden rounded-2xl bg-gray-200 dark:bg-gray-800 aspect-3/4 group block">
                   <img
                     src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=600&h=800&fit=crop"
                     alt="Outerwear"
                     className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10"></div>
+                  <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent z-10"></div>
                   <div className="absolute bottom-4 left-4 right-4 z-20">
                     <p className="text-white font-semibold text-lg">Outerwear</p>
                   </div>
@@ -162,7 +162,7 @@ export function HomePage() {
                 className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                 loading="lazy"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent z-10"></div>
+              <div className="absolute inset-0 bg-linear-to-t from-black/70 via-transparent to-transparent z-10"></div>
               <div className="absolute bottom-4 left-4 right-4 z-20">
                 <h3 className="text-white text-sm font-semibold">{category.name}</h3>
               </div>
@@ -219,7 +219,7 @@ export function HomePage() {
               "Absolutely love my new dress! The quality is amazing and it fits perfectly. I've received so many compliments!"
             </p>
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-brand-taupe to-brand-dusty-rose rounded-full"></div>
+              <div className="w-10 h-10 bg-linear-to-br from-brand-taupe to-brand-dusty-rose rounded-full"></div>
               <div>
                 <p className="font-semibold text-gray-900 dark:text-white">Sarah M.</p>
                 <p className="text-sm text-gray-500 dark:text-gray-400">Verified Customer</p>
@@ -235,7 +235,7 @@ export function HomePage() {
               "Fast shipping and beautiful packaging! The pieces are even better in person. Will definitely be shopping here again."
             </p>
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-brand-sage to-brand-mustard rounded-full"></div>
+              <div className="w-10 h-10 bg-linear-to-br from-brand-sage to-brand-mustard rounded-full"></div>
               <div>
                 <p className="font-semibold text-gray-900 dark:text-white">Emily R.</p>
                 <p className="text-sm text-gray-500 dark:text-gray-400">Verified Customer</p>
@@ -251,7 +251,7 @@ export function HomePage() {
               "The quality and style are unmatched. These pieces go from work to weekend effortlessly. So happy with my purchase!"
             </p>
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-brand-soft-blue to-brand-olive rounded-full"></div>
+              <div className="w-10 h-10 bg-linear-to-br from-brand-soft-blue to-brand-olive rounded-full"></div>
               <div>
                 <p className="font-semibold text-gray-900 dark:text-white">Jessica L.</p>
                 <p className="text-sm text-gray-500 dark:text-gray-400">Verified Customer</p>
@@ -262,7 +262,7 @@ export function HomePage() {
       </section>
 
       {/* Ambassador Spotlight */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 bg-gradient-to-br from-brand-light-beige/30 to-brand-cream dark:from-gray-800 dark:to-gray-900">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 bg-linear-to-br from-brand-light-beige/30 to-brand-cream dark:from-gray-800 dark:to-gray-900">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-heading font-bold text-gray-900 dark:text-white mb-4">Our Style Ambassadors</h2>
           <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
@@ -273,7 +273,7 @@ export function HomePage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Ambassador 1 */}
           <div className="group bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-            <div className="aspect-[4/5] bg-gray-200 dark:bg-gray-700 overflow-hidden">
+            <div className="aspect-4/5 bg-gray-200 dark:bg-gray-700 overflow-hidden">
               <img
                 src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&h=750&fit=crop"
                 alt="Emma Thompson"
@@ -307,7 +307,7 @@ export function HomePage() {
 
           {/* Ambassador 2 */}
           <div className="group bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-            <div className="aspect-[4/5] bg-gray-200 dark:bg-gray-700 overflow-hidden">
+            <div className="aspect-4/5 bg-gray-200 dark:bg-gray-700 overflow-hidden">
               <img
                 src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=600&h=750&fit=crop"
                 alt="Maya Patel"
@@ -341,7 +341,7 @@ export function HomePage() {
 
           {/* Ambassador 3 */}
           <div className="group bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-            <div className="aspect-[4/5] bg-gray-200 dark:bg-gray-700 overflow-hidden">
+            <div className="aspect-4/5 bg-gray-200 dark:bg-gray-700 overflow-hidden">
               <img
                 src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&h=750&fit=crop"
                 alt="Sophie Chen"
@@ -402,7 +402,7 @@ export function HomePage() {
             href="https://instagram.com/casualchic"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block px-8 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg font-medium hover:from-purple-700 hover:to-pink-700 transition-all"
+            className="inline-block px-8 py-3 bg-linear-to-r from-purple-600 to-pink-600 text-white rounded-lg font-medium hover:from-purple-700 hover:to-pink-700 transition-all"
           >
             Follow Us on Instagram
           </a>

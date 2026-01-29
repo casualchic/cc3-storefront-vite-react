@@ -21,21 +21,21 @@ function ShippingPage() {
 
         {/* Key Benefits */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-          <div className="bg-gradient-to-br from-brand-light-beige/30 to-brand-cream dark:from-gray-800 dark:to-gray-900 rounded-xl p-6 text-center">
+          <div className="bg-linear-to-br from-brand-light-beige/30 to-brand-cream dark:from-gray-800 dark:to-gray-900 rounded-xl p-6 text-center">
             <div className="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-4">
               <Truck className="w-6 h-6 text-green-600 dark:text-green-400" />
             </div>
             <h3 className="font-bold text-gray-900 dark:text-white mb-2">Free Shipping</h3>
             <p className="text-sm text-gray-600 dark:text-gray-400">On orders over $75</p>
           </div>
-          <div className="bg-gradient-to-br from-brand-light-beige/30 to-brand-cream dark:from-gray-800 dark:to-gray-900 rounded-xl p-6 text-center">
+          <div className="bg-linear-to-br from-brand-light-beige/30 to-brand-cream dark:from-gray-800 dark:to-gray-900 rounded-xl p-6 text-center">
             <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mx-auto mb-4">
               <Globe className="w-6 h-6 text-blue-600 dark:text-blue-400" />
             </div>
             <h3 className="font-bold text-gray-900 dark:text-white mb-2">International</h3>
             <p className="text-sm text-gray-600 dark:text-gray-400">Ship to 50+ countries</p>
           </div>
-          <div className="bg-gradient-to-br from-brand-light-beige/30 to-brand-cream dark:from-gray-800 dark:to-gray-900 rounded-xl p-6 text-center">
+          <div className="bg-linear-to-br from-brand-light-beige/30 to-brand-cream dark:from-gray-800 dark:to-gray-900 rounded-xl p-6 text-center">
             <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center mx-auto mb-4">
               <Package className="w-6 h-6 text-purple-600 dark:text-purple-400" />
             </div>
@@ -153,7 +153,7 @@ function ShippingPage() {
         {/* Order Tracking */}
         <section className="mb-12">
           <h2 className="text-2xl font-heading font-bold text-gray-900 dark:text-white mb-6">Track Your Order</h2>
-          <div className="bg-gradient-to-br from-brand-light-beige/30 to-brand-cream dark:from-gray-800 dark:to-gray-900 rounded-lg p-6">
+          <div className="bg-linear-to-br from-brand-light-beige/30 to-brand-cream dark:from-gray-800 dark:to-gray-900 rounded-lg p-6">
             <p className="text-gray-600 dark:text-gray-400 mb-4">
               Once your order ships, you'll receive a tracking number via email. You can track your package at any time:
             </p>
@@ -179,7 +179,7 @@ function ShippingPage() {
           <h2 className="text-2xl font-heading font-bold text-gray-900 dark:text-white mb-6">Important Information</h2>
           <div className="space-y-4">
             <div className="flex items-start gap-3">
-              <MapPin className="w-5 h-5 text-brand-dusty-rose mt-1 flex-shrink-0" />
+              <MapPin className="w-5 h-5 text-brand-dusty-rose mt-1 shrink-0" />
               <div>
                 <h3 className="font-semibold text-gray-900 dark:text-white mb-1">PO Boxes & APO/FPO Addresses</h3>
                 <p className="text-gray-600 dark:text-gray-400 text-sm">
@@ -188,7 +188,7 @@ function ShippingPage() {
               </div>
             </div>
             <div className="flex items-start gap-3">
-              <CreditCard className="w-5 h-5 text-brand-dusty-rose mt-1 flex-shrink-0" />
+              <CreditCard className="w-5 h-5 text-brand-dusty-rose mt-1 shrink-0" />
               <div>
                 <h3 className="font-semibold text-gray-900 dark:text-white mb-1">International Duties & Taxes</h3>
                 <p className="text-gray-600 dark:text-gray-400 text-sm">
@@ -197,7 +197,7 @@ function ShippingPage() {
               </div>
             </div>
             <div className="flex items-start gap-3">
-              <Package className="w-5 h-5 text-brand-dusty-rose mt-1 flex-shrink-0" />
+              <Package className="w-5 h-5 text-brand-dusty-rose mt-1 shrink-0" />
               <div>
                 <h3 className="font-semibold text-gray-900 dark:text-white mb-1">Shipping Delays</h3>
                 <p className="text-gray-600 dark:text-gray-400 text-sm">
@@ -234,7 +234,7 @@ function ShippingPage() {
         </section>
 
         {/* Contact CTA */}
-        <div className="mt-12 text-center bg-gradient-to-br from-brand-light-beige/30 to-brand-cream dark:from-gray-800 dark:to-gray-900 rounded-2xl p-8">
+        <div className="mt-12 text-center bg-linear-to-br from-brand-light-beige/30 to-brand-cream dark:from-gray-800 dark:to-gray-900 rounded-2xl p-8">
           <h3 className="text-2xl font-heading font-bold text-gray-900 dark:text-white mb-3">
             Questions about shipping?
           </h3>
