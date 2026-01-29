@@ -1,25 +1,47 @@
-import { useState } from 'react';
-import { ChevronLeft, ChevronRight, ZoomIn, X } from 'lucide-react';
+import { useState, useRef, useMemo } from 'react';
+import { ChevronLeft, ChevronRight, ZoomIn, X, Play } from 'lucide-react';
+import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
+import type { MediaItem, ProductImageGalleryAllProps } from '../types/media';
+import { useHoverZoom } from '../hooks/useHoverZoom';
+import { useSwipeGestures } from '../hooks/useSwipeGestures';
+import { OptimizedImage } from './OptimizedImage';
+import { VideoSchema } from './VideoSchema';
+import { formatDurationDisplay } from '../utils/imageOptimization';
 
-interface ProductImageGalleryProps {
-  images: string[];
-  productName: string;
-}
+export function ProductImageGallery(props: ProductImageGalleryAllProps) {
+  // Convert legacy images to MediaItem[] if needed
+  const media = useMemo<MediaItem[]>(() => {
+    if ('media' in props) {
+      return props.media;
+    }
+    // Legacy images prop - convert to MediaItem[]
+    return props.images.map((url) => ({
+      type: 'image' as const,
+      url,
+      alt: props.productName,
+    }));
+  }, ['media' in props ? props.media : props.images, props.productName]);
 
-export function ProductImageGallery({ images, productName }: ProductImageGalleryProps) {
-  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  // Extract props with defaults
+  const { productName, enableHoverZoom = false, enableSwipe = false, zoomScale = 2 } = props;
+
+  const [selectedMediaIndex, setSelectedMediaIndex] = useState(0);
   const [isZoomOpen, setIsZoomOpen] = useState(false);
 
+  // Refs for hover zoom and swipe gestures
+  const mainImageRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
   const handlePrevious = () => {
-    setSelectedImageIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+    setSelectedMediaIndex((prev) => (prev === 0 ? media.length - 1 : prev - 1));
   };
 
   const handleNext = () => {
-    setSelectedImageIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+    setSelectedMediaIndex((prev) => (prev === media.length - 1 ? 0 : prev + 1));
   };
 
   const handleThumbnailClick = (index: number) => {
-    setSelectedImageIndex(index);
+    setSelectedMediaIndex(index);
   };
 
   const handleZoomOpen = () => {
@@ -30,16 +52,16 @@ export function ProductImageGallery({ images, productName }: ProductImageGallery
     setIsZoomOpen(false);
   };
 
-  // If no images provided, use a single placeholder
-  const displayImages = images.length > 0 ? images : [''];
+  // If no media provided, use a single placeholder image
+  const displayMedia = media.length > 0 ? media : [{ type: 'image' as const, url: '', alt: productName }];
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4" ref={containerRef}>
       {/* Main Image */}
-      <div className="relative aspect-[4/5] bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden group">
+      <div className="relative aspect-[4/5] bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden group" ref={mainImageRef}>
         <img
-          src={displayImages[selectedImageIndex]}
-          alt={`${productName} - Image ${selectedImageIndex + 1}`}
+          src={displayMedia[selectedMediaIndex].url}
+          alt={displayMedia[selectedMediaIndex].alt || `${productName} - Image ${selectedMediaIndex + 1}`}
           className="w-full h-full object-cover"
           loading="eager"
         />
@@ -53,8 +75,8 @@ export function ProductImageGallery({ images, productName }: ProductImageGallery
           <ZoomIn className="w-5 h-5 text-gray-900 dark:text-white" />
         </button>
 
-        {/* Navigation Arrows (only show if multiple images) */}
-        {displayImages.length > 1 && (
+        {/* Navigation Arrows (only show if multiple media items) */}
+        {displayMedia.length > 1 && (
           <>
             <button
               onClick={handlePrevious}
@@ -73,31 +95,31 @@ export function ProductImageGallery({ images, productName }: ProductImageGallery
           </>
         )}
 
-        {/* Image Counter */}
-        {displayImages.length > 1 && (
+        {/* Media Counter */}
+        {displayMedia.length > 1 && (
           <div className="absolute bottom-4 right-4 px-3 py-1 bg-black/70 text-white text-sm rounded-full">
-            {selectedImageIndex + 1} / {displayImages.length}
+            {selectedMediaIndex + 1} / {displayMedia.length}
           </div>
         )}
       </div>
 
-      {/* Thumbnails (only show if multiple images) */}
-      {displayImages.length > 1 && (
+      {/* Thumbnails (only show if multiple media items) */}
+      {displayMedia.length > 1 && (
         <div className="flex gap-2 overflow-x-auto pb-2">
-          {displayImages.map((image, index) => (
+          {displayMedia.map((item, index) => (
             <button
               key={index}
               onClick={() => handleThumbnailClick(index)}
               className={`relative flex-shrink-0 w-20 h-24 rounded-lg overflow-hidden border-2 transition-all ${
-                selectedImageIndex === index
+                selectedMediaIndex === index
                   ? 'border-gray-900 dark:border-white ring-2 ring-gray-900 dark:ring-white'
                   : 'border-gray-300 dark:border-gray-700 hover:border-gray-500 dark:hover:border-gray-500'
               }`}
-              aria-label={`View image ${index + 1}`}
+              aria-label={`View ${item.type} ${index + 1}`}
             >
               <img
-                src={image}
-                alt={`${productName} thumbnail ${index + 1}`}
+                src={item.thumbnailUrl || item.url}
+                alt={item.alt || `${productName} thumbnail ${index + 1}`}
                 className="w-full h-full object-cover"
                 loading="lazy"
               />
@@ -121,7 +143,7 @@ export function ProductImageGallery({ images, productName }: ProductImageGallery
           </button>
 
           {/* Navigation in Zoom Mode */}
-          {displayImages.length > 1 && (
+          {displayMedia.length > 1 && (
             <>
               <button
                 onClick={(e) => {
@@ -146,22 +168,22 @@ export function ProductImageGallery({ images, productName }: ProductImageGallery
             </>
           )}
 
-          {/* Zoomed Image */}
+          {/* Zoomed Media */}
           <div
             className="max-w-7xl max-h-[90vh] p-4"
             onClick={(e) => e.stopPropagation()}
           >
             <img
-              src={displayImages[selectedImageIndex]}
-              alt={`${productName} - Zoomed Image ${selectedImageIndex + 1}`}
+              src={displayMedia[selectedMediaIndex].url}
+              alt={displayMedia[selectedMediaIndex].alt || `${productName} - Zoomed Image ${selectedMediaIndex + 1}`}
               className="w-full h-full object-contain"
             />
           </div>
 
-          {/* Image Counter in Zoom */}
-          {displayImages.length > 1 && (
+          {/* Media Counter in Zoom */}
+          {displayMedia.length > 1 && (
             <div className="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 bg-white dark:bg-gray-900 text-gray-900 dark:text-white text-sm rounded-full shadow-lg">
-              {selectedImageIndex + 1} / {displayImages.length}
+              {selectedMediaIndex + 1} / {displayMedia.length}
             </div>
           )}
         </div>
