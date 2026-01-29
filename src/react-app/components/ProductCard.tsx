@@ -249,30 +249,36 @@ export function ProductCard({
         </div>
 
         {/* Product Info */}
-        <div>
+        <div className={viewMode === 'list' ? 'flex-1' : ''}>
           <h3 className="font-medium text-gray-900 dark:text-white group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors duration-200 line-clamp-2 mb-2">
             {product.name}
           </h3>
 
-          {/* Size & Color Indicators */}
-          <div className="flex items-center gap-3 mb-2 text-xs text-gray-500 dark:text-gray-400">
-            {product.colors && product.colors.length > 0 && (
-              <span>{product.colors.length} color{product.colors.length > 1 ? 's' : ''}</span>
-            )}
-            {product.sizes && product.sizes.length > 0 && (
-              <span>{product.sizes.length} size{product.sizes.length > 1 ? 's' : ''}</span>
+          {/* Color Swatches or Size & Color Indicators */}
+          <div className="mb-2">
+            {product.colorSwatches && product.colorSwatches.length > 0 ? (
+              <ColorSwatches colors={product.colorSwatches} />
+            ) : (
+              <div className="flex items-center gap-3 text-xs text-gray-500 dark:text-gray-400">
+                {product.colors && product.colors.length > 0 && (
+                  <span>{product.colors.length} color{product.colors.length > 1 ? 's' : ''}</span>
+                )}
+                {product.sizes && product.sizes.length > 0 && (
+                  <span>{product.sizes.length} size{product.sizes.length > 1 ? 's' : ''}</span>
+                )}
+              </div>
             )}
           </div>
 
           {/* Price */}
           <div className="flex items-center gap-2">
             <span className="text-lg font-bold text-gray-900 dark:text-white">
-              ${product.price}
+              ${product.price.toFixed(2)}
             </span>
             {product.originalPrice && (
               <>
                 <span className="text-sm text-gray-500 dark:text-gray-400 line-through">
-                  ${product.originalPrice}
+                  ${product.originalPrice.toFixed(2)}
                 </span>
                 <span className="text-xs font-semibold text-red-600 dark:text-red-400">
                   {Math.round((1 - product.price / product.originalPrice) * 100)}% OFF
@@ -285,9 +291,21 @@ export function ProductCard({
           {product.rating && product.reviews && (
             <div className="flex items-center gap-1 mt-1 text-sm text-gray-600 dark:text-gray-400">
               <span className="text-amber-500">★</span>
-              <span>{product.rating}</span>
+              <span>{product.rating.toFixed(1)}</span>
               <span>({product.reviews})</span>
             </div>
+          )}
+
+          {/* Quick Add Button for List View */}
+          {viewMode === 'list' && showQuickAdd && stockConfig.showQuickAdd && (
+            <button
+              onClick={handleQuickAdd}
+              disabled={isAddingToCart}
+              className="mt-3 px-4 py-2 bg-black dark:bg-white text-white dark:text-black rounded-lg shadow flex items-center gap-2 text-sm font-medium hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <ShoppingCart className="w-4 h-4" />
+              {isAddingToCart ? 'Adding...' : 'Quick Add'}
+            </button>
           )}
         </div>
       </Link>
