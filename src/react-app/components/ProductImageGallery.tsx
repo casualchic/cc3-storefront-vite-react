@@ -29,7 +29,7 @@ export function ProductImageGallery(props: ProductImageGalleryAllProps) {
   const [isZoomOpen, setIsZoomOpen] = useState(false);
 
   // Refs for hover zoom and swipe gestures
-  const mainImageRef = useRef<HTMLDivElement>(null);
+  const mainImageRef = useRef<HTMLImageElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   // If no media provided, use a single placeholder image
@@ -98,7 +98,7 @@ export function ProductImageGallery(props: ProductImageGalleryAllProps) {
         {currentMedia.type === 'image' ? (
           <div className="relative w-full h-full">
             <OptimizedImage
-              ref={mainImageRef as any}
+              ref={mainImageRef}
               src={currentMedia.url}
               alt={currentMedia.alt || `${productName} - Image ${selectedMediaIndex + 1}`}
               sizes="(min-width: 1024px) 600px, 100vw"
