@@ -199,10 +199,24 @@ export function ProductImageGallery(props: ProductImageGalleryAllProps) {
             >
               <img
                 src={item.thumbnailUrl || item.url}
-                alt={item.alt || `${productName} thumbnail ${index + 1}`}
+                alt={`${productName} thumbnail ${index + 1}`}
                 className="w-full h-full object-cover"
                 loading="lazy"
               />
+
+              {/* Video indicator */}
+              {item.type === 'video' && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                  <Play className="w-4 h-4 text-white" fill="white" />
+                </div>
+              )}
+
+              {/* Duration badge for videos */}
+              {item.type === 'video' && item.duration && (
+                <div className="absolute bottom-1 right-1 px-1 py-0.5 bg-black/70 text-white text-xs rounded">
+                  {formatDurationDisplay(item.duration)}
+                </div>
+              )}
             </button>
           ))}
         </div>
