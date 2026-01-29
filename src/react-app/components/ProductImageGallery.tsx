@@ -32,6 +32,33 @@ export function ProductImageGallery(props: ProductImageGalleryAllProps) {
   const mainImageRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  // If no media provided, use a single placeholder image
+  const displayMedia = media.length > 0 ? media : [{ type: 'image' as const, url: '', alt: productName }];
+
+  // Current media item
+  const currentMedia = displayMedia[selectedMediaIndex];
+
+  // Hooks
+  const { isZooming, zoomStyle } = useHoverZoom(
+    mainImageRef,
+    enableHoverZoom && currentMedia.type === 'image',
+    zoomScale
+  );
+
+  const handleSwipeLeft = () => {
+    setSelectedMediaIndex((prev) => (prev === media.length - 1 ? 0 : prev + 1));
+  };
+
+  const handleSwipeRight = () => {
+    setSelectedMediaIndex((prev) => (prev === 0 ? media.length - 1 : prev - 1));
+  };
+
+  const { isSwiping, swipeOffset } = useSwipeGestures(
+    containerRef,
+    handleSwipeLeft,
+    handleSwipeRight
+  );
+
   const handlePrevious = () => {
     setSelectedMediaIndex((prev) => (prev === 0 ? media.length - 1 : prev - 1));
   };
@@ -51,9 +78,6 @@ export function ProductImageGallery(props: ProductImageGalleryAllProps) {
   const handleZoomClose = () => {
     setIsZoomOpen(false);
   };
-
-  // If no media provided, use a single placeholder image
-  const displayMedia = media.length > 0 ? media : [{ type: 'image' as const, url: '', alt: productName }];
 
   return (
     <div className="space-y-4" ref={containerRef}>
