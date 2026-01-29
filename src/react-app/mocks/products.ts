@@ -13,6 +13,17 @@ export const products: Product[] = [
     inStock: true,
     rating: 4.8,
     reviews: 124,
+    colorSwatches: [
+      { name: 'White', hex: '#FFFFFF' },
+      { name: 'Black', hex: '#000000' },
+      { name: 'Navy', hex: '#1E3A8A' },
+    ],
+    stockStatus: 'in-stock' as const,
+    stockCount: 45,
+    images: [
+      'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=600&h=800',
+      'https://images.unsplash.com/photo-1603252109303-2751441dd157?w=600&h=800',
+    ],
   },
   {
     id: '2',
@@ -25,6 +36,15 @@ export const products: Product[] = [
     inStock: true,
     rating: 4.9,
     reviews: 89,
+    colorSwatches: [
+      { name: 'Floral Print', hex: '#FDB9C8' },
+    ],
+    stockStatus: 'low-stock' as const,
+    stockCount: 8,
+    images: [
+      'https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=600&h=800',
+      'https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=600&h=800',
+    ],
   },
   {
     id: '3',
@@ -37,6 +57,17 @@ export const products: Product[] = [
     inStock: true,
     rating: 4.7,
     reviews: 156,
+    colorSwatches: [
+      { name: 'Black', hex: '#000000' },
+      { name: 'Navy', hex: '#1E3A8A' },
+      { name: 'Beige', hex: '#D4C5B9' },
+    ],
+    stockStatus: 'in-stock' as const,
+    stockCount: 32,
+    images: [
+      'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=600&h=800',
+      'https://images.unsplash.com/photo-1624206112918-ad8f492f0a68?w=600&h=800',
+    ],
   },
   {
     id: '4',
@@ -46,9 +77,20 @@ export const products: Product[] = [
     image: 'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=600&h=800',
     category: 'accessories',
     colors: ['Black', 'Brown', 'Tan'],
-    inStock: true,
+    inStock: false,
     rating: 5.0,
     reviews: 203,
+    colorSwatches: [
+      { name: 'Black', hex: '#000000' },
+      { name: 'Brown', hex: '#5C4033' },
+      { name: 'Tan', hex: '#D2B48C' },
+    ],
+    stockStatus: 'out-of-stock' as const,
+    stockCount: 0,
+    images: [
+      'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=600&h=800',
+      'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&h=800',
+    ],
   },
   {
     id: '5',
@@ -61,6 +103,17 @@ export const products: Product[] = [
     inStock: true,
     rating: 4.9,
     reviews: 92,
+    colorSwatches: [
+      { name: 'Cream', hex: '#FFFDD0' },
+      { name: 'Gray', hex: '#808080' },
+      { name: 'Black', hex: '#000000' },
+    ],
+    stockStatus: 'in-stock' as const,
+    stockCount: 28,
+    images: [
+      'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=600&h=800',
+      'https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=600&h=800',
+    ],
   },
   {
     id: '6',
@@ -73,6 +126,17 @@ export const products: Product[] = [
     inStock: true,
     rating: 4.8,
     reviews: 145,
+    colorSwatches: [
+      { name: 'Black', hex: '#000000' },
+      { name: 'Navy', hex: '#1E3A8A' },
+      { name: 'Camel', hex: '#C19A6B' },
+    ],
+    stockStatus: 'low-stock' as const,
+    stockCount: 6,
+    images: [
+      'https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=600&h=800',
+      'https://images.unsplash.com/photo-1507680434567-5739c80be1ac?w=600&h=800',
+    ],
   },
   {
     id: '7',
@@ -86,6 +150,19 @@ export const products: Product[] = [
     inStock: true,
     rating: 4.6,
     reviews: 342,
+    colorSwatches: [
+      { name: 'White', hex: '#FFFFFF' },
+      { name: 'Black', hex: '#000000' },
+      { name: 'Gray', hex: '#808080' },
+      { name: 'Navy', hex: '#1E3A8A' },
+      { name: 'Olive', hex: '#556B2F' },
+    ],
+    stockStatus: 'in-stock' as const,
+    stockCount: 120,
+    images: [
+      'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&h=800',
+      'https://images.unsplash.com/photo-1622445275463-afa2ab738c34?w=600&h=800',
+    ],
   },
   {
     id: '8',
@@ -97,5 +174,16 @@ export const products: Product[] = [
     inStock: true,
     rating: 4.7,
     reviews: 198,
+    colorSwatches: [
+      { name: 'Natural', hex: '#F5F5DC' },
+      { name: 'Black', hex: '#000000' },
+      { name: 'Navy', hex: '#1E3A8A' },
+    ],
+    stockStatus: 'low-stock' as const,
+    stockCount: 5,
+    images: [
+      'https://images.unsplash.com/photo-1590393-e92b-4677-9bca-0bbf43f53e93?w=600&h=800',
+      'https://images.unsplash.com/photo-1627037558426-c2d07beda3af?w=600&h=800',
+    ],
   },
 ];
