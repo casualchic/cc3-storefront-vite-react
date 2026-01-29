@@ -190,7 +190,7 @@ export function ProductCard({
           {/* Secondary Image (Hover) */}
           {product.images && product.images.length > 0 && (
             <img
-              src={product.images[0]}
+              src={product.images[1] ?? product.images[0]}
               alt={`${product.name} - alternate view`}
               className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
                 isHovered ? 'opacity-100' : 'opacity-0'
