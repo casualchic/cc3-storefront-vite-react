@@ -100,11 +100,11 @@ function ProductList() {
 
 ## Stock Status Behavior
 
-| Stock Status | Badge Displayed | Quick Add Enabled |
-|--------------|----------------|-------------------|
-| `in-stock` | "In Stock" (if stockCount > 100) | ✅ Yes |
-| `low-stock` | "Low Stock" (amber) | ✅ Yes |
-| `out-of-stock` | "Out of Stock" (gray) | ❌ No |
+| Stock Status   | Badge Displayed                          | Quick Add Enabled |
+| -------------- | ---------------------------------------- | ---------------- |
+| `in-stock`     | "In Stock" (if stockCount > 100)         | ✅ Yes           |
+| `low-stock`    | "Low Stock" (amber)                      | ✅ Yes           |
+| `out-of-stock` | "Out of Stock" (gray)                    | ❌ No            |
 
 ## Hover Interactions
 
