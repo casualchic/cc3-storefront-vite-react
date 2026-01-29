@@ -45,20 +45,6 @@ export function ProductImageGallery(props: ProductImageGalleryAllProps) {
     zoomScale
   );
 
-  const handleSwipeLeft = () => {
-    setSelectedMediaIndex((prev) => (prev === media.length - 1 ? 0 : prev + 1));
-  };
-
-  const handleSwipeRight = () => {
-    setSelectedMediaIndex((prev) => (prev === 0 ? media.length - 1 : prev - 1));
-  };
-
-  const { isSwiping, swipeOffset } = useSwipeGestures(
-    containerRef,
-    handleSwipeLeft,
-    handleSwipeRight
-  );
-
   const handlePrevious = () => {
     setSelectedMediaIndex((prev) => (prev === 0 ? media.length - 1 : prev - 1));
   };
@@ -66,6 +52,20 @@ export function ProductImageGallery(props: ProductImageGalleryAllProps) {
   const handleNext = () => {
     setSelectedMediaIndex((prev) => (prev === media.length - 1 ? 0 : prev + 1));
   };
+
+  const handleSwipeLeft = () => {
+    handleNext();
+  };
+
+  const handleSwipeRight = () => {
+    handlePrevious();
+  };
+
+  const { isSwiping, swipeOffset } = useSwipeGestures(
+    containerRef,
+    handleSwipeLeft,
+    handleSwipeRight
+  );
 
   const handleThumbnailClick = (index: number) => {
     setSelectedMediaIndex(index);
