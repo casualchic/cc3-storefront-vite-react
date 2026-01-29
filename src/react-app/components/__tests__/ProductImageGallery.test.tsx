@@ -5,7 +5,7 @@ import type { MediaItem } from '../../types/media';
 
 // Mock react-zoom-pan-pinch to avoid hook errors in tests
 vi.mock('react-zoom-pan-pinch', () => ({
-  TransformWrapper: ({ children }: { children: (utils: any) => React.ReactNode }) =>
+  TransformWrapper: ({ children }: { children: (utils: unknown) => React.ReactNode }) =>
     children({
       zoomIn: vi.fn(),
       zoomOut: vi.fn(),

@@ -10,8 +10,9 @@ import { formatDurationDisplay } from '../utils/imageOptimization';
 
 export function ProductImageGallery(props: ProductImageGalleryAllProps) {
   // Convert legacy images to MediaItem[] if needed
+  const hasMedia = 'media' in props;
   const media = useMemo<MediaItem[]>(() => {
-    if ('media' in props) {
+    if (hasMedia) {
       return props.media;
     }
     // Legacy images prop - convert to MediaItem[]
@@ -20,7 +21,8 @@ export function ProductImageGallery(props: ProductImageGalleryAllProps) {
       url,
       alt: props.productName,
     }));
-  }, ['media' in props ? props.media : props.images, props.productName]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hasMedia, props.productName, hasMedia ? props.media : props.images]);
 
   // Extract props with defaults
   const { productName, enableHoverZoom = false, enableSwipe = false, zoomScale = 2 } = props;
