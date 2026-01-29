@@ -19,6 +19,30 @@ interface ProductCardProps {
   };
 }
 
+function ColorSwatches({ colors }: { colors: { name: string; hex: string }[] }) {
+  const displayColors = colors.slice(0, 5);
+  const remainingCount = colors.length - 5;
+
+  return (
+    <div className="flex items-center gap-1.5">
+      {displayColors.map((color) => (
+        <div
+          key={color.name}
+          className="w-5 h-5 rounded-full border-2 border-gray-200 dark:border-gray-700 shadow-sm"
+          style={{ backgroundColor: color.hex }}
+          title={color.name}
+          aria-label={color.name}
+        />
+      ))}
+      {remainingCount > 0 && (
+        <span className="text-xs text-gray-500 dark:text-gray-400 ml-1">
+          +{remainingCount}
+        </span>
+      )}
+    </div>
+  );
+}
+
 function getStockStatusConfig(product: Product): {
   badge: { text: string; className: string } | null;
   showQuickAdd: boolean;
