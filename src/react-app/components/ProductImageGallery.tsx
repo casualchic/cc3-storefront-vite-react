@@ -222,7 +222,7 @@ export function ProductImageGallery(props: ProductImageGalleryAllProps) {
         </div>
       )}
 
-      {/* Zoom Modal */}
+      {/* Enhanced Lightbox with Pan/Zoom */}
       {isZoomOpen && (
         <div
           className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center"
@@ -230,55 +230,161 @@ export function ProductImageGallery(props: ProductImageGalleryAllProps) {
         >
           <button
             onClick={handleZoomClose}
-            className="absolute top-4 right-4 p-2 bg-white dark:bg-gray-900 rounded-lg shadow-lg hover:bg-gray-100 dark:hover:bg-gray-800"
+            className="absolute top-4 right-4 p-2 bg-white dark:bg-gray-900 rounded-lg shadow-lg hover:bg-gray-100 dark:hover:bg-gray-800 z-10"
             aria-label="Close zoom"
           >
             <X className="w-6 h-6 text-gray-900 dark:text-white" />
           </button>
 
-          {/* Navigation in Zoom Mode */}
-          {displayMedia.length > 1 && (
+          {currentMedia.type === 'image' ? (
+            <TransformWrapper
+              initialScale={1}
+              minScale={1}
+              maxScale={4}
+              doubleClick={{ mode: 'toggle', step: 2 }}
+              wheel={{ step: 0.1 }}
+              panning={{ velocityDisabled: true }}
+            >
+              {({ zoomIn, zoomOut, resetTransform, state }) => (
+                <>
+                  {/* Navigation in Zoom Mode (disabled while zoomed) */}
+                  {displayMedia.length > 1 && state.scale === 1 && (
+                    <>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handlePrevious();
+                        }}
+                        className="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-white dark:bg-gray-900 rounded-full shadow-lg hover:bg-gray-100 dark:hover:bg-gray-800 z-10"
+                        aria-label="Previous image"
+                      >
+                        <ChevronLeft className="w-6 h-6 text-gray-900 dark:text-white" />
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleNext();
+                        }}
+                        className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-white dark:bg-gray-900 rounded-full shadow-lg hover:bg-gray-100 dark:hover:bg-gray-800 z-10"
+                        aria-label="Next image"
+                      >
+                        <ChevronRight className="w-6 h-6 text-gray-900 dark:text-white" />
+                      </button>
+                    </>
+                  )}
+
+                  {/* Zoom Controls */}
+                  <div className="absolute bottom-4 right-4 flex gap-2 z-10">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        zoomIn();
+                      }}
+                      className="p-2 bg-white dark:bg-gray-900 rounded-lg shadow-lg hover:bg-gray-100 dark:hover:bg-gray-800"
+                      aria-label="Zoom in"
+                    >
+                      <ZoomIn className="w-5 h-5 text-gray-900 dark:text-white" />
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        zoomOut();
+                      }}
+                      className="p-2 bg-white dark:bg-gray-900 rounded-lg shadow-lg hover:bg-gray-100 dark:hover:bg-gray-800"
+                      aria-label="Zoom out"
+                    >
+                      <span className="w-5 h-5 text-gray-900 dark:text-white flex items-center justify-center font-bold">
+                        −
+                      </span>
+                    </button>
+                    {state.scale > 1 && (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          resetTransform();
+                        }}
+                        className="px-3 py-2 bg-white dark:bg-gray-900 rounded-lg shadow-lg hover:bg-gray-100 dark:hover:bg-gray-800 text-sm font-medium text-gray-900 dark:text-white"
+                        aria-label="Reset zoom"
+                      >
+                        Reset
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Zoomed Image */}
+                  <TransformComponent
+                    wrapperClass="!w-full !h-full flex items-center justify-center"
+                    contentClass="max-w-7xl max-h-[90vh]"
+                  >
+                    <img
+                      src={currentMedia.url}
+                      alt={currentMedia.alt || `${productName} - Zoomed Image ${selectedMediaIndex + 1}`}
+                      className="w-full h-full object-contain"
+                      onClick={(e) => e.stopPropagation()}
+                    />
+                  </TransformComponent>
+
+                  {/* Image Counter in Zoom */}
+                  {displayMedia.length > 1 && (
+                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 bg-white dark:bg-gray-900 text-gray-900 dark:text-white text-sm rounded-full shadow-lg z-10">
+                      {selectedMediaIndex + 1} / {displayMedia.length}
+                    </div>
+                  )}
+                </>
+              )}
+            </TransformWrapper>
+          ) : (
+            // Video player in lightbox
             <>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handlePrevious();
-                }}
-                className="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-white dark:bg-gray-900 rounded-full shadow-lg hover:bg-gray-100 dark:hover:bg-gray-800"
-                aria-label="Previous image"
+              {/* Navigation for videos */}
+              {displayMedia.length > 1 && (
+                <>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handlePrevious();
+                    }}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-white dark:bg-gray-900 rounded-full shadow-lg hover:bg-gray-100 dark:hover:bg-gray-800 z-10"
+                    aria-label="Previous"
+                  >
+                    <ChevronLeft className="w-6 h-6 text-gray-900 dark:text-white" />
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleNext();
+                    }}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-white dark:bg-gray-900 rounded-full shadow-lg hover:bg-gray-100 dark:hover:bg-gray-800 z-10"
+                    aria-label="Next"
+                  >
+                    <ChevronRight className="w-6 h-6 text-gray-900 dark:text-white" />
+                  </button>
+                </>
+              )}
+
+              <div
+                className="max-w-7xl max-h-[90vh] w-full px-4"
+                onClick={(e) => e.stopPropagation()}
               >
-                <ChevronLeft className="w-6 h-6 text-gray-900 dark:text-white" />
-              </button>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleNext();
-                }}
-                className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-white dark:bg-gray-900 rounded-full shadow-lg hover:bg-gray-100 dark:hover:bg-gray-800"
-                aria-label="Next image"
-              >
-                <ChevronRight className="w-6 h-6 text-gray-900 dark:text-white" />
-              </button>
+                <video
+                  src={currentMedia.url}
+                  poster={currentMedia.poster}
+                  controls={currentMedia.videoConfig?.controls ?? true}
+                  autoPlay={currentMedia.videoConfig?.autoplay ?? false}
+                  muted={currentMedia.videoConfig?.muted ?? true}
+                  loop={currentMedia.videoConfig?.loop ?? false}
+                  className="w-full h-full object-contain rounded-lg"
+                  preload="metadata"
+                />
+              </div>
+
+              {/* Video Counter */}
+              {displayMedia.length > 1 && (
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 bg-white dark:bg-gray-900 text-gray-900 dark:text-white text-sm rounded-full shadow-lg z-10">
+                  {selectedMediaIndex + 1} / {displayMedia.length}
+                </div>
+              )}
             </>
-          )}
-
-          {/* Zoomed Media */}
-          <div
-            className="max-w-7xl max-h-[90vh] p-4"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <img
-              src={displayMedia[selectedMediaIndex].url}
-              alt={displayMedia[selectedMediaIndex].alt || `${productName} - Zoomed Image ${selectedMediaIndex + 1}`}
-              className="w-full h-full object-contain"
-            />
-          </div>
-
-          {/* Media Counter in Zoom */}
-          {displayMedia.length > 1 && (
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 bg-white dark:bg-gray-900 text-gray-900 dark:text-white text-sm rounded-full shadow-lg">
-              {selectedMediaIndex + 1} / {displayMedia.length}
-            </div>
           )}
         </div>
       )}
