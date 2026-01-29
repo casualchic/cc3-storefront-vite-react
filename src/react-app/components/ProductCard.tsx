@@ -7,6 +7,12 @@ import { QuickViewModal } from './QuickViewModal';
 
 interface ProductCardProps {
   product: Product;
+  viewMode?: 'grid' | 'list';
+  showQuickAdd?: boolean;
+  showWishlist?: boolean;
+  aspectRatio?: '1/1' | '3/4' | '4/5'; // Default 4/5
+  onAddToCart?: (variantId: string) => void;
+  onWishlistToggle?: (productId: string) => void;
   badge?: {
     text: string;
     color: string;
