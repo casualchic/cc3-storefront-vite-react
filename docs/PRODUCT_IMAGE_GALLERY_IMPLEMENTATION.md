@@ -42,7 +42,7 @@ The ProductImageGallery component provides a best-in-class image and video viewi
 
 ### 5. Image Optimization
 - WebP format with JPEG fallback
-- Responsive srcset (400w to 1600w)
+- Responsive srcset (320w, 640w, 960w, 1280w, 1920w)
 - Eager loading for main image (LCP)
 - Lazy loading for thumbnails
 - CDN query parameter optimization
@@ -50,7 +50,7 @@ The ProductImageGallery component provides a best-in-class image and video viewi
 ## Architecture
 
 ### Component Structure
-```
+```text
 ProductImageGallery/
 ├── ProductImageGallery.tsx (main component)
 ├── hooks/
@@ -63,7 +63,7 @@ ProductImageGallery/
 │   └── media.ts
 └── utils/
     └── imageOptimization.ts
-```text
+```
 
 ### Data Flow
 1. Props accepted (legacy `images[]` or new `media[]`)
