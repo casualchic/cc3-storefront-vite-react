@@ -158,16 +158,22 @@ export function ProductCard({
       <Link
         to="/products/$id"
         params={{ id: product.id }}
-        className="group block"
+        className={`group block ${
+          viewMode === 'list'
+            ? 'flex gap-4 items-start'
+            : ''
+        }`}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
         {/* Product Image Container */}
         <div
-          className={`relative overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800 mb-3 transition-transform duration-300 ease-out ${
-            viewMode === 'grid' ? 'group-hover:scale-[1.02]' : ''
+          className={`relative overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800 transition-transform duration-300 ease-out ${
+            viewMode === 'list'
+              ? 'w-48 flex-shrink-0 mb-0'
+              : 'mb-3 group-hover:scale-[1.02]'
           }`}
-          style={{ aspectRatio }}
+          style={{ aspectRatio: viewMode === 'list' ? '3/4' : aspectRatio }}
         >
           {/* Primary Image */}
           <img
