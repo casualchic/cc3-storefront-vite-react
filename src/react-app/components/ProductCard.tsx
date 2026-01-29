@@ -163,43 +163,88 @@ export function ProductCard({
         onMouseLeave={() => setIsHovered(false)}
       >
         {/* Product Image Container */}
-        <div className="relative overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800 aspect-[4/5] mb-3 transition-transform duration-300 ease-out group-hover:scale-[1.02]">
+        <div
+          className={`relative overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800 mb-3 transition-transform duration-300 ease-out ${
+            viewMode === 'grid' ? 'group-hover:scale-[1.02]' : ''
+          }`}
+          style={{ aspectRatio }}
+        >
+          {/* Primary Image */}
           <img
             src={product.image}
             alt={product.name}
-            className="absolute inset-0 w-full h-full object-cover group-hover:opacity-90 transition-opacity duration-300"
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
+              isHovered && product.images && product.images.length > 0
+                ? 'opacity-0'
+                : 'opacity-100 group-hover:opacity-90'
+            }`}
             loading="lazy"
           />
 
-          {/* Badge (SALE, NEW, etc.) */}
+          {/* Secondary Image (Hover) */}
+          {product.images && product.images.length > 0 && (
+            <img
+              src={product.images[0]}
+              alt={`${product.name} - alternate view`}
+              className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
+                isHovered ? 'opacity-100' : 'opacity-0'
+              }`}
+              loading="lazy"
+            />
+          )}
+
+          {/* Custom Badge (SALE, NEW, etc.) */}
           {badge && (
             <div className={`absolute top-3 left-3 ${badge.color} text-white px-3 py-1 text-xs font-bold rounded shadow-lg z-10`}>
               {badge.text}
             </div>
           )}
 
-          {/* Wishlist Heart Icon */}
-          <button
-            onClick={handleWishlistClick}
-            className={`absolute top-3 right-3 z-20 p-2 rounded-full transition-all duration-200 ${
-              inWishlist
-                ? 'bg-red-500 text-white'
-                : 'bg-white/90 dark:bg-gray-900/90 text-gray-900 dark:text-white hover:bg-white dark:hover:bg-gray-900'
-            } ${isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'}`}
-            aria-label={inWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
-          >
-            <Heart className={`w-4 h-4 ${inWishlist ? 'fill-current' : ''}`} />
-          </button>
+          {/* Stock Status Badge */}
+          {stockConfig.badge && (
+            <div className={`absolute top-3 ${badge ? 'left-auto right-3' : 'left-3'} ${stockConfig.badge.className} text-white px-3 py-1 text-xs font-bold rounded shadow-lg z-10`}>
+              {stockConfig.badge.text}
+            </div>
+          )}
 
-          {/* Quick View Button */}
+          {/* Wishlist Heart Icon */}
+          {showWishlist && (
+            <button
+              onClick={handleWishlistClick}
+              className={`absolute top-3 right-3 z-20 p-2 rounded-full transition-all duration-200 ${
+                inWishlist
+                  ? 'bg-red-500 text-white'
+                  : 'bg-white/90 dark:bg-gray-900/90 text-gray-900 dark:text-white hover:bg-white dark:hover:bg-gray-900'
+              } ${isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'}`}
+              aria-label={inWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
+            >
+              <Heart className={`w-4 h-4 ${inWishlist ? 'fill-current' : ''}`} />
+            </button>
+          )}
+
+          {/* Quick Add Button (replaces Quick View in hover) */}
+          {showQuickAdd && stockConfig.showQuickAdd && viewMode === 'grid' && (
+            <button
+              onClick={handleQuickAdd}
+              disabled={isAddingToCart}
+              className={`absolute bottom-3 left-1/2 -translate-x-1/2 z-20 px-4 py-2 bg-black dark:bg-white text-white dark:text-black rounded-lg shadow-lg flex items-center gap-2 text-sm font-medium hover:bg-gray-800 dark:hover:bg-gray-100 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed ${
+                isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
+              }`}
+            >
+              <ShoppingCart className="w-4 h-4" />
+              {isAddingToCart ? 'Adding...' : 'Quick Add'}
+            </button>
+          )}
+
+          {/* Quick View Button - secondary action */}
           <button
             onClick={handleQuickView}
-            className={`absolute bottom-3 left-1/2 -translate-x-1/2 z-20 px-4 py-2 bg-white dark:bg-gray-900 text-gray-900 dark:text-white rounded-lg shadow-lg flex items-center gap-2 text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-800 transition-all duration-200 ${
+            className={`absolute bottom-3 right-3 z-20 p-2 bg-white/90 dark:bg-gray-900/90 text-gray-900 dark:text-white rounded-lg shadow-lg hover:bg-white dark:hover:bg-gray-900 transition-all duration-200 ${
               isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
             }`}
+            aria-label="Quick view"
           >
             <Eye className="w-4 h-4" />
-            Quick View
           </button>
         </div>
 
