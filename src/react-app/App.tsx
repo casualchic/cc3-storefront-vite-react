@@ -1,9 +1,10 @@
 // src/react-app/App.tsx
 
 import { RouterProvider, createRouter } from '@tanstack/react-router';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
-import { WishlistProvider } from './context/WishlistContext';
+import { WishlistProvider } from './context/WishlistProvider';
 import { ThemeProvider } from './context/ThemeContext';
 import { routeTree } from './routeTree.gen';
 
@@ -17,17 +18,29 @@ declare module '@tanstack/react-router' {
 	}
 }
 
+// Create a QueryClient instance
+const queryClient = new QueryClient({
+	defaultOptions: {
+		queries: {
+			staleTime: 1000 * 60 * 5, // 5 minutes
+			refetchOnWindowFocus: false,
+		},
+	},
+});
+
 function App() {
 	return (
-		<ThemeProvider>
-			<AuthProvider>
-				<CartProvider>
-					<WishlistProvider>
-						<RouterProvider router={router} />
-					</WishlistProvider>
-				</CartProvider>
-			</AuthProvider>
-		</ThemeProvider>
+		<QueryClientProvider client={queryClient}>
+			<ThemeProvider>
+				<AuthProvider>
+					<CartProvider>
+						<WishlistProvider>
+							<RouterProvider router={router} />
+						</WishlistProvider>
+					</CartProvider>
+				</AuthProvider>
+			</ThemeProvider>
+		</QueryClientProvider>
 	);
 }
 

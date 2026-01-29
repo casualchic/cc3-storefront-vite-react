@@ -249,3 +249,202 @@ Based on best-performing fashion e-commerce sites:
 - Consistent 8px base unit
 - Sections: 64px-96px vertical padding
 - Components: 16px-32px internal padding
+
+---
+
+## Product Grid Requirements (PROD-001 through PROD-005)
+
+### PROD-001: ProductGrid Component - Responsive Layout
+**Requirement:** Implement a responsive ProductGrid component that adapts column count based on viewport width.
+
+**Technical Specification:**
+- Component location: `src/react-app/components/ProductGrid.tsx`
+- Breakpoint-based column layout:
+  - Mobile (<640px): 1 column
+  - Tablet (640px-1023px): 2 columns
+  - Desktop (≥1024px): 3-4 columns (configurable)
+- Use CSS Grid with gap spacing (24px)
+- Maintain consistent aspect ratios across grid items
+- Support `columns` prop to override desktop column count (2 | 3 | 4)
+
+**Acceptance Criteria:**
+- [ ] Grid renders 1 column on mobile viewports
+- [ ] Grid renders 2 columns on tablet viewports (640px+)
+- [ ] Grid renders 3-4 columns on desktop (1024px+), configurable via prop
+- [ ] Grid maintains consistent spacing and alignment
+- [ ] Grid is fully responsive without horizontal scroll
+
+---
+
+### PROD-002: ProductGrid Component - View Mode Support
+**Requirement:** Support both grid and list view modes with smooth transitions.
+
+**Technical Specification:**
+- `viewMode` prop accepts 'grid' | 'list'
+- Grid mode: Standard grid layout with ProductCard components
+- List mode: Horizontal layout with image left, details right
+  - Larger images (200x250px)
+  - More product details visible
+  - Horizontal arrangement of action buttons
+- Smooth CSS transitions between view modes (300ms ease)
+- Preserve product data and state during view mode changes
+
+**Acceptance Criteria:**
+- [ ] Grid mode displays products in responsive grid
+- [ ] List mode displays products in horizontal layout
+- [ ] View mode switching is smooth with CSS transitions
+- [ ] Product state (wishlist, etc.) persists across view changes
+- [ ] Both view modes are fully accessible
+
+---
+
+### PROD-003: ProductGrid Component - Loading States
+**Requirement:** Display skeleton loading states during data fetches.
+
+**Technical Specification:**
+- `isLoading` prop controls loading state display
+- Skeleton components match ProductCard dimensions
+- Skeleton count matches expected grid layout (12 skeletons default)
+- Pulse animation for skeleton elements (Tailwind `animate-pulse`)
+- Loading skeletons respect current view mode (grid vs list)
+- Maintain layout stability (no shift when data loads)
+
+**Acceptance Criteria:**
+- [ ] Skeleton loaders display when isLoading is true
+- [ ] Skeletons match ProductCard dimensions and layout
+- [ ] Pulse animation provides visual feedback
+- [ ] No layout shift when loading completes
+- [ ] Skeletons adapt to current view mode
+
+---
+
+### PROD-004: ProductGrid Component - Empty and Error States
+**Requirement:** Display user-friendly empty and error states with appropriate actions.
+
+**Technical Specification:**
+- Empty state (no products):
+  - Icon (package or search icon from lucide-react)
+  - Heading: "No products found"
+  - Description: Context-appropriate message
+  - Optional CTA button (e.g., "Clear filters", "Browse all products")
+- Error state (isError prop is true):
+  - Icon (alert-circle from lucide-react)
+  - Heading: "Oops! Something went wrong"
+  - Description: "We couldn't load the products. Please try again."
+  - Retry button that triggers provided callback
+- Center-aligned, padded container (min-height: 400px)
+- Consistent with overall design system
+
+**Acceptance Criteria:**
+- [ ] Empty state displays when products array is empty
+- [ ] Empty state includes helpful message and icon
+- [ ] Error state displays when isError is true
+- [ ] Error state includes retry button that triggers callback
+- [ ] States are visually consistent with design system
+- [ ] States are accessible (proper heading hierarchy, button labels)
+
+---
+
+### PROD-005: ProductGrid Component - Infinite Scroll Pagination
+**Requirement:** Implement infinite scroll with TanStack Query's useInfiniteQuery and intersection observer.
+
+**Technical Specification:**
+- Integration with TanStack Query `useInfiniteQuery`:
+  - Accepts paginated API responses
+  - Manages page cursors/offsets automatically
+  - Handles loading states for initial and subsequent loads
+- Infinite scroll trigger:
+  - Intersection Observer API monitors sentinel element
+  - Sentinel placed after last product in grid
+  - Triggers `fetchNextPage` when sentinel is visible
+  - 200px root margin for early triggering
+- "Load More" button fallback:
+  - Displayed below grid when `hasNextPage` is true
+  - Manual trigger for `fetchNextPage`
+  - Shows loading spinner when fetching
+  - Disabled state during fetch
+- Loading indicator:
+  - Inline skeleton loaders for new page (4-6 items)
+  - Positioned below existing products
+  - Does not disrupt scroll position
+
+**Props Interface:**
+```typescript
+interface ProductGridProps {
+  products: Product[];
+  isLoading: boolean;
+  isError: boolean;
+  hasNextPage: boolean;
+  isFetchingNextPage?: boolean;
+  fetchNextPage: () => void;
+  viewMode?: 'grid' | 'list';
+  columns?: 2 | 3 | 4;
+  onRetry?: () => void;
+  emptyStateMessage?: string;
+  emptyStateAction?: {
+    label: string;
+    onClick: () => void;
+  };
+}
+```
+
+**Acceptance Criteria:**
+- [ ] Infinite scroll automatically loads next page when scrolling near bottom
+- [ ] Intersection observer properly triggers fetchNextPage
+- [ ] "Load More" button provides manual trigger option
+- [ ] Loading indicators display during pagination
+- [ ] No duplicate products loaded
+- [ ] Scroll position maintained during page loads
+- [ ] hasNextPage correctly controls whether to show Load More button
+- [ ] Works seamlessly with TanStack Query useInfiniteQuery
+
+---
+
+## Product Grid Integration Notes
+
+### TanStack Query Setup
+ProductGrid is designed to work with TanStack Query's `useInfiniteQuery`. Example usage:
+
+```typescript
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { ProductGrid } from '@/components/ProductGrid';
+
+function ProductsPage() {
+  const {
+    data,
+    isLoading,
+    isError,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
+    queryKey: ['products', filters],
+    queryFn: ({ pageParam = 0 }) => fetchProducts(pageParam, filters),
+    getNextPageParam: (lastPage) => lastPage.nextCursor,
+  });
+
+  const products = data?.pages.flatMap(page => page.products) ?? [];
+
+  return (
+    <ProductGrid
+      products={products}
+      isLoading={isLoading}
+      isError={isError}
+      hasNextPage={hasNextPage}
+      isFetchingNextPage={isFetchingNextPage}
+      fetchNextPage={fetchNextPage}
+      viewMode="grid"
+      columns={4}
+    />
+  );
+}
+```
+
+### Performance Considerations
+- For lists > 100 items, consider virtualizing with `@tanstack/react-virtual`
+- Implement proper React keys using product IDs
+- Use `loading="lazy"` for product images
+- Optimize image sizes and formats (WebP with fallbacks)
+- Debounce filter changes to reduce API calls
+
+---

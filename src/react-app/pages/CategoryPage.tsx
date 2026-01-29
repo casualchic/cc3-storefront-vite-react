@@ -1,18 +1,42 @@
 import { Link, useParams } from '@tanstack/react-router';
-import { products } from '../mocks/products';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { categories } from '../mocks/categories';
+import { ProductGrid } from '../components/ProductGrid';
+import { fetchProducts } from '../api/products';
 
 export function CategoryPage() {
   const { slug } = useParams({ from: '/category/$slug' });
-  const category = categories.find(c => c.slug === slug);
-  const categoryProducts = products.filter(p => p.category === slug);
+  const category = categories.find((c) => c.slug === slug);
+
+  const {
+    data,
+    isLoading,
+    isError,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+    refetch,
+  } = useInfiniteQuery({
+    queryKey: ['products', 'category', slug],
+    queryFn: ({ pageParam = 0 }) =>
+      fetchProducts({ pageParam, category: slug, limit: 12 }),
+    getNextPageParam: (lastPage) => lastPage.nextCursor,
+    initialPageParam: 0,
+    enabled: !!category, // Only fetch if category exists
+  });
+
+  const products = data?.pages.flatMap((page) => page.products) ?? [];
 
   if (!category) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Category not found</h1>
-          <Link to="/" className="text-blue-600 hover:text-blue-500">Return to home</Link>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+            Category not found
+          </h1>
+          <Link to="/" className="text-blue-600 hover:text-blue-500">
+            Return to home
+          </Link>
         </div>
       </div>
     );
@@ -22,54 +46,26 @@ export function CategoryPage() {
     <div className="min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">{category.name}</h1>
+          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+            {category.name}
+          </h1>
           <p className="text-lg text-gray-600 dark:text-gray-400">
             {category.description}
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {categoryProducts.map((product) => (
-            <Link
-              key={product.id}
-              to="/products/$id"
-              params={{ id: product.id }}
-              className="group"
-            >
-              <div className="relative overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800 aspect-4/5 mb-3 transition-transform duration-300 ease-out group-hover:scale-[1.02]">
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="absolute inset-0 w-full h-full object-cover group-hover:opacity-90 transition-opacity duration-300"
-                  loading="lazy"
-                />
-                {product.originalPrice && (
-                  <div className="absolute top-3 left-3 bg-red-600 text-white px-3 py-1 text-xs font-bold rounded-sm shadow-lg z-10">
-                    SALE
-                  </div>
-                )}
-              </div>
-              <h3 className="font-medium text-gray-900 dark:text-white group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors duration-200 line-clamp-2">
-                {product.name}
-              </h3>
-              <div className="flex items-center gap-2 mt-2">
-                <span className="text-lg font-bold text-gray-900 dark:text-white">
-                  ${product.price}
-                </span>
-                {product.originalPrice && (
-                  <>
-                    <span className="text-sm text-gray-500 dark:text-gray-400 line-through">
-                      ${product.originalPrice}
-                    </span>
-                    <span className="text-xs font-semibold text-red-600 dark:text-red-400">
-                      {Math.round((1 - product.price / product.originalPrice) * 100)}% OFF
-                    </span>
-                  </>
-                )}
-              </div>
-            </Link>
-          ))}
-        </div>
+        <ProductGrid
+          products={products}
+          isLoading={isLoading}
+          isError={isError}
+          hasNextPage={hasNextPage}
+          isFetchingNextPage={isFetchingNextPage}
+          fetchNextPage={fetchNextPage}
+          viewMode="grid"
+          columns={4}
+          onRetry={() => refetch()}
+          emptyStateMessage="No products found in this category"
+        />
       </div>
     </div>
   );
