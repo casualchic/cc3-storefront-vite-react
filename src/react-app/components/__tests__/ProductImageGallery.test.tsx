@@ -1,18 +1,19 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
+import type { ReactNode } from 'react';
 import { ProductImageGallery } from '../ProductImageGallery';
 import type { MediaItem } from '../../types/media';
 
 // Mock react-zoom-pan-pinch to avoid hook errors in tests
 vi.mock('react-zoom-pan-pinch', () => ({
-  TransformWrapper: ({ children }: { children: (utils: unknown) => React.ReactNode }) =>
+  TransformWrapper: ({ children }: { children: (utils: unknown) => ReactNode }) =>
     children({
       zoomIn: vi.fn(),
       zoomOut: vi.fn(),
       resetTransform: vi.fn(),
       state: { scale: 1 },
     }),
-  TransformComponent: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+  TransformComponent: ({ children }: { children: ReactNode }) => <div>{children}</div>,
 }));
 
 describe('ProductImageGallery', () => {

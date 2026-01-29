@@ -549,7 +549,7 @@ function ProductsPage() {
 - Component: `src/react-app/components/OptimizedImage.tsx`
 - Utilities: `src/react-app/utils/imageOptimization.ts`
 - Picture element with WebP and JPEG sources
-- Responsive srcset: 400w, 600w, 800w, 1200w, 1600w
+- Responsive srcset: 320w, 640w, 960w, 1280w, 1920w
 - Main image: `loading="eager"` (LCP optimization)
 - Thumbnails: `loading="lazy"`
 - CDN query params: ?w={width}&fm={format}&q={quality}

@@ -1,4 +1,4 @@
-import { useState, useRef, useMemo } from 'react';
+import { useState, useRef, useMemo, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, ZoomIn, X, Play } from 'lucide-react';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 import type { MediaItem, ProductImageGalleryAllProps } from '../types/media';
@@ -48,12 +48,17 @@ export function ProductImageGallery(props: ProductImageGalleryAllProps) {
   );
 
   const handlePrevious = () => {
-    setSelectedMediaIndex((prev) => (prev === 0 ? media.length - 1 : prev - 1));
+    setSelectedMediaIndex((prev) => (prev === 0 ? displayMedia.length - 1 : prev - 1));
   };
 
   const handleNext = () => {
-    setSelectedMediaIndex((prev) => (prev === media.length - 1 ? 0 : prev + 1));
+    setSelectedMediaIndex((prev) => (prev === displayMedia.length - 1 ? 0 : prev + 1));
   };
+
+  // Clamp selectedMediaIndex when media changes
+  useEffect(() => {
+    setSelectedMediaIndex((prev) => Math.min(prev, displayMedia.length - 1));
+  }, [displayMedia.length]);
 
   const handleSwipeLeft = () => {
     handleNext();
@@ -65,8 +70,9 @@ export function ProductImageGallery(props: ProductImageGalleryAllProps) {
 
   const { isSwiping, swipeOffset } = useSwipeGestures(
     containerRef,
-    enableSwipe ? handleSwipeLeft : () => {},
-    enableSwipe ? handleSwipeRight : () => {}
+    handleSwipeLeft,
+    handleSwipeRight,
+    enableSwipe
   );
 
   const handleThumbnailClick = (index: number) => {

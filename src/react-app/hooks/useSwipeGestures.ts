@@ -16,7 +16,8 @@ const VERTICAL_THRESHOLD = 30; // Maximum vertical angle in degrees
 export function useSwipeGestures(
   containerRef: RefObject<HTMLElement>,
   onSwipeLeft: () => void,
-  onSwipeRight: () => void
+  onSwipeRight: () => void,
+  isEnabled = true
 ): SwipeState {
   const [swipeState, setSwipeState] = useState<SwipeState>({
     isSwiping: false,
@@ -28,7 +29,7 @@ export function useSwipeGestures(
 
   useEffect(() => {
     const container = containerRef.current;
-    if (!container) return;
+    if (!container || !isEnabled) return;
 
     let startX = 0;
     let startY = 0;
@@ -37,7 +38,23 @@ export function useSwipeGestures(
     let isTracking = false;
     let isVertical = false;
 
+    const resetSwipe = () => {
+      setSwipeState({
+        isSwiping: false,
+        swipeOffset: 0,
+      });
+      startX = 0;
+      startY = 0;
+      currentX = 0;
+      startTime = 0;
+      isTracking = false;
+      isVertical = false;
+    };
+
     const handleTouchStart = (e: TouchEvent) => {
+      // Ignore multi-touch gestures
+      if (e.touches.length !== 1) return;
+
       startX = e.touches[0].clientX;
       startY = e.touches[0].clientY;
       currentX = startX;
@@ -54,6 +71,9 @@ export function useSwipeGestures(
     const handleTouchMove = (e: TouchEvent) => {
       if (!isTracking) return;
 
+      // Ignore multi-touch gestures
+      if (e.touches.length !== 1) return;
+
       currentX = e.touches[0].clientX;
       const currentY = e.touches[0].clientY;
       const deltaX = currentX - startX;
@@ -67,6 +87,9 @@ export function useSwipeGestures(
         isVertical = true;
         return;
       }
+
+      // Early exit if already determined to be vertical
+      if (isVertical) return;
 
       // Prevent page scroll during horizontal swipe
       if (Math.abs(deltaX) > Math.abs(deltaY)) {
@@ -99,30 +122,26 @@ export function useSwipeGestures(
         }
       }
 
-      // Reset state
-      setSwipeState({
-        isSwiping: false,
-        swipeOffset: 0,
-      });
+      resetSwipe();
+    };
 
-      startX = 0;
-      startY = 0;
-      currentX = 0;
-      startTime = 0;
-      isTracking = false;
-      isVertical = false;
+    const handleTouchCancel = () => {
+      if (!isTracking) return;
+      resetSwipe();
     };
 
     container.addEventListener('touchstart', handleTouchStart);
     container.addEventListener('touchmove', handleTouchMove, { passive: false });
     container.addEventListener('touchend', handleTouchEnd);
+    container.addEventListener('touchcancel', handleTouchCancel);
 
     return () => {
       container.removeEventListener('touchstart', handleTouchStart);
       container.removeEventListener('touchmove', handleTouchMove);
       container.removeEventListener('touchend', handleTouchEnd);
+      container.removeEventListener('touchcancel', handleTouchCancel);
     };
-  }, [containerRef]);
+  }, [containerRef, isEnabled]);
 
   return swipeState;
 }

@@ -2226,7 +2226,7 @@ ProductImageGallery/
 │   └── media.ts
 └── utils/
     └── imageOptimization.ts
-```
+```text
 
 ### Data Flow
 1. Props accepted (legacy `images[]` or new `media[]`)
