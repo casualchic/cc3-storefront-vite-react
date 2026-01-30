@@ -69,19 +69,30 @@ Expand discount system to support free gift with purchase and buy-more-save-more
 **Description:**
 Integrate actual product recommendation engine or service to power cross-sell suggestions.
 
-**Options to Evaluate:**
-- Medusa product relations/collections
-- Third-party service (Algolia Recommend, etc.)
-- Custom ML-based recommendations
-- Collaborative filtering based on purchase history
-
 **Requirements:**
-- Research and select recommendation approach
-- Implement recommendation data fetching
-- Cache recommendations for performance
-- A/B test different recommendation strategies
-- Track click-through and conversion rates
-- Tests: Unit tests for recommendation fetching and caching, integration tests with recommendation service, A/B testing validation, analytics tracking verification
+- Recommendation System:
+  - Return minimum 4-8 product recommendations per cart
+  - Response time <200ms for recommendation fetch
+  - Fallback to featured products if service unavailable
+  - Cache recommendations for 5 minutes
+  - Support A/B testing of different algorithms
+- Implementation:
+  - Research and select recommendation approach (spike: 3 days)
+  - Integrate chosen service/API
+  - Implement caching layer with Redis
+  - Add fallback logic for service failures
+  - Track recommendation impressions and clicks
+- Analytics:
+  - Track click-through rate (target: >5%)
+  - Measure conversion rate from recommendations
+  - Log recommendation latency
+  - A/B test different algorithms with statistical significance
+- Tests:
+  - Unit tests for recommendation fetching and caching
+  - Integration tests with mock recommendation service
+  - Performance tests: verify <200ms response time
+  - Fallback behavior tests: verify featured products shown on failure
+  - Analytics tracking tests: verify impression/click events fired
 
 **Dependencies:**
 - Medusa.js backend integration (Issue 1)
