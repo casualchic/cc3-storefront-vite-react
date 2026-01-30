@@ -212,6 +212,7 @@ describe('CartDrawer', () => {
 
     expect(screen.getByText('SAVE10')).toBeInTheDocument();
     expect(screen.getByText(/10% off your order/i)).toBeInTheDocument();
+    expect(screen.getByText('-$10.00')).toBeInTheDocument();
   });
 
   it('shows error for invalid discount code', async () => {

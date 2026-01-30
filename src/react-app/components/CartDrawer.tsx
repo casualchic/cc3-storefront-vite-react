@@ -90,13 +90,18 @@ function DiscountCodeInput({
               </div>
             </div>
           </div>
-          <button
-            onClick={onRemove}
-            className="p-1 hover:bg-green-100 rounded"
-            aria-label="Remove discount"
-          >
-            <X className="w-4 h-4 text-green-700" />
-          </button>
+          <div className="flex items-center gap-2">
+            <span className="text-sm font-semibold text-green-900">
+              -{SHOP_CONFIG.currencySymbol}{appliedDiscount.amount.toFixed(2)}
+            </span>
+            <button
+              onClick={onRemove}
+              className="p-1 hover:bg-green-100 rounded"
+              aria-label="Remove discount"
+            >
+              <X className="w-4 h-4 text-green-700" />
+            </button>
+          </div>
         </div>
       ) : (
         <>
