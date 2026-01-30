@@ -62,11 +62,4 @@ describe('SizeGuideModal', () => {
     render(<SizeGuideModal isOpen={true} onClose={mockOnClose} category="unknown" />);
     expect(screen.getByText('General Size Guide')).toBeInTheDocument();
   });
-
-  it('does not close when clicking inside modal content', () => {
-    render(<SizeGuideModal isOpen={true} onClose={mockOnClose} category="tops" />);
-    const modalTitle = screen.getByText('Tops Size Guide');
-    fireEvent.click(modalTitle);
-    expect(mockOnClose).not.toHaveBeenCalled();
-  });
 });

@@ -50,6 +50,16 @@ const mockReviews: Review[] = [
     verified: true,
     helpful: 5,
   },
+  {
+    id: '4',
+    author: 'Michael T.',
+    rating: 4,
+    date: '2026-01-02',
+    title: 'Good quality',
+    comment: 'Nice product overall. The fit is good and the material quality meets expectations.',
+    verified: false,
+    helpful: 3,
+  },
 ];
 
 export function ProductReviews({ averageRating, totalReviews }: ProductReviewsProps) {

@@ -81,7 +81,10 @@ export function SizeGuideModal({ isOpen, onClose, category = 'general' }: SizeGu
             {guide.title}
           </h2>
           <button
-            onClick={onClose}
+            onClick={(e) => {
+              e.stopPropagation();
+              onClose();
+            }}
             className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
             aria-label="Close size guide"
           >
