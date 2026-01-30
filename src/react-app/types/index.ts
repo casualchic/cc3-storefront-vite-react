@@ -91,3 +91,63 @@ export interface ProductFilters {
   onSale?: boolean;
   sort?: SortOption;
 }
+
+// Medusa.js compatible types for variant selection
+export interface ProductOption {
+  id: string;
+  title: string;              // e.g., "Size", "Color"
+  product_id?: string;
+  values: ProductOptionValue[];
+  metadata?: Record<string, unknown>;
+}
+
+export interface ProductOptionValue {
+  id: string;
+  value: string;              // e.g., "Blue", "Medium"
+  option_id?: string;
+  option?: ProductOption;
+  metadata?: Record<string, unknown>;
+}
+
+export interface ProductVariant {
+  id: string;
+  sku?: string;
+  barcode?: string;
+  title?: string;
+  product_id?: string;
+
+  // Pricing
+  price?: number;
+  calculated_price?: number;
+  original_price?: number;
+
+  // Inventory
+  inventory_quantity?: number;
+  allow_backorder?: boolean;
+  manage_inventory?: boolean;
+
+  // Selected option values for this variant
+  options: ProductOptionValue[];
+
+  // Media
+  images?: ProductImage[];
+  thumbnail?: string;
+
+  // Physical attributes
+  weight?: number;
+  length?: number;
+  height?: number;
+  width?: number;
+  material?: string;
+
+  // Metadata
+  metadata?: Record<string, unknown>;
+  variant_rank?: number;
+}
+
+export interface ProductImage {
+  id: string;
+  url: string;
+  rank?: number;
+  metadata?: Record<string, unknown>;
+}
