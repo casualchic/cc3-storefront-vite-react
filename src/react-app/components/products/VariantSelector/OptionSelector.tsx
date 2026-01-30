@@ -16,7 +16,7 @@ export function OptionSelector({
 }: OptionSelectorProps) {
   return (
     <div className="option-selector" role="group" aria-label={`${option.title} selection`}>
-      <label className="option-label">{option.title}:</label>
+      <div className="option-label">{option.title}:</div>
       <div className="option-buttons">
         {option.values.map((optionValue) => {
           const isSelected = selectedValue === optionValue.value;
