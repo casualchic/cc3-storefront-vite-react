@@ -123,19 +123,19 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const closeDrawer = () => setIsDrawerOpen(false);
 
   const applyDiscount = (code: string): { success: boolean; error?: string } => {
-    const discount = validateDiscountCode(code);
+    const result = validateDiscountCode(code);
 
-    if (!discount) {
-      return { success: false, error: 'Invalid discount code' };
+    if (!result.valid || !result.discount) {
+      return { success: false, error: result.error || 'Invalid discount code' };
     }
 
     const subtotal = getCartTotal();
-    const discountAmount = calculateDiscount(subtotal, discount);
+    const discountAmount = calculateDiscount(result.discount, subtotal);
 
     setAppliedDiscount({
       code: code.toUpperCase(),
       amount: discountAmount,
-      description: discount.description,
+      description: result.discount.description,
     });
 
     return { success: true };

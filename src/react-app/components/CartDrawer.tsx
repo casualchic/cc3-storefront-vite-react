@@ -1,5 +1,5 @@
-import { useEffect, useMemo } from 'react';
-import { X, ShoppingBag } from 'lucide-react';
+import { useEffect, useMemo, useState } from 'react';
+import { X, ShoppingBag, Tag } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { CartItem } from './CartItem';
 import { SHOP_CONFIG } from '../config/shopConfig';
@@ -44,8 +44,99 @@ function FreeShippingProgress({ subtotal }: { subtotal: number }) {
   );
 }
 
+interface DiscountCodeInputProps {
+  appliedDiscount: { code: string; amount: number; description: string } | null;
+  onApply: (code: string) => { success: boolean; error?: string };
+  onRemove: () => void;
+}
+
+function DiscountCodeInput({
+  appliedDiscount,
+  onApply,
+  onRemove,
+}: DiscountCodeInputProps) {
+  const [code, setCode] = useState('');
+  const [error, setError] = useState('');
+
+  const handleApply = () => {
+    setError('');
+    const result = onApply(code);
+
+    if (result.success) {
+      setCode('');
+    } else {
+      setError(result.error || 'Invalid discount code');
+    }
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleApply();
+    }
+  };
+
+  return (
+    <div className="space-y-2">
+      {appliedDiscount ? (
+        <div className="flex items-center justify-between p-3 bg-green-50 border border-green-200 rounded-lg">
+          <div className="flex items-center gap-2">
+            <Tag className="w-4 h-4 text-green-600" />
+            <div>
+              <div className="text-sm font-medium text-green-900">
+                {appliedDiscount.code}
+              </div>
+              <div className="text-xs text-green-700">
+                {appliedDiscount.description}
+              </div>
+            </div>
+          </div>
+          <button
+            onClick={onRemove}
+            className="p-1 hover:bg-green-100 rounded"
+            aria-label="Remove discount"
+          >
+            <X className="w-4 h-4 text-green-700" />
+          </button>
+        </div>
+      ) : (
+        <>
+          <div className="flex gap-2">
+            <input
+              type="text"
+              value={code}
+              onChange={(e) => setCode(e.target.value)}
+              onKeyPress={handleKeyPress}
+              placeholder="Enter discount code"
+              className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+            />
+            <button
+              onClick={handleApply}
+              disabled={!code.trim()}
+              className="px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+            >
+              Apply
+            </button>
+          </div>
+          {error && (
+            <div className="text-sm text-red-600">{error}</div>
+          )}
+        </>
+      )}
+    </div>
+  );
+}
+
 export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
-  const { cart, getCartItemCount, getCartTotal, updateQuantity, removeFromCart } = useCart();
+  const {
+    cart,
+    getCartItemCount,
+    getCartTotal,
+    updateQuantity,
+    removeFromCart,
+    appliedDiscount,
+    applyDiscount,
+    removeDiscount,
+  } = useCart();
   const itemCount = useMemo(() => cart.reduce((count, item) => count + item.quantity, 0), [cart]);
 
   // Prevent body scroll when drawer is open
@@ -154,6 +245,13 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
         {cart.length > 0 && (
           <div className="border-t border-gray-200 px-6 py-4 space-y-4">
             <FreeShippingProgress subtotal={getCartTotal()} />
+
+            <DiscountCodeInput
+              appliedDiscount={appliedDiscount}
+              onApply={applyDiscount}
+              onRemove={removeDiscount}
+            />
+
             {/* More footer content to come */}
           </div>
         )}

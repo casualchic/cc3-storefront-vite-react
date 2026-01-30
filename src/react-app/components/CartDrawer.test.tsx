@@ -182,4 +182,65 @@ describe('CartDrawer', () => {
 
     expect(screen.getByText(/You qualify for FREE shipping/i)).toBeInTheDocument();
   });
+
+  it('applies valid discount code', async () => {
+    const user = userEvent.setup();
+
+    const CartWithItems = () => {
+      const { addToCart } = useCart();
+
+      useEffect(() => {
+        addToCart({
+          productId: 'test-1',
+          name: 'Test Product',
+          price: 100,
+          image: '/test.jpg',
+          quantity: 1,
+        });
+      }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+      return <CartDrawer isOpen={true} onClose={vi.fn()} />;
+    };
+
+    renderWithCart(<CartWithItems />);
+
+    const input = screen.getByPlaceholderText(/enter discount code/i);
+    const applyButton = screen.getByText('Apply');
+
+    await user.type(input, 'SAVE10');
+    await user.click(applyButton);
+
+    expect(screen.getByText('SAVE10')).toBeInTheDocument();
+    expect(screen.getByText(/10% off your order/i)).toBeInTheDocument();
+  });
+
+  it('shows error for invalid discount code', async () => {
+    const user = userEvent.setup();
+
+    const CartWithItems = () => {
+      const { addToCart } = useCart();
+
+      useEffect(() => {
+        addToCart({
+          productId: 'test-1',
+          name: 'Test Product',
+          price: 100,
+          image: '/test.jpg',
+          quantity: 1,
+        });
+      }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+      return <CartDrawer isOpen={true} onClose={vi.fn()} />;
+    };
+
+    renderWithCart(<CartWithItems />);
+
+    const input = screen.getByPlaceholderText(/enter discount code/i);
+    const applyButton = screen.getByText('Apply');
+
+    await user.type(input, 'INVALID');
+    await user.click(applyButton);
+
+    expect(screen.getByText(/invalid discount code/i)).toBeInTheDocument();
+  });
 });
