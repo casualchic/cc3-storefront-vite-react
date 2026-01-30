@@ -280,7 +280,7 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
           role="dialog"
           aria-modal="true"
           aria-labelledby="cart-drawer-title"
-          className="fixed md:top-0 bottom-0 md:bottom-auto right-0 md:h-full h-[90vh] w-full md:max-w-md bg-white md:shadow-xl shadow-2xl z-50 flex flex-col md:animate-slide-in animate-slide-up md:rounded-none rounded-t-2xl"
+          className="fixed md:top-0 bottom-0 md:bottom-auto right-0 md:h-full h-[90vh] w-full md:w-[420px] bg-white md:shadow-xl shadow-2xl z-50 flex flex-col md:animate-slide-in animate-slide-up md:rounded-none rounded-t-2xl"
         >
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">

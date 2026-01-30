@@ -140,7 +140,7 @@ ul, ol {
 }
 
 /* Mobile drawer slides from bottom */
-@media (max-width: 768px) {
+@media (max-width: 767.98px) {
   @keyframes slide-up {
     from {
       transform: translateY(100%);
@@ -152,5 +152,23 @@ ul, ol {
 
   .animate-slide-up {
     animation: slide-up 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .animate-slide-in {
+    animation: none;
+    transform: translateX(0);
+  }
+
+  .animate-slide-up {
+    animation: none;
+    transform: translateY(0);
+  }
+
+  .animate-fade-in {
+    animation: none;
+    opacity: 1;
   }
 }
