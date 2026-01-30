@@ -1,47 +1,52 @@
-// src/react-app/App.tsx
-
-import { RouterProvider, createRouter } from '@tanstack/react-router';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { AuthProvider } from './context/AuthContext';
+import { useState, useEffect } from 'react';
 import { CartProvider } from './context/CartContext';
 import { WishlistProvider } from './context/WishlistContext';
 import { ThemeProvider } from './context/ThemeContext';
-import { routeTree } from './routeTree.gen';
-
-// Create a new router instance
-const router = createRouter({ routeTree });
-
-// Register the router instance for type safety
-declare module '@tanstack/react-router' {
-	interface Register {
-		router: typeof router;
-	}
-}
-
-// Create a QueryClient instance
-const queryClient = new QueryClient({
-	defaultOptions: {
-		queries: {
-			staleTime: 1000 * 60 * 5, // 5 minutes
-			refetchOnWindowFocus: false,
-		},
-	},
-});
+import { RootLayout } from './components/layout/RootLayout';
+import { HomePage } from './pages/HomePage';
+import { CategoryPage } from './pages/CategoryPage';
 
 function App() {
-	return (
-		<QueryClientProvider client={queryClient}>
-			<ThemeProvider>
-				<AuthProvider>
-					<CartProvider>
-						<WishlistProvider>
-							<RouterProvider router={router} />
-						</WishlistProvider>
-					</CartProvider>
-				</AuthProvider>
-			</ThemeProvider>
-		</QueryClientProvider>
-	);
+  // Simple client-side routing simulation
+  // In production, this would use TanStack Router
+  const [currentPath, setCurrentPath] = useState(() =>
+    typeof window !== 'undefined' ? window.location.pathname : '/'
+  );
+
+  // Listen for popstate events (browser back/forward)
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const handlePopState = () => {
+      setCurrentPath(window.location.pathname);
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  // Simple route matching
+  const renderPage = () => {
+    const pathParts = currentPath.split('/').filter(Boolean);
+
+    if (pathParts[0] === 'category' && pathParts[1]) {
+      const categorySlug = pathParts[1];
+      const subcategorySlug = pathParts[2];
+      return <CategoryPage categorySlug={categorySlug} subcategorySlug={subcategorySlug} />;
+    }
+
+    // Default to home page
+    return <HomePage />;
+  };
+
+  return (
+    <ThemeProvider>
+      <WishlistProvider>
+        <CartProvider>
+          <RootLayout>{renderPage()}</RootLayout>
+        </CartProvider>
+      </WishlistProvider>
+    </ThemeProvider>
+  );
 }
 
 export default App;

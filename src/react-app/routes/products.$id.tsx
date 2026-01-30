@@ -3,6 +3,7 @@ import { createFileRoute, Link } from '@tanstack/react-router';
 import { Heart, Truck, RotateCcw, Shield, Minus, Plus } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { products } from '../mocks/products';
+import { Product } from '../types';
 import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
 import { ProductCard } from '../components/ProductCard';
@@ -127,7 +128,7 @@ function ProductDetailPage() {
   const recentlyViewedProducts = recentlyViewedIds
     .filter((pid: string) => pid !== id)
     .map((pid: string) => products.find(p => p.id === pid))
-    .filter(Boolean)
+    .filter((p: Product | undefined): p is Product => Boolean(p))
     .slice(0, 4);
 
   // Check if all required selections are made
@@ -191,7 +192,9 @@ function ProductDetailPage() {
         productId: product.id,
         name: product.name,
         price: product.price,
+        originalPrice: product.originalPrice,
         image: product.image,
+        inStock: product.inStock,
       });
     }
   };
@@ -511,7 +514,7 @@ function ProductDetailPage() {
                 Recently Viewed
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {recentlyViewedProducts.map((viewedProduct) => (
+                {recentlyViewedProducts.map((viewedProduct: Product) => (
                   <ProductCard
                     key={viewedProduct.id}
                     product={viewedProduct}

@@ -9,7 +9,7 @@ interface NotifyWhenAvailableProps {
 }
 
 export function NotifyWhenAvailable({
-  productId,
+  productId: _productId,
   productName,
   selectedSize,
   selectedColor,

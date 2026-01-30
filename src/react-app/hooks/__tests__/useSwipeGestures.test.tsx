@@ -6,8 +6,8 @@ import { RefObject } from 'react';
 describe('useSwipeGestures', () => {
   let containerRef: RefObject<HTMLDivElement>;
   let mockContainer: HTMLDivElement;
-  let onSwipeLeft: ReturnType<typeof vi.fn>;
-  let onSwipeRight: ReturnType<typeof vi.fn>;
+  let onSwipeLeft: () => void;
+  let onSwipeRight: () => void;
 
   beforeEach(() => {
     mockContainer = document.createElement('div');

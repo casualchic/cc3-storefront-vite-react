@@ -4,10 +4,23 @@ import { sign, verify } from "hono/jwt";
 
 const app = new Hono<{ Bindings: Env }>();
 
-// Enable CORS for API requests
+// Enable CORS for API requests with origin validation
 app.use(
 	"/api/*",
 	cors({
+		origin: (origin: string, c) => {
+			// Get allowed origins from environment or use default for development
+			const allowedOriginsStr = c.env?.ALLOWED_ORIGINS || "http://localhost:5173,http://localhost:4173";
+			const allowedOrigins = allowedOriginsStr.split(",").map((o: string) => o.trim());
+
+			// Check if the origin is in the allowlist
+			if (allowedOrigins.includes(origin)) {
+				return origin;
+			}
+
+			// Reject unauthorized origins by returning first allowed origin
+			return allowedOrigins[0];
+		},
 		allowHeaders: ["Content-Type", "Authorization"],
 	})
 );

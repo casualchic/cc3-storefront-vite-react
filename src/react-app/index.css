@@ -1,137 +1,105 @@
-@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&display=swap')
-layer(base);
-
-@import 'tailwindcss';
-
-@source '../**/*.{js,ts,jsx,tsx}';
-
-@custom-variant dark (&:is(.dark *));
-
-@theme {
-  --font-heading: Libre Baskerville, Georgia, Times New Roman, serif;
-  --font-body: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif;
-
-  --color-brand-cream: #efe9e5;
-  --color-brand-light-beige: #e2d6d1;
-  --color-brand-taupe: #b6a59d;
-  --color-brand-dusty-rose: #cc8b81;
-  --color-brand-taupe-brown: #a18d84;
-  --color-brand-sage: #a6af99;
-  --color-brand-mustard: #d2c76c;
-  --color-brand-soft-blue: #94a9c9;
-  --color-brand-olive: #8e9b8d;
-}
-
-/*
-  The default border color has changed to `currentcolor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
-
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
-*/
-@layer base {
-  *,
-  ::after,
-  ::before,
-  ::backdrop,
-  ::file-selector-button {
-    border-color: var(--color-gray-200, currentcolor);
-  }
-}
+/* Casual Chic Boutique - Global Styles */
 
 :root {
-  /* Casual Chic Brand Colors */
-  --brand-cream: #EFE9E5;
-  --brand-light-beige: #E2D6D1;
-  --brand-taupe: #B6A59D;
-  --brand-dusty-rose: #CC8B81;
-  --brand-taupe-brown: #A18D84;
-  --brand-sage: #A6AF99;
-  --brand-mustard: #D2C76C;
-  --brand-soft-blue: #94A9C9;
-  --brand-olive: #8E9B8D;
+  /* Typography */
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.6;
+  font-weight: 400;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 
-  /* Color System - Updated to match brand */
-  --background: 16 20% 94%;  /* #EFE9E5 cream */
-  --foreground: 0 0% 0%;
-  --primary: 0 0% 0%;
-  --primary-foreground: 0 0% 100%;
-  --accent: 12 35% 65%;  /* #CC8B81 dusty rose */
-  --accent-foreground: 0 0% 100%;
-  --muted: 16 15% 90%;  /* #E2D6D1 light beige */
-  --muted-foreground: 20 10% 40%;
-  --border: 20 10% 80%;
-
-  /* Spacing System */
-  --spacing-xs: 0.25rem;
-  --spacing-sm: 0.5rem;
-  --spacing-md: 1rem;
-  --spacing-lg: 1.5rem;
-  --spacing-xl: 2rem;
-  --spacing-2xl: 3rem;
-
-  /* Animation */
-  --animation-speed: 0.2s;
-  --animation-ease: cubic-bezier(0.4, 0, 0.2, 1);
-
-  /* Typography Scale with Fluid Sizing */
-  --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
-  --text-sm: clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
-  --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
-  --text-lg: clamp(1.125rem, 1rem + 0.5vw, 1.25rem);
-  --text-xl: clamp(1.25rem, 1.1rem + 0.75vw, 1.5rem);
-  --text-2xl: clamp(1.5rem, 1.3rem + 1vw, 1.875rem);
-  --text-3xl: clamp(1.875rem, 1.6rem + 1.4vw, 2.25rem);
-  --text-4xl: clamp(2.25rem, 1.9rem + 1.75vw, 3rem);
-  --text-5xl: clamp(3rem, 2.5rem + 2.5vw, 3.75rem);
-
-  /* Aspect Ratios for Product Cards */
-  --ratio-square: 1;
-  --ratio-portrait: 0.75;
-  --ratio-landscape: 1.77777778;
-  --ratio-product: 0.8;
+  /* Light Mode Colors */
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F9FAFB;
+  --text-primary: #000000;
+  --text-secondary: #6B7280;
+  --border-color: #D1D5DB;
+  --accent-red: #DC2626;
 }
 
-.dark {
-  /* Dark Mode Colors - Adapted for Casual Chic */
-  --background: 20 15% 12%;
-  --foreground: 16 20% 94%;  /* cream */
-  --primary: 16 20% 94%;
-  --primary-foreground: 0 0% 12%;
-  --accent: 12 35% 65%;  /* dusty rose */
-  --accent-foreground: 0 0% 100%;
-  --muted: 0 0% 18%;
-  --muted-foreground: 20 10% 64%;
-  --border: 20 10% 28%;
+:root.dark {
+  /* Dark Mode Colors */
+  --bg-primary: #1F2937;
+  --bg-secondary: #111827;
+  --text-primary: #FFFFFF;
+  --text-secondary: #9CA3AF;
+  --border-color: #374151;
+  --accent-red: #EF4444;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  /* Brand Typography - Avenir-like sans-serif for body */
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-color: #EFE9E5;  /* brand cream */
-  color: #1a1a1a;
+  padding: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background: var(--bg-primary);
+  color: var(--text-primary);
 }
 
-.dark body {
-  background-color: #1f1f1f;
-  color: #EFE9E5;
+#root {
+  width: 100%;
 }
 
-/* Brand Typography Classes */
-.font-heading {
-  /* Big Caslon Medium alternative - Libre Baskerville */
-  font-family: 'Libre Baskerville', 'Georgia', 'Times New Roman', serif;
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0;
 }
 
-.font-body {
-  /* Avenir Book alternative - system sans-serif */
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+h1 {
+  font-size: 2.5rem;
 }
+
+h2 {
+  font-size: 2rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+input, select, textarea {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+ul, ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Responsive breakpoints */
+/* sm: 640px */
+/* md: 768px */
+/* lg: 1024px */
+/* xl: 1280px */
