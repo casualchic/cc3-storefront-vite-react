@@ -29,7 +29,7 @@ const PRICE_RANGES: [number, number][] = [
   [0, 50],
   [50, 100],
   [100, 200],
-  [200, 500],
+  [200, Infinity],
 ];
 
 export const ProductFilters = ({
@@ -220,13 +220,16 @@ export const ProductFilters = ({
               {PRICE_RANGES.map((range) => {
                 const isActive =
                   priceRange && priceRange[0] === range[0] && priceRange[1] === range[1];
+                const label = range[1] === Infinity
+                  ? `$${range[0]}+`
+                  : `$${range[0]} - $${range[1]}`;
                 return (
                   <button
                     key={`${range[0]}-${range[1]}`}
                     className={`filter-option${isActive ? ' active' : ''}`}
                     onClick={() => handlePriceRangeClick(range)}
                   >
-                    ${range[0]} - ${range[1]}
+                    {label}
                   </button>
                 );
               })}

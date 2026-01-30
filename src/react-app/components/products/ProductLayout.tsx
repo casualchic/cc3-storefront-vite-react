@@ -71,8 +71,8 @@ export const ProductLayout = ({ category, subcategory }: ProductLayoutProps) => 
     if (filters.sizes && filters.sizes.length > 0) params.set('sizes', filters.sizes.join(','));
     if (filters.colors && filters.colors.length > 0)
       params.set('colors', filters.colors.join(','));
-    if (filters.minPrice) params.set('minPrice', filters.minPrice.toString());
-    if (filters.maxPrice) params.set('maxPrice', filters.maxPrice.toString());
+    if (filters.minPrice !== undefined) params.set('minPrice', filters.minPrice.toString());
+    if (filters.maxPrice !== undefined) params.set('maxPrice', filters.maxPrice.toString());
     if (filters.inStockOnly) params.set('inStock', 'true');
     if (filters.onSale) params.set('onSale', 'true');
     if (sortBy !== 'relevance') params.set('sort', sortBy);

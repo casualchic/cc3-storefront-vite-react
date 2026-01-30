@@ -37,15 +37,15 @@ export const Footer = () => {
           <h3>Connect</h3>
           <ul>
             <li><a href="/newsletter">Newsletter</a></li>
-            <li><a href="#">Instagram</a></li>
-            <li><a href="#">Facebook</a></li>
-            <li><a href="#">Pinterest</a></li>
+            <li><a href="https://instagram.com/casualchicboutique" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+            <li><a href="https://facebook.com/casualchicboutique" target="_blank" rel="noopener noreferrer">Facebook</a></li>
+            <li><a href="https://pinterest.com/casualchicboutique" target="_blank" rel="noopener noreferrer">Pinterest</a></li>
           </ul>
         </div>
       </div>
 
       <div className="footer-bottom">
-        <p>&copy; 2026 Casual Chic Boutique. All rights reserved.</p>
+        <p>&copy; {new Date().getFullYear()} Casual Chic Boutique. All rights reserved.</p>
       </div>
     </footer>
   );

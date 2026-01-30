@@ -1,10 +1,11 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
+import type { ReactNode } from 'react';
 import { CartProvider } from '../../context/CartContext';
 import { WishlistProvider } from '../../context/WishlistContext';
 import { ProductLayout } from './ProductLayout';
 
-const Wrapper = ({ children }: { children: React.ReactNode }) => (
+const Wrapper = ({ children }: { children: ReactNode }) => (
   <WishlistProvider>
     <CartProvider>{children}</CartProvider>
   </WishlistProvider>

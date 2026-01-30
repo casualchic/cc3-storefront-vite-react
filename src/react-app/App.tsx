@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { CartProvider } from './context/CartContext';
 import { WishlistProvider } from './context/WishlistContext';
 import { ThemeProvider } from './context/ThemeContext';
@@ -9,16 +9,20 @@ import { CategoryPage } from './pages/CategoryPage';
 function App() {
   // Simple client-side routing simulation
   // In production, this would use TanStack Router
-  const [currentPath, setCurrentPath] = useState(window.location.pathname);
+  const [currentPath, setCurrentPath] = useState(() =>
+    typeof window !== 'undefined' ? window.location.pathname : '/'
+  );
 
   // Listen for popstate events (browser back/forward)
-  useState(() => {
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
     const handlePopState = () => {
       setCurrentPath(window.location.pathname);
     };
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
-  });
+  }, []);
 
   // Simple route matching
   const renderPage = () => {
