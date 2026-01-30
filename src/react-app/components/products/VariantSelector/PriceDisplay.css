@@ -1,0 +1,30 @@
+.price-display {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+  transition: opacity 300ms ease-in-out;
+}
+
+.price-current {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.price-original {
+  font-size: 1.125rem;
+  font-weight: 400;
+  color: var(--text-secondary);
+  text-decoration: line-through;
+}
+
+.price-placeholder {
+  color: var(--text-secondary);
+  opacity: 0.7;
+}
+
+.price-select-text {
+  font-size: 1rem;
+  font-style: italic;
+}
