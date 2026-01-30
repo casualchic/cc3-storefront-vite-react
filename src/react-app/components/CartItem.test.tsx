@@ -32,8 +32,8 @@ const mockCartItemMinimal: CartItem = {
 };
 
 function renderCartItem(
-  onUpdateQuantity: (productId: string, quantity: number) => void,
-  onRemove: (productId: string) => void,
+  onUpdateQuantity: (productId: string, quantity: number, size?: string, color?: string) => void,
+  onRemove: (productId: string, size?: string, color?: string) => void,
   item: CartItem = mockCartItem,
   compact: boolean = false
 ) {
@@ -126,7 +126,7 @@ describe('CartItem', () => {
       const plusButton = screen.getByRole('button', { name: /increase quantity/i });
       fireEvent.click(plusButton);
 
-      expect(onUpdateQuantity).toHaveBeenCalledWith(mockCartItem.productId, 3);
+      expect(onUpdateQuantity).toHaveBeenCalledWith(mockCartItem.productId, 3, mockCartItem.size, mockCartItem.color);
     });
 
     it('calls onUpdateQuantity when minus button clicked (quantity - 1)', () => {
@@ -138,7 +138,7 @@ describe('CartItem', () => {
       const minusButton = screen.getByRole('button', { name: /decrease quantity/i });
       fireEvent.click(minusButton);
 
-      expect(onUpdateQuantity).toHaveBeenCalledWith(mockCartItem.productId, 1);
+      expect(onUpdateQuantity).toHaveBeenCalledWith(mockCartItem.productId, 1, mockCartItem.size, mockCartItem.color);
     });
 
     it('disables minus button at quantity 1', () => {
@@ -175,7 +175,7 @@ describe('CartItem', () => {
       fireEvent.change(quantityInput, { target: { value: '5' } });
       fireEvent.blur(quantityInput);
 
-      expect(onUpdateQuantity).toHaveBeenCalledWith(mockCartItem.productId, 5);
+      expect(onUpdateQuantity).toHaveBeenCalledWith(mockCartItem.productId, 5, mockCartItem.size, mockCartItem.color);
     });
   });
 
@@ -189,7 +189,7 @@ describe('CartItem', () => {
       const removeButton = screen.getByRole('button', { name: /remove item/i });
       fireEvent.click(removeButton);
 
-      expect(onRemove).toHaveBeenCalledWith(mockCartItem.productId);
+      expect(onRemove).toHaveBeenCalledWith(mockCartItem.productId, mockCartItem.size, mockCartItem.color);
     });
 
     it('has accessible label for remove button', () => {

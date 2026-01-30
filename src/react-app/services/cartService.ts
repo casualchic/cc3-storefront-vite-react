@@ -139,8 +139,9 @@ class LocalStorageCartService implements CartService {
     const existingIndex = this.findItem(cart, item.productId, item.size, item.color);
 
     if (existingIndex >= 0) {
-      // Item exists, merge quantities
-      cart[existingIndex].quantity += item.quantity;
+      // Item exists, merge quantities with max cap
+      const newQuantity = cart[existingIndex].quantity + item.quantity;
+      cart[existingIndex].quantity = Math.min(newQuantity, 99);
     } else {
       // Check cart size limit before adding new item
       if (cart.length >= this.MAX_CART_ITEMS) {

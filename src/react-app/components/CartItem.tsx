@@ -2,27 +2,31 @@ import { Link } from '@tanstack/react-router';
 import { Minus, Plus, Trash2 } from 'lucide-react';
 import { CartItem as CartItemType } from '../types';
 import { SHOP_CONFIG } from '../config/shopConfig';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface CartItemProps {
   item: CartItemType;
-  onUpdateQuantity: (productId: string, quantity: number) => void;
-  onRemove: (productId: string) => void;
+  onUpdateQuantity: (productId: string, quantity: number, size?: string, color?: string) => void;
+  onRemove: (productId: string, size?: string, color?: string) => void;
   compact?: boolean;
 }
 
 export function CartItem({ item, onUpdateQuantity, onRemove, compact = false }: CartItemProps) {
   const [localQuantity, setLocalQuantity] = useState(item.quantity.toString());
 
+  useEffect(() => {
+    setLocalQuantity(item.quantity.toString());
+  }, [item.quantity]);
+
   const handleDecrease = () => {
     if (item.quantity > 1) {
-      onUpdateQuantity(item.productId, item.quantity - 1);
+      onUpdateQuantity(item.productId, item.quantity - 1, item.size, item.color);
     }
   };
 
   const handleIncrease = () => {
     if (item.quantity < SHOP_CONFIG.maxQuantityPerItem) {
-      onUpdateQuantity(item.productId, item.quantity + 1);
+      onUpdateQuantity(item.productId, item.quantity + 1, item.size, item.color);
     }
   };
 
@@ -38,14 +42,14 @@ export function CartItem({ item, onUpdateQuantity, onRemove, compact = false }: 
       setLocalQuantity(item.quantity.toString());
     } else if (numValue > SHOP_CONFIG.maxQuantityPerItem) {
       setLocalQuantity(SHOP_CONFIG.maxQuantityPerItem.toString());
-      onUpdateQuantity(item.productId, SHOP_CONFIG.maxQuantityPerItem);
+      onUpdateQuantity(item.productId, SHOP_CONFIG.maxQuantityPerItem, item.size, item.color);
     } else if (numValue !== item.quantity) {
-      onUpdateQuantity(item.productId, numValue);
+      onUpdateQuantity(item.productId, numValue, item.size, item.color);
     }
   };
 
   const handleRemove = () => {
-    onRemove(item.productId);
+    onRemove(item.productId, item.size, item.color);
   };
 
   const totalPrice = (item.price * item.quantity).toFixed(2);
@@ -123,11 +127,11 @@ export function CartItem({ item, onUpdateQuantity, onRemove, compact = false }: 
           {/* Price */}
           <div className="text-right">
             <div className="text-sm font-medium text-gray-900">
-              ${totalPrice}
+              {SHOP_CONFIG.currencySymbol}{totalPrice}
             </div>
             {item.quantity > 1 && (
               <div className="text-xs text-gray-500">
-                ${item.price.toFixed(2)} each
+                {SHOP_CONFIG.currencySymbol}{item.price.toFixed(2)} each
               </div>
             )}
           </div>

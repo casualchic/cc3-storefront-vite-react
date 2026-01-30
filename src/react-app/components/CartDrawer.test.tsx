@@ -155,7 +155,7 @@ describe('CartDrawer', () => {
 
     renderWithCart(<CartWithItems />);
 
-    expect(screen.getByText((content, element) => {
+    expect(screen.getByText((_content, element) => {
       return element?.textContent === 'Add $25.00 more for FREE shipping!' &&
              element?.className === 'text-sm text-gray-600 mb-2';
     })).toBeInTheDocument();

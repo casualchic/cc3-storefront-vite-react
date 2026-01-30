@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, useMemo, ReactNode } from 'react';
 import { CartItem } from '../types';
 import { DiscountCode, validateDiscountCode, calculateDiscount } from '../data/mockDiscounts';
 
@@ -47,7 +47,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     return [];
   });
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [appliedDiscount, setAppliedDiscount] = useState<AppliedDiscount | null>(null);
+  const [appliedDiscountCode, setAppliedDiscountCode] = useState<{code: string; discount: DiscountCode} | null>(null);
 
   // Persist cart to localStorage whenever it changes
   useEffect(() => {
@@ -122,6 +122,18 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const openDrawer = () => setIsDrawerOpen(true);
   const closeDrawer = () => setIsDrawerOpen(false);
 
+  // Calculate discount dynamically based on current cart total
+  const appliedDiscount = useMemo(() => {
+    if (!appliedDiscountCode) return null;
+    const subtotal = cart.reduce((total, item) => total + item.price * item.quantity, 0);
+    const amount = calculateDiscount(appliedDiscountCode.discount, subtotal);
+    return {
+      code: appliedDiscountCode.code,
+      amount,
+      description: appliedDiscountCode.discount.description,
+    };
+  }, [appliedDiscountCode, cart]);
+
   const applyDiscount = (code: string): { success: boolean; error?: string } => {
     const result = validateDiscountCode(code);
 
@@ -129,20 +141,16 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       return { success: false, error: result.error || 'Invalid discount code' };
     }
 
-    const subtotal = getCartTotal();
-    const discountAmount = calculateDiscount(result.discount, subtotal);
-
-    setAppliedDiscount({
+    setAppliedDiscountCode({
       code: code.toUpperCase(),
-      amount: discountAmount,
-      description: result.discount.description,
+      discount: result.discount,
     });
 
     return { success: true };
   };
 
   const removeDiscount = () => {
-    setAppliedDiscount(null);
+    setAppliedDiscountCode(null);
   };
 
   return (
