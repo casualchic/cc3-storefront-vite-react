@@ -212,7 +212,7 @@ describe('CartDrawer', () => {
 
     expect(screen.getByText('SAVE10')).toBeInTheDocument();
     expect(screen.getByText(/10% off your order/i)).toBeInTheDocument();
-    expect(screen.getByText('-$10.00')).toBeInTheDocument();
+    expect(screen.getAllByText('-$10.00')).toHaveLength(2); // Shows in discount badge and summary
   });
 
   it('shows error for invalid discount code', async () => {
@@ -243,5 +243,38 @@ describe('CartDrawer', () => {
     await user.click(applyButton);
 
     expect(screen.getByText(/invalid discount code/i)).toBeInTheDocument();
+  });
+
+  it('displays correct subtotal and total with discount', () => {
+    const CartWithDiscount = () => {
+      const { cart, addToCart, applyDiscount } = useCart();
+
+      useEffect(() => {
+        addToCart({
+          productId: 'test-1',
+          name: 'Test Product',
+          price: 100,
+          image: '/test.jpg',
+          quantity: 1,
+        });
+      }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+      useEffect(() => {
+        if (cart.length > 0) {
+          applyDiscount('SAVE10');
+        }
+      }, [cart.length]); // eslint-disable-line react-hooks/exhaustive-deps
+
+      return <CartDrawer isOpen={true} onClose={vi.fn()} />;
+    };
+
+    renderWithCart(<CartWithDiscount />);
+
+    expect(screen.getByText('Subtotal:')).toBeInTheDocument();
+    expect(screen.getAllByText('$100.00').length).toBeGreaterThanOrEqual(1);
+    expect(screen.getByText('Discount:')).toBeInTheDocument();
+    expect(screen.getAllByText('-$10.00').length).toBeGreaterThanOrEqual(1);
+    expect(screen.getByText('Total:')).toBeInTheDocument();
+    expect(screen.getByText('$90.00')).toBeInTheDocument();
   });
 });

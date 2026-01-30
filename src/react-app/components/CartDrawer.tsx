@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { Link } from '@tanstack/react-router';
 import { X, ShoppingBag, Tag } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { CartItem } from './CartItem';
@@ -131,6 +132,67 @@ function DiscountCodeInput({
   );
 }
 
+interface CartSummaryProps {
+  subtotal: number;
+  discount: number;
+  total: number;
+  onContinueShopping: () => void;
+}
+
+function CartSummary({ subtotal, discount, total, onContinueShopping }: CartSummaryProps) {
+  return (
+    <div className="space-y-3">
+      {/* Subtotal */}
+      <div className="flex justify-between text-gray-600">
+        <span>Subtotal:</span>
+        <span>
+          {SHOP_CONFIG.currencySymbol}
+          {subtotal.toFixed(2)}
+        </span>
+      </div>
+
+      {/* Discount */}
+      {discount > 0 && (
+        <div className="flex justify-between text-green-600 font-medium">
+          <span>Discount:</span>
+          <span>
+            -{SHOP_CONFIG.currencySymbol}
+            {discount.toFixed(2)}
+          </span>
+        </div>
+      )}
+
+      {/* Divider */}
+      <div className="border-t border-gray-200" />
+
+      {/* Total */}
+      <div className="flex justify-between text-lg font-bold">
+        <span>Total:</span>
+        <span>
+          {SHOP_CONFIG.currencySymbol}
+          {total.toFixed(2)}
+        </span>
+      </div>
+
+      {/* Checkout Button */}
+      <Link
+        to="/checkout"
+        className="block w-full py-3 bg-black text-white text-center rounded-lg font-medium hover:bg-gray-800 transition-colors"
+      >
+        Proceed to Checkout
+      </Link>
+
+      {/* Continue Shopping */}
+      <button
+        onClick={onContinueShopping}
+        className="block w-full text-center text-gray-600 hover:text-gray-900 transition-colors"
+      >
+        Continue Shopping
+      </button>
+    </div>
+  );
+}
+
 export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
   const {
     cart,
@@ -246,7 +308,7 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
           )}
         </div>
 
-        {/* Footer (to be implemented) */}
+        {/* Footer */}
         {cart.length > 0 && (
           <div className="border-t border-gray-200 px-6 py-4 space-y-4">
             <FreeShippingProgress subtotal={getCartTotal()} />
@@ -257,7 +319,12 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
               onRemove={removeDiscount}
             />
 
-            {/* More footer content to come */}
+            <CartSummary
+              subtotal={getCartTotal()}
+              discount={appliedDiscount?.amount || 0}
+              total={getCartTotal() - (appliedDiscount?.amount || 0)}
+              onContinueShopping={onClose}
+            />
           </div>
         )}
       </div>
