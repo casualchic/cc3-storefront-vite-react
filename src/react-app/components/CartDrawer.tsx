@@ -10,7 +10,7 @@ interface CartDrawerProps {
 
 export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
   const { cart, getCartItemCount, updateQuantity, removeFromCart } = useCart();
-  const itemCount = useMemo(() => getCartItemCount(), [getCartItemCount]);
+  const itemCount = useMemo(() => cart.reduce((count, item) => count + item.quantity, 0), [cart]);
 
   // Prevent body scroll when drawer is open
   useEffect(() => {
@@ -97,16 +97,16 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
             </div>
           ) : (
             // Cart Items List
-            <div className="py-4 space-y-0">
+            <div className="py-4">
               {cart.map((item) => (
                 <CartItem
                   key={`${item.productId}-${item.size}-${item.color}`}
                   item={item}
-                  onUpdateQuantity={(quantity) =>
-                    updateQuantity(item.productId, quantity, item.size, item.color)
+                  onUpdateQuantity={(productId, quantity) =>
+                    updateQuantity(productId, quantity, item.size, item.color)
                   }
-                  onRemove={() =>
-                    removeFromCart(item.productId, item.size, item.color)
+                  onRemove={(productId) =>
+                    removeFromCart(productId, item.size, item.color)
                   }
                 />
               ))}

@@ -120,7 +120,7 @@ describe('CartDrawer', () => {
           image: '/test.jpg',
           quantity: 2,
         });
-      }, []);
+      }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
       return <CartDrawer isOpen={true} onClose={onClose} />;
     };
