@@ -1,6 +1,7 @@
 import { useEffect, useMemo } from 'react';
 import { X, ShoppingBag } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { CartItem } from './CartItem';
 
 interface CartDrawerProps {
   isOpen: boolean;
@@ -8,7 +9,7 @@ interface CartDrawerProps {
 }
 
 export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
-  const { cart, getCartItemCount } = useCart();
+  const { cart, getCartItemCount, updateQuantity, removeFromCart } = useCart();
   const itemCount = useMemo(() => getCartItemCount(), [getCartItemCount]);
 
   // Prevent body scroll when drawer is open
@@ -95,9 +96,20 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
               </button>
             </div>
           ) : (
-            // Cart Items (to be implemented)
-            <div className="py-4">
-              <p>Cart items will be displayed here</p>
+            // Cart Items List
+            <div className="py-4 space-y-0">
+              {cart.map((item) => (
+                <CartItem
+                  key={`${item.productId}-${item.size}-${item.color}`}
+                  item={item}
+                  onUpdateQuantity={(quantity) =>
+                    updateQuantity(item.productId, quantity, item.size, item.color)
+                  }
+                  onRemove={() =>
+                    removeFromCart(item.productId, item.size, item.color)
+                  }
+                />
+              ))}
             </div>
           )}
         </div>

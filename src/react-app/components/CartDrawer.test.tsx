@@ -1,8 +1,18 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
+import { useEffect } from 'react';
 import { CartDrawer } from './CartDrawer';
-import { CartProvider } from '../context/CartContext';
+import { CartProvider, useCart } from '../context/CartContext';
+
+// Mock the @tanstack/react-router Link component
+vi.mock('@tanstack/react-router', () => ({
+  Link: ({ to, params, children, className }: any) => (
+    <a href={typeof to === 'string' ? to.replace('$productId', params?.productId || '') : '/'} className={className}>
+      {children}
+    </a>
+  ),
+}));
 
 describe('CartDrawer', () => {
   const renderWithCart = (ui: React.ReactElement) => {
@@ -93,5 +103,30 @@ describe('CartDrawer', () => {
     await user.click(continueButton);
 
     expect(onClose).toHaveBeenCalled();
+  });
+
+  it('displays cart items when cart has items', () => {
+    const onClose = vi.fn();
+
+    // Need to wrap with CartProvider that has items
+    const CartWithItems = () => {
+      const { addToCart } = useCart();
+
+      useEffect(() => {
+        addToCart({
+          productId: 'test-1',
+          name: 'Test Product',
+          price: 49.99,
+          image: '/test.jpg',
+          quantity: 2,
+        });
+      }, []);
+
+      return <CartDrawer isOpen={true} onClose={onClose} />;
+    };
+
+    renderWithCart(<CartWithItems />);
+
+    expect(screen.getByText('Test Product')).toBeInTheDocument();
   });
 });
