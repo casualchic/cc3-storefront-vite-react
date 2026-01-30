@@ -153,5 +153,5 @@ Before deploying to production:
 
 For deployment issues:
 - Check Cloudflare Workers dashboard logs
-- Review Wrangler documentation: https://developers.cloudflare.com/workers/
-- Check R2 documentation: https://developers.cloudflare.com/r2/
+- Review [Cloudflare Workers documentation](https://developers.cloudflare.com/workers/)
+- Check [Cloudflare R2 documentation](https://developers.cloudflare.com/r2/)
