@@ -30,6 +30,11 @@
   --text-secondary: #9CA3AF;
   --border-color: #374151;
   --accent-red: #EF4444;
+
+  /* Stock status colors (dark mode) */
+  --color-success: #10b981; /* lighter green for better contrast */
+  --color-warning: #fbbf24; /* lighter amber for better contrast */
+  --color-error: #ef4444; /* lighter red for better contrast */
 }
 
 * {
