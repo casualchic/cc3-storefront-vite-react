@@ -32,7 +32,7 @@ export function adaptSimpleProductToOptions(product: Product): {
           option_id: 'color-option',
           metadata: { hex: swatch.hex },
         }))
-      : product.colors!.map((color, idx) => ({
+      : (product.colors || []).map((color, idx) => ({
           id: `color-${idx}`,
           value: color,
           option_id: 'color-option',

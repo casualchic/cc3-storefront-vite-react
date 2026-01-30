@@ -1,5 +1,10 @@
 // Type definitions for Casual Chic Boutique storefront
 
+export interface ColorSwatch {
+  name: string;
+  hex: string;
+}
+
 export interface Product {
   id: string;
   name: string;
@@ -12,6 +17,8 @@ export interface Product {
   subcategory?: string;
   sizes?: string[];
   colors?: string[];
+  colorSwatches?: ColorSwatch[];
+  variants?: ProductVariant[];
   inStock: boolean;
   rating?: number;
   reviews?: number;
