@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from '@tanstack/react-router';
 import { X, ShoppingBag, Tag } from 'lucide-react';
+import FocusTrap from 'focus-trap-react';
 import { useCart } from '../context/CartContext';
 import { CartItem } from './CartItem';
 import { SHOP_CONFIG } from '../config/shopConfig';
@@ -265,13 +266,22 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
         aria-hidden="true"
       />
 
-      {/* Drawer */}
-      <div
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="cart-drawer-title"
-        className="fixed top-0 right-0 h-full w-full max-w-md bg-white shadow-xl z-50 flex flex-col animate-slide-in"
+      {/* Drawer with Focus Trap */}
+      <FocusTrap
+        active={isOpen}
+        focusTrapOptions={{
+          initialFocus: false,
+          allowOutsideClick: true,
+          escapeDeactivates: false, // We handle Escape ourselves
+          fallbackFocus: () => document.body,
+        }}
       >
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="cart-drawer-title"
+          className="fixed top-0 right-0 h-full w-full max-w-md bg-white shadow-xl z-50 flex flex-col animate-slide-in"
+        >
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
           <h2 id="cart-drawer-title" className="text-lg font-semibold">
@@ -350,7 +360,8 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
             />
           </div>
         )}
-      </div>
+        </div>
+      </FocusTrap>
     </>
   );
 }

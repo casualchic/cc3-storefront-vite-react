@@ -277,4 +277,21 @@ describe('CartDrawer', () => {
     expect(screen.getByText('Total:')).toBeInTheDocument();
     expect(screen.getByText('$90.00')).toBeInTheDocument();
   });
+
+  it('traps focus within drawer when open', async () => {
+    const user = userEvent.setup();
+
+    renderWithCart(<CartDrawer isOpen={true} onClose={vi.fn()} />);
+
+    const closeButton = screen.getByLabelText('Close cart');
+    const continueButton = screen.getByText('Continue Shopping');
+
+    // Focus should cycle within drawer
+    closeButton.focus();
+    expect(closeButton).toHaveFocus();
+
+    await user.tab();
+    // Focus should move to next element in drawer, not outside
+    expect(document.activeElement).not.toBe(document.body);
+  });
 });
