@@ -4,6 +4,9 @@ import { X, ShoppingBag, Tag } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { CartItem } from './CartItem';
 import { SHOP_CONFIG } from '../config/shopConfig';
+import { ProductRecommendations } from './ProductRecommendations';
+import { getRecommendations } from '../data/mockRecommendations';
+import { Product } from '../types';
 
 interface CartDrawerProps {
   isOpen: boolean;
@@ -206,6 +209,24 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
   } = useCart();
   const itemCount = useMemo(() => cart.reduce((count, item) => count + item.quantity, 0), [cart]);
 
+  // Get recommended products
+  const recommendedProductIds = useMemo(() => {
+    return getRecommendations(cart);
+  }, [cart]);
+
+  // TODO: Fetch actual products by IDs
+  // For now, we'll create mock products from IDs
+  const recommendedProducts: Product[] = useMemo(() => {
+    return recommendedProductIds.map((id) => ({
+      id,
+      name: `Product ${id}`,
+      price: 29.99,
+      image: '/placeholder.jpg',
+      category: 'women',
+      inStock: true,
+    }));
+  }, [recommendedProductIds]);
+
   // Prevent body scroll when drawer is open
   useEffect(() => {
     if (isOpen) {
@@ -318,6 +339,8 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
               onApply={applyDiscount}
               onRemove={removeDiscount}
             />
+
+            <ProductRecommendations products={recommendedProducts} />
 
             <CartSummary
               subtotal={getCartTotal()}
