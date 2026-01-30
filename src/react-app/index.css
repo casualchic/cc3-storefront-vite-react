@@ -17,6 +17,9 @@
   --text-secondary: #6B7280;
   --border-color: #D1D5DB;
   --accent-red: #DC2626;
+  --color-success: #059669;
+  --color-warning: #f59e0b;
+  --color-error: #dc2626;
 }
 
 :root.dark {
@@ -27,6 +30,11 @@
   --text-secondary: #9CA3AF;
   --border-color: #374151;
   --accent-red: #EF4444;
+
+  /* Stock status colors (dark mode) */
+  --color-success: #10b981; /* lighter green for better contrast */
+  --color-warning: #fbbf24; /* lighter amber for better contrast */
+  --color-error: #ef4444; /* lighter red for better contrast */
 }
 
 * {
@@ -129,4 +137,20 @@ ul, ol {
 
 .animate-fade-in {
   animation: fade-in 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Mobile drawer slides from bottom */
+@media (max-width: 768px) {
+  @keyframes slide-up {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  .animate-slide-up {
+    animation: slide-up 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
 }
