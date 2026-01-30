@@ -1,11 +1,7 @@
 import { useState } from 'react';
 import { Truck, MapPin } from 'lucide-react';
 
-interface ShippingEstimateProps {
-  productName: string;
-}
-
-export function ShippingEstimate({ productName: _productName }: ShippingEstimateProps) {
+export function ShippingEstimate() {
   const [zipCode, setZipCode] = useState('');
   const [estimate, setEstimate] = useState<{
     standard: string;

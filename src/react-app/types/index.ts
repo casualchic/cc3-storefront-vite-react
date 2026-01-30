@@ -24,6 +24,9 @@ export interface Product {
   reviews?: number;
   isNew?: boolean;
   isSale?: boolean;
+  stockStatus?: 'in-stock' | 'low-stock' | 'out-of-stock';
+  stockCount?: number;
+  defaultVariantId?: string;
 }
 
 export interface Category {
@@ -192,6 +195,10 @@ export interface ProductVariant {
   width?: number;
   /** Material description */
   material?: string;
+  /** Size value (convenience field) */
+  size?: string;
+  /** Color value (convenience field) */
+  color?: string;
 
   // Metadata
   /** Additional custom data */

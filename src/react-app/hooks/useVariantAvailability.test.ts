@@ -1,3 +1,4 @@
+import { describe, test, expect } from 'vitest';
 import { renderHook } from '@testing-library/react';
 import { useVariantAvailability } from './useVariantAvailability';
 import type { ProductOption, ProductVariant } from '../types';
@@ -27,8 +28,8 @@ describe('useVariantAvailability', () => {
       id: 'var-1',
       title: 'Blue / S',
       options: [
-        { id: 'blue', value: 'Blue', option: { title: 'Color' } as any },
-        { id: 's', value: 'S', option: { title: 'Size' } as any },
+        { id: 'blue', value: 'Blue', option: { title: 'Color' } as ProductOption },
+        { id: 's', value: 'S', option: { title: 'Size' } as ProductOption },
       ],
       inventory_quantity: 10,
     },
@@ -36,8 +37,8 @@ describe('useVariantAvailability', () => {
       id: 'var-2',
       title: 'Red / M',
       options: [
-        { id: 'red', value: 'Red', option: { title: 'Color' } as any },
-        { id: 'm', value: 'M', option: { title: 'Size' } as any },
+        { id: 'red', value: 'Red', option: { title: 'Color' } as ProductOption },
+        { id: 'm', value: 'M', option: { title: 'Size' } as ProductOption },
       ],
       inventory_quantity: 5,
     },

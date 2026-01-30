@@ -116,7 +116,7 @@ export const ProductLayout = ({ category, subcategory }: ProductLayoutProps) => 
 
       return true;
     });
-  }, [products, filters]);
+  }, [filters]);
 
   // Sort products
   const sortedProducts = useMemo(() => {

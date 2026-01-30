@@ -1,10 +1,30 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { RouterProvider, createMemoryHistory, createRootRoute, createRoute, createRouter } from '@tanstack/react-router';
 import { ProductCard } from '../ProductCard';
 import { CartProvider } from '../../context/CartContext';
 import { WishlistProvider } from '../../context/WishlistContext';
 import { Product } from '../../types';
+
+// Mock the @tanstack/react-router Link component
+vi.mock('@tanstack/react-router', () => ({
+  Link: ({ to, params, children, className, onMouseEnter, onMouseLeave }: {
+    to: string;
+    params?: { id?: string };
+    children: React.ReactNode;
+    className?: string;
+    onMouseEnter?: () => void;
+    onMouseLeave?: () => void;
+  }) => (
+    <a
+      href={typeof to === 'string' ? to.replace('$id', params?.id || '') : '/'}
+      className={className}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+    >
+      {children}
+    </a>
+  ),
+}));
 
 // Mock product data
 const mockProduct: Product = {
@@ -35,29 +55,12 @@ const mockProductOutOfStock: Product = {
 };
 
 function renderWithProviders(ui: React.ReactElement) {
-  // Create a simple router for testing
-  const rootRoute = createRootRoute();
-  const indexRoute = createRoute({
-    getParentRoute: () => rootRoute,
-    path: '/',
-    component: () => (
-      <CartProvider>
-        <WishlistProvider>
-          {ui}
-        </WishlistProvider>
-      </CartProvider>
-    ),
-  });
-
-  const router = createRouter({
-    routeTree: rootRoute.addChildren([indexRoute]),
-    history: createMemoryHistory({
-      initialEntries: ['/'],
-    }),
-  });
-
   return render(
-    <RouterProvider router={router} />
+    <CartProvider>
+      <WishlistProvider>
+        {ui}
+      </WishlistProvider>
+    </CartProvider>
   );
 }
 

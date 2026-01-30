@@ -29,8 +29,8 @@ describe('VariantSelector', () => {
         id: 'var-1',
         title: 'Blue / S',
         options: [
-          { id: 'blue', value: 'Blue', option: { title: 'Color' } as any },
-          { id: 's', value: 'S', option: { title: 'Size' } as any },
+          { id: 'blue', value: 'Blue', option: { title: 'Color' } as ProductOption },
+          { id: 's', value: 'S', option: { title: 'Size' } as ProductOption },
         ],
         price: 29.99,
         inventory_quantity: 10,
@@ -39,8 +39,8 @@ describe('VariantSelector', () => {
         id: 'var-2',
         title: 'Red / M',
         options: [
-          { id: 'red', value: 'Red', option: { title: 'Color' } as any },
-          { id: 'm', value: 'M', option: { title: 'Size' } as any },
+          { id: 'red', value: 'Red', option: { title: 'Color' } as ProductOption },
+          { id: 'm', value: 'M', option: { title: 'Size' } as ProductOption },
         ],
         price: 34.99,
         inventory_quantity: 3,

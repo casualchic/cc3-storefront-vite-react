@@ -50,9 +50,19 @@ const mockReviews: Review[] = [
     verified: true,
     helpful: 5,
   },
+  {
+    id: '4',
+    author: 'Michael T.',
+    rating: 4,
+    date: '2026-01-02',
+    title: 'Good quality',
+    comment: 'Nice product overall. The fit is good and the material quality meets expectations.',
+    verified: false,
+    helpful: 3,
+  },
 ];
 
-export function ProductReviews({ productId: _productId, averageRating, totalReviews }: ProductReviewsProps) {
+export function ProductReviews({ averageRating, totalReviews }: ProductReviewsProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [showWriteReview, setShowWriteReview] = useState(false);
   const [sortBy, setSortBy] = useState<'recent' | 'helpful' | 'highest' | 'lowest'>('recent');
@@ -205,7 +215,7 @@ export function ProductReviews({ productId: _productId, averageRating, totalRevi
           <span className="text-sm text-gray-600 dark:text-gray-400">Sort by:</span>
           <select
             value={sortBy}
-            onChange={(e) => setSortBy(e.target.value as any)}
+            onChange={(e) => setSortBy(e.target.value as 'recent' | 'helpful' | 'highest' | 'lowest')}
             className="px-3 py-1 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-gray-900 dark:focus:ring-white focus:border-transparent"
           >
             <option value="recent">Most Recent</option>

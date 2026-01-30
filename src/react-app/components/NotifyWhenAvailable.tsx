@@ -9,7 +9,6 @@ interface NotifyWhenAvailableProps {
 }
 
 export function NotifyWhenAvailable({
-  productId: _productId,
   productName,
   selectedSize,
   selectedColor,
@@ -44,7 +43,7 @@ export function NotifyWhenAvailable({
         setEmail('');
         setIsSuccess(false);
       }, 2000);
-    } catch (err) {
+    } catch {
       setError('Something went wrong. Please try again.');
     } finally {
       setIsSubmitting(false);

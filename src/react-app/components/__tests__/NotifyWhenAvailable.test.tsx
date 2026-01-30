@@ -66,15 +66,15 @@ describe('NotifyWhenAvailable', () => {
     const openButton = screen.getByText('Notify Me When Available');
     fireEvent.click(openButton);
 
-    const emailInput = screen.getByPlaceholderText('Enter your email');
-    const submitButton = screen.getByText('Notify Me');
+    const emailInput = screen.getByPlaceholderText('Enter your email') as HTMLInputElement;
+    const form = emailInput.closest('form') as HTMLFormElement;
 
     fireEvent.change(emailInput, { target: { value: 'invalid' } });
-    fireEvent.click(submitButton);
+    fireEvent.submit(form);
 
     await waitFor(() => {
       expect(screen.getByText('Please enter a valid email address')).toBeInTheDocument();
-    });
+    }, { timeout: 500 });
   });
 
   it('shows error for empty email', async () => {
@@ -82,12 +82,14 @@ describe('NotifyWhenAvailable', () => {
     const openButton = screen.getByText('Notify Me When Available');
     fireEvent.click(openButton);
 
-    const submitButton = screen.getByText('Notify Me');
-    fireEvent.click(submitButton);
+    const emailInput = screen.getByPlaceholderText('Enter your email') as HTMLInputElement;
+    const form = emailInput.closest('form') as HTMLFormElement;
+
+    fireEvent.submit(form);
 
     await waitFor(() => {
       expect(screen.getByText('Please enter a valid email address')).toBeInTheDocument();
-    });
+    }, { timeout: 500 });
   });
 
   it('submits form with valid email', async () => {
@@ -101,9 +103,10 @@ describe('NotifyWhenAvailable', () => {
     fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
     fireEvent.click(submitButton);
 
+    // Wait for async submission (1s API call + success state update)
     await waitFor(() => {
       expect(screen.getByText(/You're on the list!/)).toBeInTheDocument();
-    });
+    }, { timeout: 2000 });
   });
 
   it('shows loading state during submission', async () => {
