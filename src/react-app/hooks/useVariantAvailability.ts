@@ -3,7 +3,12 @@ import type { ProductOption, ProductVariant } from '../types';
 import { computeAvailableOptions } from '../utils/variantMatching';
 
 /**
- * Helper to check if two option availability results are semantically equal
+ * Compares two availability results for semantic equality.
+ * This prevents unnecessary re-renders in child components when the computed
+ * availability hasn't actually changed, even if new objects were created.
+ *
+ * Trade-off: The deep equality check has O(n*m) complexity but is typically
+ * cheaper than re-rendering child components that depend on these values.
  */
 function areAvailabilityResultsEqual(
   a: Record<string, Set<string>>,

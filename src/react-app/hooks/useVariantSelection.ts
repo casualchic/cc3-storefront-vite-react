@@ -14,15 +14,13 @@ import { findMatchingVariant } from '../utils/variantMatching';
 export function useVariantSelection(
   variants: ProductVariant[],
   selectedOptions: Record<string, string>
-) {
+): { currentVariant: ProductVariant | null; isComplete: boolean } {
   const currentVariant = useMemo(
     () => findMatchingVariant(variants, selectedOptions),
     [variants, selectedOptions]
   );
 
-  const isComplete = useMemo(() => {
-    return currentVariant !== null;
-  }, [currentVariant]);
+  const isComplete = currentVariant !== null;
 
   return useMemo(
     () => ({ currentVariant, isComplete }),
