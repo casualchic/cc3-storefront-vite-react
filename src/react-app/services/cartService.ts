@@ -31,7 +31,7 @@ class LocalStorageCartService implements CartService {
   /**
    * Validate that an object is a valid CartItem with all required properties
    */
-  private isValidCartItem(item: any): item is CartItem {
+  private isValidCartItem(item: unknown): item is CartItem {
     return (
       typeof item === 'object' &&
       item !== null &&

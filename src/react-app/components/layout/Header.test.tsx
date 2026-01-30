@@ -8,7 +8,7 @@ import { ThemeProvider } from '../../context/ThemeContext';
 
 // Mock TanStack Router
 vi.mock('@tanstack/react-router', () => ({
-  Link: ({ to, children, className }: any) => (
+  Link: ({ to, children, className }: { to: string; children: React.ReactNode; className?: string }) => (
     <a href={to} className={className}>
       {children}
     </a>
