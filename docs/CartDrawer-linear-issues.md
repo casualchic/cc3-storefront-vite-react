@@ -16,6 +16,7 @@ Replace localStorage cart service with Medusa.js cart API integration for produc
 - Implement optimistic updates with server reconciliation
 - Add proper error handling and retry logic
 - Test with actual Medusa backend
+- Tests: Unit tests for MedusaCartService, integration tests with Medusa backend, cart session management tests, optimistic update scenarios
 
 **Dependencies:**
 - Medusa backend must be deployed and accessible
@@ -49,12 +50,13 @@ Expand discount system to support free gift with purchase and buy-more-save-more
   - Clear messaging about qualification
   - Non-removable gift items
 - Backend integration with Medusa promotion engine
+- Tests: Unit tests for discount calculation logic, UI tests for progress indicators, integration tests with Medusa promotions, edge case tests for threshold boundaries
 
 **Dependencies:**
 - Medusa.js backend integration (Issue 1)
 - Promotion rules configured in Medusa admin
 
-**Estimate:** Medium (M)
+**Estimate:** Large (L)
 
 **Labels:** frontend, feature, promotions
 
@@ -79,6 +81,7 @@ Integrate actual product recommendation engine or service to power cross-sell su
 - Cache recommendations for performance
 - A/B test different recommendation strategies
 - Track click-through and conversion rates
+- Tests: Unit tests for recommendation fetching and caching, integration tests with recommendation service, A/B testing validation, analytics tracking verification
 
 **Dependencies:**
 - Medusa.js backend integration (Issue 1)
@@ -104,12 +107,13 @@ Allow users to move items from cart to wishlist ("Save for Later") for future pu
 - Display saved items section in drawer (collapsible)
 - "Move to Cart" button on saved items
 - Sync with backend wishlist
+- Tests: Unit tests for move operations, UI animation tests, integration tests with wishlist backend, state synchronization tests
 
 **Dependencies:**
 - Wishlist backend integration
-- May want to complete Medusa integration first
+- Medusa.js backend integration (Issue 1)
 
-**Estimate:** Small (S)
+**Estimate:** Medium (M)
 
 **Labels:** frontend, feature, cart, wishlist
 
@@ -129,6 +133,7 @@ Validate product stock levels in real-time and show warnings for low/out-of-stoc
 - "Out of Stock" badge on affected items
 - Suggest removing or saving for later
 - Real-time updates via WebSocket or polling
+- Tests: Unit tests for stock validation logic, integration tests with inventory system, WebSocket connection tests, UI tests for stock warnings and badges
 
 **Dependencies:**
 - Medusa.js backend integration (Issue 1)
@@ -154,6 +159,7 @@ Allow customers to add gift wrapping and personalized messages to orders.
 - Display gift options in cart summary
 - Include in checkout data
 - Backend support for gift options
+- Tests: Unit tests for gift option state management, UI tests for form validation, integration tests with checkout flow, character limit validation tests
 
 **Dependencies:**
 - Medusa.js backend integration (Issue 1)
