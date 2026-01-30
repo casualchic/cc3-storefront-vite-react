@@ -7,7 +7,7 @@ import { CartProvider, useCart } from '../context/CartContext';
 
 // Mock the @tanstack/react-router Link component
 vi.mock('@tanstack/react-router', () => ({
-  Link: ({ to, params, children, className }: any) => (
+  Link: ({ to, params, children, className }: { to: string; params?: { productId?: string }; children: React.ReactNode; className?: string }) => (
     <a href={typeof to === 'string' ? to.replace('$productId', params?.productId || '') : '/'} className={className}>
       {children}
     </a>
@@ -284,7 +284,6 @@ describe('CartDrawer', () => {
     renderWithCart(<CartDrawer isOpen={true} onClose={vi.fn()} />);
 
     const closeButton = screen.getByLabelText('Close cart');
-    const continueButton = screen.getByText('Continue Shopping');
 
     // Focus should cycle within drawer
     closeButton.focus();

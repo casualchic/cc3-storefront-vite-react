@@ -5,7 +5,7 @@ import { CartItem } from '../types';
 
 // Mock the @tanstack/react-router Link component
 vi.mock('@tanstack/react-router', () => ({
-  Link: ({ to, params, children, className }: any) => (
+  Link: ({ to, params, children, className }: { to: string; params?: { productId?: string }; children: React.ReactNode; className?: string }) => (
     <a href={typeof to === 'string' ? to.replace('$productId', params?.productId || '') : '/'} className={className}>
       {children}
     </a>

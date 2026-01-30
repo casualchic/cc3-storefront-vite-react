@@ -200,7 +200,6 @@ function CartSummary({ subtotal, discount, total, onContinueShopping }: CartSumm
 export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
   const {
     cart,
-    getCartItemCount,
     getCartTotal,
     updateQuantity,
     removeFromCart,
