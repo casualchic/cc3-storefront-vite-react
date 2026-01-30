@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { useEffect } from 'react';
@@ -15,6 +15,11 @@ vi.mock('@tanstack/react-router', () => ({
 }));
 
 describe('CartDrawer', () => {
+  beforeEach(() => {
+    // Clear localStorage before each test to prevent state pollution
+    localStorage.clear();
+  });
+
   const renderWithCart = (ui: React.ReactElement) => {
     return render(<CartProvider>{ui}</CartProvider>);
   };
@@ -128,5 +133,53 @@ describe('CartDrawer', () => {
     renderWithCart(<CartWithItems />);
 
     expect(screen.getByText('Test Product')).toBeInTheDocument();
+  });
+
+  it('shows free shipping progress when under threshold', () => {
+    // Cart with $50 total, threshold is $75
+    const CartWithItems = () => {
+      const { addToCart } = useCart();
+
+      useEffect(() => {
+        addToCart({
+          productId: 'test-1',
+          name: 'Test Product',
+          price: 50,
+          image: '/test.jpg',
+          quantity: 1,
+        });
+      }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+      return <CartDrawer isOpen={true} onClose={vi.fn()} />;
+    };
+
+    renderWithCart(<CartWithItems />);
+
+    expect(screen.getByText((content, element) => {
+      return element?.textContent === 'Add $25.00 more for FREE shipping!' &&
+             element?.className === 'text-sm text-gray-600 mb-2';
+    })).toBeInTheDocument();
+  });
+
+  it('shows free shipping qualified message when threshold met', () => {
+    const CartWithItems = () => {
+      const { addToCart } = useCart();
+
+      useEffect(() => {
+        addToCart({
+          productId: 'test-1',
+          name: 'Test Product',
+          price: 100,
+          image: '/test.jpg',
+          quantity: 1,
+        });
+      }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+      return <CartDrawer isOpen={true} onClose={vi.fn()} />;
+    };
+
+    renderWithCart(<CartWithItems />);
+
+    expect(screen.getByText(/You qualify for FREE shipping/i)).toBeInTheDocument();
   });
 });

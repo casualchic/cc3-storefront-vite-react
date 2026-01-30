@@ -2,14 +2,50 @@ import { useEffect, useMemo } from 'react';
 import { X, ShoppingBag } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { CartItem } from './CartItem';
+import { SHOP_CONFIG } from '../config/shopConfig';
 
 interface CartDrawerProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
+function FreeShippingProgress({ subtotal }: { subtotal: number }) {
+  const threshold = SHOP_CONFIG.freeShippingThreshold;
+  const remaining = Math.max(0, threshold - subtotal);
+  const progress = Math.min(100, (subtotal / threshold) * 100);
+  const qualified = subtotal >= threshold;
+
+  return (
+    <div className="mb-4">
+      {qualified ? (
+        <div className="flex items-center gap-2 text-green-600 text-sm font-medium">
+          <span>✓</span>
+          <span>You qualify for FREE shipping! 🎉</span>
+        </div>
+      ) : (
+        <>
+          <div className="text-sm text-gray-600 mb-2">
+            Add{' '}
+            <span className="font-semibold text-orange-600">
+              {SHOP_CONFIG.currencySymbol}
+              {remaining.toFixed(2)}
+            </span>{' '}
+            more for <strong>FREE shipping!</strong>
+          </div>
+          <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+            <div
+              className="bg-orange-500 h-full transition-all duration-300"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
 export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
-  const { cart, getCartItemCount, updateQuantity, removeFromCart } = useCart();
+  const { cart, getCartItemCount, getCartTotal, updateQuantity, removeFromCart } = useCart();
   const itemCount = useMemo(() => cart.reduce((count, item) => count + item.quantity, 0), [cart]);
 
   // Prevent body scroll when drawer is open
@@ -116,8 +152,9 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
 
         {/* Footer (to be implemented) */}
         {cart.length > 0 && (
-          <div className="border-t border-gray-200 px-6 py-4">
-            <p>Footer will be implemented next</p>
+          <div className="border-t border-gray-200 px-6 py-4 space-y-4">
+            <FreeShippingProgress subtotal={getCartTotal()} />
+            {/* More footer content to come */}
           </div>
         )}
       </div>
