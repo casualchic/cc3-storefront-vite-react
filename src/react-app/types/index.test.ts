@@ -25,11 +25,15 @@ describe('Medusa-Compatible Types', () => {
     expect(value.value).toBe('Medium');
   });
 
-  test('ProductVariant type exists with options array', () => {
+  test('ProductVariant type exists with required fields', () => {
     const variant: ProductVariant = {
       id: 'var-1',
+      title: 'Small / Blue',
+      inventory_quantity: 10,
       options: [],
     };
     expect(variant.id).toBe('var-1');
+    expect(variant.title).toBe('Small / Blue');
+    expect(variant.inventory_quantity).toBe(10);
   });
 });
