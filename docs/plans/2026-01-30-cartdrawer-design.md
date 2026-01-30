@@ -78,7 +78,7 @@ src/react-app/
 interface CartService {
   getCart(): Promise<CartItem[]>;
   addItem(item: CartItem): Promise<void>;
-  updateQuantity(id: string, quantity: number): Promise<void>;
+  updateQuantity(id: string, quantity: number): boolean;
   removeItem(id: string): Promise<void>;
   applyDiscount(code: string): Promise<Discount>;
 }
