@@ -1,0 +1,29 @@
+.stock-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: opacity 200ms ease-in-out;
+}
+
+.stock-icon {
+  flex-shrink: 0;
+}
+
+.stock-message {
+  line-height: 1.25rem;
+}
+
+.stock-in-stock {
+  color: #059669; /* green-600 */
+}
+
+.stock-low-stock {
+  color: #f59e0b; /* amber-500 */
+}
+
+.stock-out-of-stock {
+  color: #dc2626; /* red-600 */
+}
