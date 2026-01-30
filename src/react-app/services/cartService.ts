@@ -1,4 +1,5 @@
 import { CartItem } from '../types';
+import { SHOP_CONFIG } from '../config/shopConfig';
 
 /**
  * CartService interface for cart data operations
@@ -20,6 +21,7 @@ export interface CartService {
 class LocalStorageCartService implements CartService {
   private readonly storageKey = 'cc3-cart';
   private readonly MAX_CART_ITEMS = 100;
+  private readonly MAX_ITEM_QUANTITY = SHOP_CONFIG.maxQuantityPerItem;
 
   /**
    * Check if we're in a browser environment
@@ -141,7 +143,7 @@ class LocalStorageCartService implements CartService {
     if (existingIndex >= 0) {
       // Item exists, merge quantities with max cap
       const newQuantity = cart[existingIndex].quantity + item.quantity;
-      cart[existingIndex].quantity = Math.min(newQuantity, 99);
+      cart[existingIndex].quantity = Math.min(newQuantity, this.MAX_ITEM_QUANTITY);
     } else {
       // Check cart size limit before adding new item
       if (cart.length >= this.MAX_CART_ITEMS) {
