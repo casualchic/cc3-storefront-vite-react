@@ -5,7 +5,7 @@ interface ShippingEstimateProps {
   productName: string;
 }
 
-export function ShippingEstimate({ productName }: ShippingEstimateProps) {
+export function ShippingEstimate({ productName: _productName }: ShippingEstimateProps) {
   const [zipCode, setZipCode] = useState('');
   const [estimate, setEstimate] = useState<{
     standard: string;

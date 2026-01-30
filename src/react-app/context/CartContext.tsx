@@ -4,6 +4,7 @@ import { CartItem } from '../types';
 interface CartContextType {
   cart: CartItem[];
   addToCart: (item: Omit<CartItem, 'quantity'> & { quantity?: number }) => void;
+  addItem: (item: Omit<CartItem, 'quantity'> & { quantity?: number }) => void;
   removeFromCart: (productId: string, size?: string, color?: string) => void;
   updateQuantity: (productId: string, quantity: number, size?: string, color?: string) => void;
   clearCart: () => void;
@@ -105,6 +106,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       value={{
         cart,
         addToCart,
+        addItem: addToCart, // Alias for compatibility
         removeFromCart,
         updateQuantity,
         clearCart,

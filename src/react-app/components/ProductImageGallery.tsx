@@ -42,7 +42,7 @@ export function ProductImageGallery(props: ProductImageGalleryAllProps) {
 
   // Hooks
   const { isZooming, zoomStyle } = useHoverZoom(
-    mainImageRef,
+    mainImageRef as React.RefObject<HTMLImageElement>,
     enableHoverZoom && currentMedia.type === 'image',
     zoomScale
   );
@@ -69,7 +69,7 @@ export function ProductImageGallery(props: ProductImageGalleryAllProps) {
   };
 
   const { isSwiping, swipeOffset } = useSwipeGestures(
-    containerRef,
+    containerRef as React.RefObject<HTMLElement>,
     handleSwipeLeft,
     handleSwipeRight,
     enableSwipe
@@ -91,7 +91,7 @@ export function ProductImageGallery(props: ProductImageGalleryAllProps) {
     <div className="space-y-4">
       {/* Video Schema for SEO */}
       {currentMedia.type === 'video' && currentMedia.schema && (
-        <VideoSchema schema={currentMedia.schema} />
+        <VideoSchema schema={currentMedia.schema as unknown as Record<string, unknown>} />
       )}
 
       {/* Main Media */}
@@ -253,6 +253,7 @@ export function ProductImageGallery(props: ProductImageGalleryAllProps) {
               wheel={{ step: 0.1 }}
               panning={{ velocityDisabled: true }}
             >
+              {/* @ts-expect-error - state exists in runtime but not in type definition */}
               {({ zoomIn, zoomOut, resetTransform, state }) => (
                 <>
                   {/* Navigation in Zoom Mode (disabled while zoomed) */}

@@ -13,6 +13,11 @@ export interface Product {
   sizes?: string[];
   colors?: string[];
   inStock: boolean;
+  stockStatus?: 'in-stock' | 'low-stock' | 'out-of-stock';
+  stockCount?: number;
+  colorSwatches?: { name: string; hex: string }[];
+  variants?: { id: string; price: number; size?: string; color?: string }[];
+  defaultVariantId?: string;
   rating?: number;
   reviews?: number;
   isNew?: boolean;

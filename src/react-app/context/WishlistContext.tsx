@@ -4,7 +4,9 @@ import { WishlistItem } from '../types';
 interface WishlistContextType {
   wishlist: WishlistItem[];
   addToWishlist: (item: Omit<WishlistItem, 'addedAt'>) => void;
+  addItem: (item: Omit<WishlistItem, 'addedAt'>) => void;
   removeFromWishlist: (productId: string) => void;
+  removeItem: (productId: string) => void;
   isInWishlist: (productId: string) => boolean;
   clearWishlist: () => void;
 }
@@ -71,7 +73,9 @@ export const WishlistProvider = ({ children }: { children: ReactNode }) => {
       value={{
         wishlist,
         addToWishlist,
+        addItem: addToWishlist, // Alias for compatibility
         removeFromWishlist,
+        removeItem: removeFromWishlist, // Alias for compatibility
         isInWishlist,
         clearWishlist,
       }}

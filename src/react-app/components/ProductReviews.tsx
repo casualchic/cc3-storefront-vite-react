@@ -52,7 +52,7 @@ const mockReviews: Review[] = [
   },
 ];
 
-export function ProductReviews({ productId, averageRating, totalReviews }: ProductReviewsProps) {
+export function ProductReviews({ productId: _productId, averageRating, totalReviews }: ProductReviewsProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [showWriteReview, setShowWriteReview] = useState(false);
   const [sortBy, setSortBy] = useState<'recent' | 'helpful' | 'highest' | 'lowest'>('recent');

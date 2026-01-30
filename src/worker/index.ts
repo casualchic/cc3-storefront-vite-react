@@ -8,6 +8,7 @@ const app = new Hono<{ Bindings: Env }>();
 app.use(
 	"/api/*",
 	cors({
+		origin: "*",
 		allowHeaders: ["Content-Type", "Authorization"],
 	})
 );

@@ -69,7 +69,9 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
         productId: product.id,
         name: product.name,
         price: product.price,
+        originalPrice: product.originalPrice,
         image: product.image,
+        inStock: product.inStock,
       });
     }
   };
