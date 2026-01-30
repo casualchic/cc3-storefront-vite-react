@@ -22,9 +22,7 @@ export function ColorSelector({
         {option.values.map((optionValue) => {
           const isSelected = selectedValue === optionValue.value;
           const isAvailable = availableValues.has(optionValue.value);
-          const hexColor = typeof optionValue.metadata?.hex === 'string'
-            ? optionValue.metadata.hex
-            : '#cccccc';  // Default gray when hex not provided
+          const hexColor = (optionValue.metadata?.hex as string) || '#cccccc';
 
           return (
             <button

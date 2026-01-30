@@ -16,7 +16,7 @@ export function SizeSelector({
 }: SizeSelectorProps) {
   return (
     <div className="size-selector" role="group" aria-label={`${option.title} selection`}>
-      <label className="size-label">{option.title}:</label>
+      <div className="size-label">{option.title}:</div>
       <div className="size-buttons">
         {option.values.map((optionValue) => {
           const isSelected = selectedValue === optionValue.value;
