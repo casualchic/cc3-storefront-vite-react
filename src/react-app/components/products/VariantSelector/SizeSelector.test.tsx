@@ -24,9 +24,9 @@ describe('SizeSelector', () => {
       />
     );
 
-    expect(screen.getByRole('radio', { name: /size s/i })).toBeInTheDocument();
-    expect(screen.getByRole('radio', { name: /size m/i })).toBeInTheDocument();
-    expect(screen.getByRole('radio', { name: /size l/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /size s/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /size m/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /size l/i })).toBeInTheDocument();
   });
 
   test('highlights selected size', () => {
@@ -39,9 +39,9 @@ describe('SizeSelector', () => {
       />
     );
 
-    const mediumButton = screen.getByRole('radio', { name: /size m/i });
+    const mediumButton = screen.getByRole('button', { name: /size m/i });
     expect(mediumButton).toHaveClass('size-button', 'size-button-selected');
-    expect(mediumButton).toHaveAttribute('aria-checked', 'true');
+    expect(mediumButton).toHaveAttribute('aria-pressed', 'true');
   });
 
   test('disables unavailable sizes', () => {
@@ -54,7 +54,7 @@ describe('SizeSelector', () => {
       />
     );
 
-    const largeButton = screen.getByRole('radio', { name: /size l/i });
+    const largeButton = screen.getByRole('button', { name: /size l/i });
     expect(largeButton).toBeDisabled();
     expect(largeButton).toHaveClass('size-button-unavailable');
   });
@@ -70,7 +70,7 @@ describe('SizeSelector', () => {
       />
     );
 
-    fireEvent.click(screen.getByRole('radio', { name: /size m/i }));
+    fireEvent.click(screen.getByRole('button', { name: /size m/i }));
 
     expect(handleSelect).toHaveBeenCalledWith('Size', 'M');
   });
@@ -98,7 +98,7 @@ describe('SizeSelector', () => {
       />
     );
 
-    const smallButton = screen.getByRole('radio', { name: /size s/i });
+    const smallButton = screen.getByRole('button', { name: /size s/i });
     smallButton.focus();
     expect(smallButton).toHaveFocus();
   });

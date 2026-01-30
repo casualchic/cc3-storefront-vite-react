@@ -26,8 +26,7 @@ export function SizeSelector({
             <button
               key={optionValue.id}
               type="button"
-              role="radio"
-              aria-checked={isSelected}
+              aria-pressed={isSelected}
               aria-label={`${option.title} ${optionValue.value}`}
               disabled={!isAvailable}
               className={`

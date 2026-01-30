@@ -34,7 +34,7 @@
   border-color: var(--text-primary);
 }
 
-.size-button:focus {
+.size-button:focus-visible {
   outline: 2px solid var(--text-primary);
   outline-offset: 2px;
 }
