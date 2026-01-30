@@ -59,6 +59,7 @@ function ProductDetailPage() {
   const variants: ProductVariant[] = [
     {
       id: 'var-1',
+      title: 'S / Blue',
       options: [
         { id: 'blue', value: 'Blue', option: { title: 'Color' } },
         { id: 's', value: 'S', option: { title: 'Size' } },

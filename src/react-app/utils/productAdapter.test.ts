@@ -6,7 +6,11 @@ describe('adaptSimpleProductToOptions', () => {
   it('converts simple sizes array to ProductOption', () => {
     const product: Product = {
       id: '1',
-      title: 'T-Shirt',
+      name: 'T-Shirt',
+      price: 29.99,
+      image: 'tshirt.jpg',
+      category: 'clothing',
+      inStock: true,
       sizes: ['S', 'M', 'L', 'XL'],
     };
 
@@ -29,7 +33,11 @@ describe('adaptSimpleProductToOptions', () => {
   it('converts colors array to ProductOption with hex metadata', () => {
     const product: Product = {
       id: '2',
-      title: 'Shirt',
+      name: 'Shirt',
+      price: 39.99,
+      image: 'shirt.jpg',
+      category: 'clothing',
+      inStock: true,
       colors: ['Blue', 'Red', 'Green'],
     };
 
@@ -66,7 +74,11 @@ describe('adaptSimpleProductToOptions', () => {
   it('uses colorSwatches when available (preferred over colors)', () => {
     const product: Product = {
       id: '3',
-      title: 'Premium Shirt',
+      name: 'Premium Shirt',
+      price: 59.99,
+      image: 'premium-shirt.jpg',
+      category: 'clothing',
+      inStock: true,
       colors: ['Blue', 'Red'], // Should be ignored
       colorSwatches: [
         { name: 'Navy', hex: '#001f3f' },
@@ -100,7 +112,11 @@ describe('adaptSimpleProductToOptions', () => {
   it('returns empty arrays when no sizes or colors', () => {
     const product: Product = {
       id: '4',
-      title: 'Simple Product',
+      name: 'Simple Product',
+      price: 19.99,
+      image: 'simple.jpg',
+      category: 'accessories',
+      inStock: true,
     };
 
     const result = adaptSimpleProductToOptions(product);
@@ -112,15 +128,19 @@ describe('adaptSimpleProductToOptions', () => {
   it('passes through existing variants if present', () => {
     const product: Product = {
       id: '5',
-      title: 'Product with Variants',
+      name: 'Product with Variants',
+      price: 49.99,
+      image: 'product.jpg',
+      category: 'clothing',
+      inStock: true,
       sizes: ['S', 'M'],
       variants: [
         {
           id: 'var-1',
           title: 'Small / Blue',
           options: [
-            { value: 'S', option_id: 'size-option' },
-            { value: 'Blue', option_id: 'color-option' },
+            { id: 'opt-val-1', value: 'S', option_id: 'size-option' },
+            { id: 'opt-val-2', value: 'Blue', option_id: 'color-option' },
           ],
           inventory_quantity: 10,
         },
@@ -128,8 +148,8 @@ describe('adaptSimpleProductToOptions', () => {
           id: 'var-2',
           title: 'Medium / Red',
           options: [
-            { value: 'M', option_id: 'size-option' },
-            { value: 'Red', option_id: 'color-option' },
+            { id: 'opt-val-3', value: 'M', option_id: 'size-option' },
+            { id: 'opt-val-4', value: 'Red', option_id: 'color-option' },
           ],
           inventory_quantity: 5,
         },
@@ -146,7 +166,11 @@ describe('adaptSimpleProductToOptions', () => {
   it('handles both sizes and colors together', () => {
     const product: Product = {
       id: '6',
-      title: 'Full Product',
+      name: 'Full Product',
+      price: 79.99,
+      image: 'full-product.jpg',
+      category: 'clothing',
+      inStock: true,
       sizes: ['S', 'M', 'L'],
       colorSwatches: [
         { name: 'Navy', hex: '#001f3f' },
