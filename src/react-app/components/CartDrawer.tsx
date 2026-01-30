@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { X, ShoppingBag } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 
@@ -9,19 +9,18 @@ interface CartDrawerProps {
 
 export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
   const { cart, getCartItemCount } = useCart();
-  const itemCount = getCartItemCount();
+  const itemCount = useMemo(() => getCartItemCount(), [getCartItemCount]);
 
   // Prevent body scroll when drawer is open
   useEffect(() => {
     if (isOpen) {
+      const previousOverflow = document.body.style.overflow;
       document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
 
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
+      return () => {
+        document.body.style.overflow = previousOverflow;
+      };
+    }
   }, [isOpen]);
 
   // Handle Escape key
@@ -32,8 +31,10 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
       }
     };
 
-    document.addEventListener('keydown', handleEscape);
-    return () => document.removeEventListener('keydown', handleEscape);
+    if (isOpen) {
+      document.addEventListener('keydown', handleEscape);
+      return () => document.removeEventListener('keydown', handleEscape);
+    }
   }, [isOpen, onClose]);
 
   if (!isOpen) return null;
@@ -43,7 +44,7 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
       {/* Backdrop */}
       <div
         data-testid="drawer-backdrop"
-        className="fixed inset-0 bg-black/50 z-40 backdrop-blur-sm transition-opacity"
+        className="fixed inset-0 bg-black/50 z-40 backdrop-blur-sm animate-fade-in"
         onClick={onClose}
         aria-hidden="true"
       />

@@ -58,4 +58,40 @@ describe('CartDrawer', () => {
 
     expect(onClose).toHaveBeenCalled();
   });
+
+  it('calls onClose when Escape key pressed', async () => {
+    const user = userEvent.setup();
+    const onClose = vi.fn();
+
+    renderWithCart(<CartDrawer isOpen={true} onClose={onClose} />);
+
+    await user.keyboard('{Escape}');
+
+    expect(onClose).toHaveBeenCalled();
+  });
+
+  it('locks body scroll when open', () => {
+    const onClose = vi.fn();
+    const originalOverflow = document.body.style.overflow;
+
+    const { rerender } = renderWithCart(<CartDrawer isOpen={true} onClose={onClose} />);
+
+    expect(document.body.style.overflow).toBe('hidden');
+
+    rerender(<CartProvider><CartDrawer isOpen={false} onClose={onClose} /></CartProvider>);
+
+    expect(document.body.style.overflow).toBe(originalOverflow);
+  });
+
+  it('calls onClose when Continue Shopping button clicked', async () => {
+    const user = userEvent.setup();
+    const onClose = vi.fn();
+
+    renderWithCart(<CartDrawer isOpen={true} onClose={onClose} />);
+
+    const continueButton = screen.getByText('Continue Shopping');
+    await user.click(continueButton);
+
+    expect(onClose).toHaveBeenCalled();
+  });
 });
