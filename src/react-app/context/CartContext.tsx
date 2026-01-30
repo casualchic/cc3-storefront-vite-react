@@ -1,5 +1,12 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, useMemo, ReactNode } from 'react';
 import { CartItem } from '../types';
+import { DiscountCode, validateDiscountCode, calculateDiscount } from '../data/mockDiscounts';
+
+export interface AppliedDiscount {
+  code: string;
+  amount: number;
+  description: string;
+}
 
 interface CartContextType {
   cart: CartItem[];
@@ -10,6 +17,14 @@ interface CartContextType {
   clearCart: () => void;
   getCartTotal: () => number;
   getCartItemCount: () => number;
+  // Drawer state
+  isDrawerOpen: boolean;
+  openDrawer: () => void;
+  closeDrawer: () => void;
+  // Discount state
+  appliedDiscount: AppliedDiscount | null;
+  applyDiscount: (code: string) => { success: boolean; error?: string };
+  removeDiscount: () => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -31,6 +46,8 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     }
     return [];
   });
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [appliedDiscountCode, setAppliedDiscountCode] = useState<{code: string; discount: DiscountCode} | null>(null);
 
   // Persist cart to localStorage whenever it changes
   useEffect(() => {
@@ -58,6 +75,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         return [...prevCart, { ...item, quantity: item.quantity || 1 }];
       }
     });
+    setIsDrawerOpen(true);
   };
 
   const removeFromCart = (productId: string, size?: string, color?: string) => {
@@ -101,6 +119,40 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     return cart.reduce((count, item) => count + item.quantity, 0);
   };
 
+  const openDrawer = () => setIsDrawerOpen(true);
+  const closeDrawer = () => setIsDrawerOpen(false);
+
+  // Calculate discount dynamically based on current cart total
+  const appliedDiscount = useMemo(() => {
+    if (!appliedDiscountCode) return null;
+    const subtotal = cart.reduce((total, item) => total + item.price * item.quantity, 0);
+    const amount = calculateDiscount(appliedDiscountCode.discount, subtotal);
+    return {
+      code: appliedDiscountCode.code,
+      amount,
+      description: appliedDiscountCode.discount.description,
+    };
+  }, [appliedDiscountCode, cart]);
+
+  const applyDiscount = (code: string): { success: boolean; error?: string } => {
+    const result = validateDiscountCode(code);
+
+    if (!result.valid || !result.discount) {
+      return { success: false, error: result.error || 'Invalid discount code' };
+    }
+
+    setAppliedDiscountCode({
+      code: code.toUpperCase(),
+      discount: result.discount,
+    });
+
+    return { success: true };
+  };
+
+  const removeDiscount = () => {
+    setAppliedDiscountCode(null);
+  };
+
   return (
     <CartContext.Provider
       value={{
@@ -112,6 +164,12 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         clearCart,
         getCartTotal,
         getCartItemCount,
+        isDrawerOpen,
+        openDrawer,
+        closeDrawer,
+        appliedDiscount,
+        applyDiscount,
+        removeDiscount,
       }}
     >
       {children}
