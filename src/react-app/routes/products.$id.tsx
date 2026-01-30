@@ -471,7 +471,7 @@ function ProductDetailPage() {
               </div>
 
               {/* Shipping Estimate */}
-              <ShippingEstimate productName={product.name} />
+              <ShippingEstimate />
             </div>
           </div>
 

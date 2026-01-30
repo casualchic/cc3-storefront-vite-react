@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import { cartService } from './cartService';
 import { CartItem } from '../types';
 import { SHOP_CONFIG } from '../config/shopConfig';

@@ -34,15 +34,18 @@ class LocalStorageCartService implements CartService {
    * Validate that an object is a valid CartItem with all required properties
    */
   private isValidCartItem(item: unknown): item is CartItem {
+    if (typeof item !== 'object' || item === null) {
+      return false;
+    }
+
+    const obj = item as Record<string, unknown>;
     return (
-      typeof item === 'object' &&
-      item !== null &&
-      typeof item.productId === 'string' &&
-      typeof item.name === 'string' &&
-      typeof item.price === 'number' &&
-      typeof item.image === 'string' &&
-      typeof item.quantity === 'number' &&
-      item.quantity > 0
+      typeof obj.productId === 'string' &&
+      typeof obj.name === 'string' &&
+      typeof obj.price === 'number' &&
+      typeof obj.image === 'string' &&
+      typeof obj.quantity === 'number' &&
+      obj.quantity > 0
     );
   }
 

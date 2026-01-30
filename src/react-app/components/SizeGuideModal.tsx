@@ -6,11 +6,21 @@ interface SizeGuideModalProps {
   category?: string;
 }
 
+interface SizeMeasurement {
+  size: string;
+  [key: string]: string;
+}
+
+interface SizeGuide {
+  title: string;
+  measurements: SizeMeasurement[];
+}
+
 export function SizeGuideModal({ isOpen, onClose, category = 'general' }: SizeGuideModalProps) {
   if (!isOpen) return null;
 
   // Size guide data based on category
-  const sizeGuides: Record<string, any> = {
+  const sizeGuides: Record<string, SizeGuide> = {
     tops: {
       title: 'Tops Size Guide',
       measurements: [
@@ -97,7 +107,7 @@ export function SizeGuideModal({ isOpen, onClose, category = 'general' }: SizeGu
                 </tr>
               </thead>
               <tbody>
-                {guide.measurements.map((row: any, index: number) => (
+                {guide.measurements.map((row: SizeMeasurement, index: number) => (
                   <tr
                     key={index}
                     className="border-b dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-900/50"
