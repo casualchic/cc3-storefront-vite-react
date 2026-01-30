@@ -170,6 +170,7 @@ interface CartContextType {
   // Existing cart methods
   cart: CartItem[];
   addToCart: (item: Omit<CartItem, 'quantity'> & { quantity?: number }) => void;
+  addItem: (item: Omit<CartItem, 'quantity'> & { quantity?: number }) => void;  // Alias for addToCart
   removeFromCart: (productId: string, size?: string, color?: string) => void;
   updateQuantity: (productId: string, quantity: number, size?: string, color?: string) => void;
   clearCart: () => void;
@@ -565,7 +566,7 @@ interface CartService {
   getCart(): CartItem[];
   saveCart(cart: CartItem[]): void;
   addItem(item: CartItem): void;
-  updateQuantity(productId: string, quantity: number, size?: string, color?: string): void;
+  updateQuantity(productId: string, quantity: number, size?: string, color?: string): boolean;
   removeItem(productId: string, size?: string, color?: string): void;
   clearCart(): void;
 }
