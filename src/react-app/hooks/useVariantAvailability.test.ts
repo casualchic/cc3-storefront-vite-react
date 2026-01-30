@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react';
-import { useVariantAvailability } from '../useVariantAvailability';
-import type { ProductOption, ProductVariant } from '../../types';
+import { useVariantAvailability } from './useVariantAvailability';
+import type { ProductOption, ProductVariant } from '../types';
 
 describe('useVariantAvailability', () => {
   const options: ProductOption[] = [

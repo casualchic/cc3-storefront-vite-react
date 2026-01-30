@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react';
-import { useVariantSelection } from '../useVariantSelection';
-import type { ProductVariant } from '../../types';
+import { useVariantSelection } from './useVariantSelection';
+import type { ProductVariant } from '../types';
 
 describe('useVariantSelection', () => {
   const blueSmall: ProductVariant = {
