@@ -42,13 +42,6 @@ export function computeAvailableOptions(
   variants: ProductVariant[],
   selectedOptions: Record<string, string>
 ): Record<string, Set<string>> {
-  const availableValues: Record<string, Set<string>> = {};
-
-  // Initialize with all possible values
-  options.forEach((option) => {
-    availableValues[option.title] = new Set(option.values.map((v) => v.value));
-  });
-
   // Filter to only values that have matching variants with inventory
   const availableFromVariants: Record<string, Set<string>> = {};
   options.forEach((option) => {
@@ -59,10 +52,10 @@ export function computeAvailableOptions(
     // Check if this variant matches current selections
     const matches = Object.entries(selectedOptions).every(
       ([optionName, selectedValue]) => {
-        const variantValue = variant.options.find(
+        const variantOption = variant.options.find(
           (opt) => opt.option?.title === optionName
         );
-        return !variantValue || variantValue.value === selectedValue;
+        return variantOption?.value === selectedValue;
       }
     );
 

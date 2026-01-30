@@ -86,6 +86,11 @@ describe('findMatchingVariant', () => {
     // Partial selection could match multiple variants, so should return null
     expect(result).toBeNull();
   });
+
+  it('returns null when variant has more options than selected (partial selection)', () => {
+    const result = findMatchingVariant(mockVariants, { Size: 'Small' }); // Only selecting Size, not Color
+    expect(result).toBeNull(); // Should not match because selection is incomplete
+  });
 });
 
 describe('computeAvailableOptions', () => {
