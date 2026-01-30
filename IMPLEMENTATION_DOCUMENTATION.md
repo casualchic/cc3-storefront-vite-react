@@ -42,13 +42,20 @@ src/react-app/
 
 #### CartContext
 Manages shopping cart state with localStorage persistence:
-- `items`: Array of cart items
-- `addItem`: Add product to cart (merges quantities if item exists)
-- `removeItem`: Remove item from cart
-- `updateQuantity`: Update item quantity
+- `cart`: Array of cart items
+- `addToCart`: Add product to cart (merges quantities if item exists, auto-opens drawer)
+- `addItem`: Alias for addToCart for compatibility
+- `removeFromCart`: Remove item from cart by productId, size, and color
+- `updateQuantity`: Update item quantity by productId, size, and color
 - `clearCart`: Clear all items
-- `totalItems`: Total number of items (sum of quantities)
-- `totalPrice`: Total cart value
+- `getCartTotal`: Calculate total cart value
+- `getCartItemCount`: Get total number of items (sum of quantities)
+- `isDrawerOpen`: Drawer visibility state
+- `openDrawer`: Open cart drawer
+- `closeDrawer`: Close cart drawer
+- `appliedDiscount`: Currently applied discount (code, amount, description)
+- `applyDiscount`: Apply discount code with validation
+- `removeDiscount`: Remove applied discount
 
 #### WishlistContext
 Manages wishlist state with localStorage persistence:
@@ -428,6 +435,50 @@ npm run test
 - Date-based delivery projections
 - Form validation
 - Clean results display
+
+### CartDrawer
+
+Slide-out shopping cart panel with auto-open on add-to-cart.
+
+**Location:** `src/react-app/components/CartDrawer.tsx`
+
+**Features:**
+- Auto-opens when items added to cart
+- Free shipping progress bar with threshold tracking
+- Discount code input and validation
+- Cross-sell product recommendations carousel
+- Cart summary with subtotal, discount, and total
+- Checkout and continue shopping buttons
+- Mobile responsive (slides from bottom on mobile, right on desktop)
+- Focus trap for accessibility
+- Body scroll lock when open
+- Escape key closes drawer
+- Click-outside-to-close backdrop
+- Respects prefers-reduced-motion
+
+**Related Components:**
+- `CartItem.tsx` - Individual cart item display with quantity controls
+- `ProductRecommendations.tsx` - Cross-sell product carousel
+
+**Internal Components:**
+- `FreeShippingProgress` - Progress bar toward free shipping threshold
+- `DiscountCodeInput` - Discount code entry and display
+- `CartSummary` - Cart totals and checkout controls
+
+**State Management:**
+- Connected to CartContext for cart operations
+- Manages drawer open/close state
+- Handles discount code application and removal
+- Tracks applied discount with amount and description
+
+**Configuration:**
+- `SHOP_CONFIG` - Free shipping threshold, currency, max quantity
+- `mockDiscounts.ts` - Available discount codes (SAVE10, WELCOME20, FLASH15)
+- `mockRecommendations.ts` - Product recommendation mappings
+
+**Testing:** `CartDrawer.test.tsx`, `CartItem.test.tsx`, `ProductRecommendations.test.tsx`
+
+**Documentation:** See `docs/CartDrawer.md` for detailed usage and API reference
 
 ## Future Enhancements
 
