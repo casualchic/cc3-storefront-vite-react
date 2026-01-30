@@ -6,7 +6,6 @@ describe('StockIndicator', () => {
     render(
       <StockIndicator
         status="in-stock"
-        quantity={100}
         message="In Stock"
       />
     );
@@ -22,7 +21,6 @@ describe('StockIndicator', () => {
     render(
       <StockIndicator
         status="low-stock"
-        quantity={3}
         message="Only 3 left in stock"
       />
     );
@@ -51,7 +49,6 @@ describe('StockIndicator', () => {
     render(
       <StockIndicator
         status="low-stock"
-        quantity={2}
         message="Only 2 left"
       />
     );

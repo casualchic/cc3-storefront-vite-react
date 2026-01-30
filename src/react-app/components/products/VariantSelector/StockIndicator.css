@@ -17,13 +17,13 @@
 }
 
 .stock-in-stock {
-  color: #059669; /* green-600 */
+  color: var(--color-success);
 }
 
 .stock-low-stock {
-  color: #f59e0b; /* amber-500 */
+  color: var(--color-warning);
 }
 
 .stock-out-of-stock {
-  color: #dc2626; /* red-600 */
+  color: var(--color-error);
 }

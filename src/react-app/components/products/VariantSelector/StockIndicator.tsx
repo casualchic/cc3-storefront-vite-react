@@ -3,7 +3,6 @@ import './StockIndicator.css';
 
 interface StockIndicatorProps {
   status: 'in-stock' | 'low-stock' | 'out-of-stock';
-  quantity?: number;
   message: string;
 }
 

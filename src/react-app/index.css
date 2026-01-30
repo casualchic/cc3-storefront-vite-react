@@ -17,6 +17,9 @@
   --text-secondary: #6B7280;
   --border-color: #D1D5DB;
   --accent-red: #DC2626;
+  --color-success: #059669;
+  --color-warning: #f59e0b;
+  --color-error: #dc2626;
 }
 
 :root.dark {
