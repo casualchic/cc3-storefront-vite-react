@@ -17,12 +17,14 @@ export function ColorSelector({
 }: ColorSelectorProps) {
   return (
     <div className="color-selector" role="group" aria-label={`${option.title} selection`}>
-      <label className="color-label">{option.title}:</label>
+      <div className="color-label">{option.title}:</div>
       <div className="color-swatches">
         {option.values.map((optionValue) => {
           const isSelected = selectedValue === optionValue.value;
           const isAvailable = availableValues.has(optionValue.value);
-          const hexColor = (optionValue.metadata?.hex as string) || '#cccccc';
+          const hexColor = typeof optionValue.metadata?.hex === 'string'
+            ? optionValue.metadata.hex
+            : '#cccccc';  // Default gray when hex not provided
 
           return (
             <button
