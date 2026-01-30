@@ -1,0 +1,26 @@
+.variant-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1rem 0;
+}
+
+.variant-selector-compact {
+  gap: 1rem;
+}
+
+.variant-selector-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .variant-selector {
+    gap: 1.25rem;
+  }
+}
