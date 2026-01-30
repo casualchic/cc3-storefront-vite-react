@@ -1,14 +1,15 @@
+import { describe, test, expect } from 'vitest';
 import { renderHook } from '@testing-library/react';
 import { useVariantSelection } from './useVariantSelection';
-import type { ProductVariant } from '../types';
+import type { ProductVariant, ProductOption } from '../types';
 
 describe('useVariantSelection', () => {
   const blueSmall: ProductVariant = {
     id: 'var-1',
     title: 'Blue / S',
     options: [
-      { id: 'blue', value: 'Blue', option: { title: 'Color' } as any },
-      { id: 's', value: 'S', option: { title: 'Size' } as any },
+      { id: 'blue', value: 'Blue', option: { title: 'Color' } as ProductOption },
+      { id: 's', value: 'S', option: { title: 'Size' } as ProductOption },
     ],
     price: 29.99,
     inventory_quantity: 10,
@@ -18,8 +19,8 @@ describe('useVariantSelection', () => {
     id: 'var-2',
     title: 'Blue / M',
     options: [
-      { id: 'blue', value: 'Blue', option: { title: 'Color' } as any },
-      { id: 'm', value: 'M', option: { title: 'Size' } as any },
+      { id: 'blue', value: 'Blue', option: { title: 'Color' } as ProductOption },
+      { id: 'm', value: 'M', option: { title: 'Size' } as ProductOption },
     ],
     price: 29.99,
     inventory_quantity: 5,

@@ -3,7 +3,6 @@ import type {
   ProductOption,
   ProductOptionValue,
   ProductVariant,
-  ProductImage,
 } from './index';
 
 describe('Medusa-Compatible Types', () => {

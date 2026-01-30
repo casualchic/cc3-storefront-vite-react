@@ -246,6 +246,7 @@ describe('getVariantStockStatus', () => {
       id: 'var-1',
       title: 'Test',
       options: [],
+      inventory_quantity: 0,
     } as ProductVariant;
     const result = getVariantStockStatus(variant);
     expect(result.status).toBe('out-of-stock');
