@@ -4,8 +4,14 @@ import { cloudflare } from "@cloudflare/vite-plugin";
 import { tanstackRouter } from '@tanstack/router-plugin/vite';
 import tailwindcss from '@tailwindcss/vite';
 import { visualizer } from 'rollup-plugin-visualizer';
+import path from 'path';
 
 export default defineConfig({
+	resolve: {
+		alias: {
+			'@': path.resolve(__dirname, './src/react-app'),
+		},
+	},
 	plugins: [
 		tailwindcss(),
 		tanstackRouter({
