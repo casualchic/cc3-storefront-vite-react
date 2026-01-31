@@ -1,13 +1,10 @@
 // src/react-app/routes/account.orders.tsx
 
+import { lazy } from 'react';
 import { createFileRoute } from '@tanstack/react-router';
 import { Package } from '@/lib/icons';
 
-export const Route = createFileRoute('/account/orders')({
-	component: OrdersPage,
-});
-
-function OrdersPage() {
+const OrdersPageComponent = () => {
 	// Mock orders data
 	const orders = [
 		{
@@ -62,4 +59,8 @@ function OrdersPage() {
 			)}
 		</div>
 	);
-}
+};
+
+export const Route = createFileRoute('/account/orders')({
+	component: lazy(() => Promise.resolve({ default: OrdersPageComponent })),
+});

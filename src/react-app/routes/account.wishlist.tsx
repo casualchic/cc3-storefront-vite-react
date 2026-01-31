@@ -1,13 +1,10 @@
 // src/react-app/routes/account.wishlist.tsx
 
+import { lazy } from 'react';
 import { createFileRoute } from '@tanstack/react-router';
 import { Heart } from '@/lib/icons';
 
-export const Route = createFileRoute('/account/wishlist')({
-	component: WishlistPage,
-});
-
-function WishlistPage() {
+const WishlistPageComponent = () => {
 	// Mock wishlist data
 	const wishlistItems = [
 		{
@@ -67,4 +64,8 @@ function WishlistPage() {
 			)}
 		</div>
 	);
-}
+};
+
+export const Route = createFileRoute('/account/wishlist')({
+	component: lazy(() => Promise.resolve({ default: WishlistPageComponent })),
+});

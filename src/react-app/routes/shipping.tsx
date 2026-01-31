@@ -1,11 +1,8 @@
+import { lazy } from 'react';
 import { createFileRoute, Link } from '@tanstack/react-router';
 import { Package, Truck, Globe, Clock, MapPin, CreditCard } from '@/lib/icons';
 
-export const Route = createFileRoute('/shipping')({
-  component: ShippingPage,
-});
-
-function ShippingPage() {
+const ShippingPageComponent = () => {
   return (
     <div className="min-h-screen bg-white dark:bg-gray-950">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -251,4 +248,8 @@ function ShippingPage() {
       </div>
     </div>
   );
-}
+};
+
+export const Route = createFileRoute('/shipping')({
+  component: lazy(() => Promise.resolve({ default: ShippingPageComponent })),
+});

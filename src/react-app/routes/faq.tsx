@@ -1,11 +1,7 @@
+import { lazy, useState } from 'react';
 import { createFileRoute, Link } from '@tanstack/react-router';
-import { useState } from 'react';
 import { ChevronDown, ChevronUp } from '@/lib/icons';
 import type { JSX } from 'react';
-
-export const Route = createFileRoute('/faq')({
-  component: FAQPage,
-});
 
 interface FAQItem {
   question: string;
@@ -13,7 +9,7 @@ interface FAQItem {
   category: string;
 }
 
-function FAQPage() {
+const FAQPageComponent = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   const faqData: FAQItem[] = [
@@ -241,4 +237,8 @@ function FAQPage() {
       </div>
     </div>
   );
-}
+};
+
+export const Route = createFileRoute('/faq')({
+  component: lazy(() => Promise.resolve({ default: FAQPageComponent })),
+});

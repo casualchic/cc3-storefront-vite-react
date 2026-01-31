@@ -1,11 +1,8 @@
+import { lazy } from 'react';
 import { createFileRoute, Link } from '@tanstack/react-router';
 import { RotateCcw, Package, Check, X, Mail } from '@/lib/icons';
 
-export const Route = createFileRoute('/returns')({
-  component: ReturnsPage,
-});
-
-function ReturnsPage() {
+const ReturnsPageComponent = () => {
   return (
     <div className="min-h-screen bg-white dark:bg-gray-950">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -269,4 +266,8 @@ function ReturnsPage() {
       </div>
     </div>
   );
-}
+};
+
+export const Route = createFileRoute('/returns')({
+  component: lazy(() => Promise.resolve({ default: ReturnsPageComponent })),
+});

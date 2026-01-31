@@ -1,29 +1,11 @@
 // src/react-app/routes/account.tsx
 
+import { lazy } from 'react';
 import { createFileRoute, Link, Outlet, redirect } from '@tanstack/react-router';
 import { LogOut, User, MapPin, Package, Heart } from '@/lib/icons';
 import { useAuth } from '../context/AuthContext';
 
-export const Route = createFileRoute('/account')({
-	beforeLoad: ({ location }) => {
-		// Check if user is authenticated
-		const authToken = localStorage.getItem('cc3_auth_token');
-		const userStr = localStorage.getItem('cc3_user');
-
-		if (!authToken || !userStr) {
-			// Redirect to login with return path
-			throw redirect({
-				to: '/login',
-				search: {
-					redirect: location.href,
-				},
-			});
-		}
-	},
-	component: AccountLayout,
-});
-
-function AccountLayout() {
+const AccountLayoutComponent = () => {
 	const { user, logout } = useAuth();
 
 	if (!user) {
@@ -92,4 +74,23 @@ function AccountLayout() {
 			</div>
 		</div>
 	);
-}
+};
+
+export const Route = createFileRoute('/account')({
+	beforeLoad: ({ location }) => {
+		// Check if user is authenticated
+		const authToken = localStorage.getItem('cc3_auth_token');
+		const userStr = localStorage.getItem('cc3_user');
+
+		if (!authToken || !userStr) {
+			// Redirect to login with return path
+			throw redirect({
+				to: '/login',
+				search: {
+					redirect: location.href,
+				},
+			});
+		}
+	},
+	component: lazy(() => Promise.resolve({ default: AccountLayoutComponent })),
+});

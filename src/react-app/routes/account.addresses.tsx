@@ -1,13 +1,10 @@
 // src/react-app/routes/account.addresses.tsx
 
+import { lazy } from 'react';
 import { createFileRoute } from '@tanstack/react-router';
 import { MapPin, Plus } from '@/lib/icons';
 
-export const Route = createFileRoute('/account/addresses')({
-	component: AddressesPage,
-});
-
-function AddressesPage() {
+const AddressesPageComponent = () => {
 	// Mock addresses data
 	const addresses = [
 		{
@@ -71,4 +68,8 @@ function AddressesPage() {
 			)}
 		</div>
 	);
-}
+};
+
+export const Route = createFileRoute('/account/addresses')({
+	component: lazy(() => Promise.resolve({ default: AddressesPageComponent })),
+});

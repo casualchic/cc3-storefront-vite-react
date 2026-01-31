@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy } from 'react';
 import { createFileRoute, Link } from '@tanstack/react-router';
 import { Heart, Truck, RotateCcw, Shield, Minus, Plus } from '@/lib/icons';
 import { useQuery } from '@tanstack/react-query';
@@ -15,29 +15,6 @@ import { ShareButtons } from '../components/ShareButtons';
 import { NotifyWhenAvailable } from '../components/NotifyWhenAvailable';
 import { ShippingEstimate } from '../components/ShippingEstimate';
 
-export const Route = createFileRoute('/products/$id')({
-  component: ProductDetailPage,
-  head: ({ params }) => {
-    const product = products.find(p => p.id === params.id);
-    if (!product) return {};
-
-    return {
-      meta: [
-        { title: `${product.name} | Casual Chic Boutique` },
-        { name: 'description', content: product.description || `Shop ${product.name} at Casual Chic Boutique. Premium quality, free shipping on orders over $75.` },
-        { property: 'og:title', content: `${product.name} | Casual Chic Boutique` },
-        { property: 'og:description', content: product.description || `Shop ${product.name}` },
-        { property: 'og:image', content: product.image },
-        { property: 'og:type', content: 'product' },
-        { name: 'twitter:card', content: 'summary_large_image' },
-        { name: 'twitter:title', content: `${product.name} | Casual Chic Boutique` },
-        { name: 'twitter:description', content: product.description || `Shop ${product.name}` },
-        { name: 'twitter:image', content: product.image },
-      ],
-    };
-  },
-});
-
 // Fetch product with caching
 const fetchProduct = async (id: string) => {
   // Simulate API call - in production, this would be a real API
@@ -47,7 +24,7 @@ const fetchProduct = async (id: string) => {
   return product;
 };
 
-function ProductDetailPage() {
+const ProductDetailPageComponent = () => {
   const { id } = Route.useParams();
 
   // Use TanStack Query for data fetching with caching
@@ -535,4 +512,27 @@ function ProductDetailPage() {
       />
     </>
   );
-}
+};
+
+export const Route = createFileRoute('/products/$id')({
+  component: lazy(() => Promise.resolve({ default: ProductDetailPageComponent })),
+  head: ({ params }) => {
+    const product = products.find(p => p.id === params.id);
+    if (!product) return {};
+
+    return {
+      meta: [
+        { title: `${product.name} | Casual Chic Boutique` },
+        { name: 'description', content: product.description || `Shop ${product.name} at Casual Chic Boutique. Premium quality, free shipping on orders over $75.` },
+        { property: 'og:title', content: `${product.name} | Casual Chic Boutique` },
+        { property: 'og:description', content: product.description || `Shop ${product.name}` },
+        { property: 'og:image', content: product.image },
+        { property: 'og:type', content: 'product' },
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:title', content: `${product.name} | Casual Chic Boutique` },
+        { name: 'twitter:description', content: product.description || `Shop ${product.name}` },
+        { name: 'twitter:image', content: product.image },
+      ],
+    };
+  },
+});
