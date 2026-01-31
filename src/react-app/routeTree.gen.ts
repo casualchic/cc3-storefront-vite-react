@@ -70,7 +70,7 @@ const ShippingRoute = ShippingRouteImport.update({
   id: '/shipping',
   path: '/shipping',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any).lazy(() => import('./routes/shipping.lazy').then((d) => d.Route))
 const SaleRoute = SaleRouteImport.update({
   id: '/sale',
   path: '/sale',
@@ -80,7 +80,7 @@ const ReturnsRoute = ReturnsRouteImport.update({
   id: '/returns',
   path: '/returns',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any).lazy(() => import('./routes/returns.lazy').then((d) => d.Route))
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
@@ -105,12 +105,12 @@ const FaqRoute = FaqRouteImport.update({
   id: '/faq',
   path: '/faq',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any).lazy(() => import('./routes/faq.lazy').then((d) => d.Route))
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any).lazy(() => import('./routes/contact.lazy').then((d) => d.Route))
 const CollectionsRoute = CollectionsRouteImport.update({
   id: '/collections',
   path: '/collections',
@@ -130,7 +130,7 @@ const AccountRoute = AccountRouteImport.update({
   id: '/account',
   path: '/account',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any).lazy(() => import('./routes/account.lazy').then((d) => d.Route))
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
@@ -145,7 +145,7 @@ const ProductsIdRoute = ProductsIdRouteImport.update({
   id: '/products/$id',
   path: '/products/$id',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any).lazy(() => import('./routes/products.$id.lazy').then((d) => d.Route))
 const CollectionsUnder50Route = CollectionsUnder50RouteImport.update({
   id: '/under-50',
   path: '/under-50',
@@ -180,7 +180,9 @@ const AccountWishlistRoute = AccountWishlistRouteImport.update({
   id: '/wishlist',
   path: '/wishlist',
   getParentRoute: () => AccountRoute,
-} as any)
+} as any).lazy(() =>
+  import('./routes/account.wishlist.lazy').then((d) => d.Route),
+)
 const AccountProfileRoute = AccountProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
@@ -190,12 +192,16 @@ const AccountOrdersRoute = AccountOrdersRouteImport.update({
   id: '/orders',
   path: '/orders',
   getParentRoute: () => AccountRoute,
-} as any)
+} as any).lazy(() =>
+  import('./routes/account.orders.lazy').then((d) => d.Route),
+)
 const AccountAddressesRoute = AccountAddressesRouteImport.update({
   id: '/addresses',
   path: '/addresses',
   getParentRoute: () => AccountRoute,
-} as any)
+} as any).lazy(() =>
+  import('./routes/account.addresses.lazy').then((d) => d.Route),
+)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute

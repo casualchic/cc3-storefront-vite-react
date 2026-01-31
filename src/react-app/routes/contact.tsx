@@ -1,9 +1,7 @@
-import { lazy } from 'react';
-import { createFileRoute } from '@tanstack/react-router';
-import { ContactPage } from '../pages/ContactPage';
+// src/react-app/routes/contact.tsx
 
-const ContactPageComponent = () => <ContactPage />;
+import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/contact')({
-  component: lazy(() => Promise.resolve({ default: ContactPageComponent })),
+	pendingComponent: () => <div className="flex items-center justify-center min-h-[400px]"><div className="text-gray-600">Loading...</div></div>,
 });
