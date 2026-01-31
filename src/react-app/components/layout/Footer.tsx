@@ -37,7 +37,7 @@ export const Footer = () => {
         <div className="footer-section">
           <h3>Connect</h3>
           <ul>
-            <li><Link to="/newsletter">Newsletter</Link></li>
+            <li><a href="/newsletter">Newsletter</a></li>
             <li><a href="https://instagram.com/casualchicboutique" target="_blank" rel="noopener noreferrer">Instagram</a></li>
             <li><a href="https://facebook.com/casualchicboutique" target="_blank" rel="noopener noreferrer">Facebook</a></li>
             <li><a href="https://pinterest.com/casualchicboutique" target="_blank" rel="noopener noreferrer">Pinterest</a></li>
