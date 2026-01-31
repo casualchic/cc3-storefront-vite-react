@@ -616,3 +616,334 @@ function ProductsPage() {
 - YouTube/Vimeo embed support
 - Social media video integration
 - Shoppable video features
+
+---
+
+## Cart Component Requirements (CART-020 through CART-034)
+
+### CART-020: CartItem Component - Product Display
+**Requirement:** Display individual cart items with product thumbnail, name, and variant information.
+
+**Technical Specification:**
+- Component location: `src/react-app/components/CartItem.tsx`
+- Product thumbnail: 80x80px, rounded corners, links to product detail page
+- Product name: Clickable link to product detail page, line-clamp-2 for long names
+- Variant display: Size and color shown as compact badges
+- Responsive layout: Image left, details center, remove button right
+- Support compact mode via prop for different display contexts
+
+**Acceptance Criteria:**
+- [x] Product thumbnail renders at 80x80px with proper aspect ratio
+- [x] Product name links to `/product/$productId`
+- [x] Size variant displays as badge when present
+- [x] Color variant displays as badge when present
+- [x] Layout adapts to compact mode
+
+---
+
+### CART-021: CartItem Component - Quantity Controls
+**Requirement:** Implement quantity adjustment controls with min/max validation.
+
+**Technical Specification:**
+- Quantity controls: Plus/minus buttons with numeric input
+- Minimum quantity: 1 (decrease button disabled at min)
+- Maximum quantity: Configurable via `SHOP_CONFIG.maxQuantityPerItem` (default: 10)
+- Manual input: Allows typing quantity directly
+- Validation: On blur, clamp to valid range and update cart
+- Inventory-aware: Max should respect available inventory (future enhancement)
+
+**Acceptance Criteria:**
+- [x] Plus button increases quantity up to max
+- [x] Minus button decreases quantity down to 1
+- [x] Manual input field accepts numeric values
+- [x] Invalid inputs reset to current quantity on blur
+- [x] Out-of-range values clamp to valid range
+- [ ] Inventory warning displays when exceeding available stock
+
+---
+
+### CART-022: CartItem Component - Price Display
+**Requirement:** Show line item pricing with unit price breakdown.
+
+**Technical Specification:**
+- Line item total: `quantity × unit price`, displayed prominently
+- Unit price: Show "each" price below total when quantity > 1
+- Currency formatting: Use `SHOP_CONFIG.currencySymbol` and 2 decimal places
+- Real-time updates: Price updates immediately when quantity changes
+
+**Acceptance Criteria:**
+- [x] Line item total displays correctly
+- [x] Unit price shows when quantity > 1
+- [x] Currency symbol and formatting consistent
+- [x] Prices update in real-time
+
+---
+
+### CART-023: CartItem Component - Remove Item
+**Requirement:** Allow users to remove items from cart with clear visual feedback.
+
+**Technical Specification:**
+- Remove button: Trash icon (lucide-react Trash2)
+- Position: Right side of cart item row
+- Hover state: Red background with red icon
+- Confirmation: Optional confirmation dialog for high-value items (future enhancement)
+- Callback: `onRemove(productId, size?, color?)` to handle variant-specific removal
+
+**Acceptance Criteria:**
+- [x] Remove button displays trash icon
+- [x] Hover state provides visual feedback
+- [x] Clicking remove calls onRemove callback
+- [x] Item removed from cart immediately
+- [ ] Optional confirmation dialog for expensive items
+
+---
+
+### CART-024: CartItem Component - Save for Later
+**Requirement:** Provide option to move items from cart to wishlist/save for later.
+
+**Technical Specification:**
+- UI element: Link or button below quantity controls
+- Text: "Save for later" or "Move to wishlist"
+- Callback: `onSaveForLater(productId, size?, color?)` optional prop
+- Behavior: Removes from cart, adds to wishlist
+- Visibility: Only show if `onSaveForLater` callback provided
+
+**Acceptance Criteria:**
+- [ ] "Save for later" option displays when callback provided
+- [ ] Clicking triggers onSaveForLater callback
+- [ ] Item moves to wishlist context
+- [ ] Item removed from cart
+- [ ] Success feedback shown to user
+
+---
+
+### CART-025: CartItem Component - Inventory Warnings
+**Requirement:** Display warnings when requested quantity exceeds available inventory.
+
+**Technical Specification:**
+- Warning trigger: When `item.quantity > item.availableInventory`
+- Visual indicator: Warning icon and amber/yellow text
+- Message: "Only X left in stock" or "Limited availability"
+- Auto-adjustment: Option to auto-clamp quantity to available stock
+- Real-time updates: Check inventory on quantity change
+
+**Acceptance Criteria:**
+- [ ] Warning displays when quantity exceeds inventory
+- [ ] Warning message is clear and actionable
+- [ ] Visual styling uses warning colors
+- [ ] Optional auto-adjustment to available quantity
+- [ ] Warning disappears when quantity valid
+
+---
+
+### CART-026: CartItem Component - Props Interface
+**Requirement:** Define type-safe props interface for CartItem component.
+
+**Technical Specification:**
+```typescript
+interface CartItemProps {
+  item: CartItem;
+  onUpdateQuantity: (productId: string, quantity: number, size?: string, color?: string) => void;
+  onRemove: (productId: string, size?: string, color?: string) => void;
+  onSaveForLater?: (productId: string, size?: string, color?: string) => void;
+  compact?: boolean;
+}
+
+interface CartItem {
+  productId: string;
+  name: string;
+  price: number;
+  image: string;
+  size?: string;
+  color?: string;
+  quantity: number;
+  availableInventory?: number; // For inventory warnings
+}
+```
+
+**Acceptance Criteria:**
+- [x] CartItemProps interface defined
+- [x] All required props implemented
+- [x] Optional props work correctly
+- [x] Type safety enforced
+- [ ] availableInventory support added
+
+---
+
+### CART-030: CartSummary Component - Subtotal Display
+**Requirement:** Calculate and display cart subtotal (sum of all line items before discounts/shipping/tax).
+
+**Technical Specification:**
+- Component location: Inline in `CartDrawer.tsx` (lines 139-182) or separate component
+- Calculation: Sum of `item.price × item.quantity` for all cart items
+- Display: "Subtotal" label with amount right-aligned
+- Currency formatting: Consistent with `SHOP_CONFIG`
+- Updates: Real-time as cart items change
+
+**Acceptance Criteria:**
+- [x] Subtotal calculates correctly
+- [x] Label and amount displayed clearly
+- [x] Currency formatting consistent
+- [x] Updates in real-time
+
+---
+
+### CART-031: CartSummary Component - Discount Display
+**Requirement:** Show applied discount code and savings amount.
+
+**Technical Specification:**
+- Display conditions: Only show when discount applied
+- Information shown:
+  - Discount code name (e.g., "SAVE10")
+  - Discount amount with minus sign (e.g., "-$10.00")
+- Remove option: Small "X" button to remove discount
+- Styling: Use green or success color for savings
+- Calculation: Based on discount rules (percentage, fixed, minimum requirements)
+
+**Acceptance Criteria:**
+- [x] Discount code name displays
+- [x] Discount amount shows with negative sign
+- [x] Remove button allows clearing discount
+- [x] Only displays when discount active
+- [x] Styling indicates savings
+
+---
+
+### CART-032: CartSummary Component - Shipping Estimate
+**Requirement:** Display shipping cost estimate or "Calculated at checkout" message.
+
+**Technical Specification:**
+- Default behavior: "Calculated at checkout" message
+- With shipping estimate: Show amount (e.g., "$5.99")
+- Free shipping indicator: "$0.00 - Free shipping" when qualified
+- Free shipping threshold: Progress bar showing distance to free shipping
+- Region-based estimation: Optional prop to pass region-specific rate
+- Calculation: Based on `shippingEstimate` prop or threshold logic
+
+**Acceptance Criteria:**
+- [ ] "Calculated at checkout" displays by default
+- [ ] Shipping estimate shows when provided
+- [x] Free shipping message displays when qualified
+- [x] Progress bar shows distance to threshold
+- [ ] Region-based rates supported via props
+
+---
+
+### CART-033: CartSummary Component - Tax Estimate
+**Requirement:** Display estimated tax based on detected or selected region.
+
+**Technical Specification:**
+- Default behavior: "Calculated at checkout" message
+- With tax estimate: Show amount (e.g., "$8.40")
+- Tax calculation: Based on `taxEstimate` prop or region tax rate
+- Region detection: Use IP geolocation, user preferences, or shipping address
+- Disclaimer: "Estimated" label to indicate preliminary calculation
+- Updates: Recalculate when cart total or region changes
+
+**Acceptance Criteria:**
+- [ ] "Calculated at checkout" displays by default
+- [ ] Tax estimate shows when provided
+- [ ] "Estimated" disclaimer included
+- [ ] Amount calculates based on region
+- [ ] Updates when cart changes
+
+---
+
+### CART-034: CartSummary Component - Grand Total
+**Requirement:** Display final cart total including all adjustments.
+
+**Technical Specification:**
+- Calculation: `subtotal - discount + shipping + tax`
+- Display: Prominent styling (larger font, bold)
+- Label: "Total" or "Grand Total"
+- Currency formatting: Consistent with shop config
+- Visual hierarchy: Most prominent price in summary
+- Updates: Real-time as any cart value changes
+
+**Props Interface:**
+```typescript
+interface CartSummaryProps {
+  subtotal: Money | number;
+  discount?: AppliedDiscount | number;
+  shippingEstimate?: Money | number | 'calculated';
+  taxEstimate?: Money | number | 'calculated';
+  total: Money | number;
+  onContinueShopping?: () => void;
+  onCheckout?: () => void;
+}
+
+type Money = {
+  amount: number;
+  currency: string;
+};
+
+interface AppliedDiscount {
+  code: string;
+  amount: number;
+  description?: string;
+}
+```
+
+**Acceptance Criteria:**
+- [x] Grand total displays prominently
+- [x] Calculation includes all components
+- [x] Visual styling emphasizes importance
+- [x] Updates in real-time
+- [ ] Props interface supports all display options
+
+---
+
+## Cart Component Implementation Notes
+
+### Current Status (as of PR #12 - CCB-1090)
+
+**Completed Components:**
+- ✅ CartDrawer: Full-featured slide-out cart with animations, focus management
+- ✅ CartItem: Product display, quantity controls, remove functionality
+- ✅ CartSummary: Subtotal, discount, total (embedded in CartDrawer)
+- ✅ ProductRecommendations: Cross-sell carousel
+- ✅ FreeShippingProgress: Progress bar to free shipping threshold
+- ✅ DiscountCodeInput: Apply/remove discount codes with validation
+
+**Outstanding Features:**
+- ❌ Save for later / Move to wishlist (CART-024)
+- ❌ Inventory warnings (CART-025)
+- ❌ Shipping estimate display (CART-032)
+- ❌ Tax estimate display (CART-033)
+- ❌ Separate CartSummary component extraction (optional refactor)
+
+### Related Components
+
+**Dependencies:**
+- CartContext (`src/react-app/context/CartContext.tsx`): Global cart state management
+- cartService (`src/react-app/services/cartService.ts`): Cart persistence layer
+- mockDiscounts (`src/react-app/data/mockDiscounts.ts`): Discount code validation
+- mockRecommendations (`src/react-app/data/mockRecommendations.ts`): Product recommendations
+- shopConfig (`src/react-app/config/shopConfig.ts`): Shop-wide constants
+
+**Type Definitions:**
+- `src/react-app/types/index.ts`: CartItem, Product, AppliedDiscount interfaces
+
+### Testing Coverage
+
+**Existing Tests:**
+- CartDrawer.test.tsx: Comprehensive tests for drawer, empty state, discounts, free shipping
+- CartItem.test.tsx: Tests for rendering, quantity controls, validation, removal
+- cartService.test.ts: Service layer CRUD operations, validation, storage
+
+**Test Coverage Needs:**
+- Save for later functionality
+- Inventory warning display
+- Tax/shipping estimate display
+- Edge cases for new props
+
+### Future Enhancements
+
+- [ ] Persistent wishlist/saved items
+- [ ] Real-time inventory sync
+- [ ] Multi-currency support
+- [ ] Gift wrapping options
+- [ ] Promo code suggestions
+- [ ] Cart abandonment recovery
+- [ ] Bundle/package deals
+- [ ] Subscription items in cart

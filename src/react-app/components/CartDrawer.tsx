@@ -139,11 +139,13 @@ function DiscountCodeInput({
 interface CartSummaryProps {
   subtotal: number;
   discount: number;
+  shippingEstimate?: number | 'calculated';
+  taxEstimate?: number | 'calculated';
   total: number;
   onContinueShopping: () => void;
 }
 
-function CartSummary({ subtotal, discount, total, onContinueShopping }: CartSummaryProps) {
+function CartSummary({ subtotal, discount, shippingEstimate, taxEstimate, total, onContinueShopping }: CartSummaryProps) {
   return (
     <div className="space-y-3">
       {/* Subtotal */}
@@ -165,6 +167,38 @@ function CartSummary({ subtotal, discount, total, onContinueShopping }: CartSumm
           </span>
         </div>
       )}
+
+      {/* Shipping Estimate */}
+      <div className="flex justify-between text-gray-600 text-sm">
+        <span>Shipping:</span>
+        <span>
+          {shippingEstimate === 'calculated' || shippingEstimate === undefined ? (
+            <span className="italic text-gray-500">Calculated at checkout</span>
+          ) : shippingEstimate === 0 ? (
+            <span className="text-green-600 font-medium">FREE</span>
+          ) : (
+            <span>
+              {SHOP_CONFIG.currencySymbol}
+              {shippingEstimate.toFixed(2)}
+            </span>
+          )}
+        </span>
+      </div>
+
+      {/* Tax Estimate */}
+      <div className="flex justify-between text-gray-600 text-sm">
+        <span>Tax (estimated):</span>
+        <span>
+          {taxEstimate === 'calculated' || taxEstimate === undefined ? (
+            <span className="italic text-gray-500">Calculated at checkout</span>
+          ) : (
+            <span>
+              {SHOP_CONFIG.currencySymbol}
+              {taxEstimate.toFixed(2)}
+            </span>
+          )}
+        </span>
+      </div>
 
       {/* Divider */}
       <div className="border-t border-gray-200" />
@@ -354,6 +388,8 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
             <CartSummary
               subtotal={getCartTotal()}
               discount={appliedDiscount?.amount || 0}
+              shippingEstimate={getCartTotal() >= SHOP_CONFIG.freeShippingThreshold ? 0 : 'calculated'}
+              taxEstimate="calculated"
               total={getCartTotal() - (appliedDiscount?.amount || 0)}
               onContinueShopping={onClose}
             />

@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router';
-import { Minus, Plus, Trash2 } from '@/lib/icons';
+import { Minus, Plus, Trash2, AlertTriangle, Heart } from '@/lib/icons';
 import { CartItem as CartItemType } from '../types';
 import { SHOP_CONFIG } from '../config/shopConfig';
 import { useEffect, useState } from 'react';
@@ -8,10 +8,11 @@ interface CartItemProps {
   item: CartItemType;
   onUpdateQuantity: (productId: string, quantity: number, size?: string, color?: string) => void;
   onRemove: (productId: string, size?: string, color?: string) => void;
+  onSaveForLater?: (productId: string, size?: string, color?: string) => void;
   compact?: boolean;
 }
 
-export function CartItem({ item, onUpdateQuantity, onRemove, compact = false }: CartItemProps) {
+export function CartItem({ item, onUpdateQuantity, onRemove, onSaveForLater, compact = false }: CartItemProps) {
   const [localQuantity, setLocalQuantity] = useState(item.quantity.toString());
 
   useEffect(() => {
@@ -52,7 +53,17 @@ export function CartItem({ item, onUpdateQuantity, onRemove, compact = false }: 
     onRemove(item.productId, item.size, item.color);
   };
 
+  const handleSaveForLater = () => {
+    if (onSaveForLater) {
+      onSaveForLater(item.productId, item.size, item.color);
+    }
+  };
+
   const totalPrice = (item.price * item.quantity).toFixed(2);
+
+  // Check if quantity exceeds available inventory
+  const hasInventoryWarning = item.availableInventory !== undefined && item.quantity > item.availableInventory;
+  const isLowStock = item.availableInventory !== undefined && item.availableInventory > 0 && item.availableInventory <= 5;
 
   return (
     <div className={`flex gap-4 ${compact ? 'py-2' : 'py-4'}`}>
@@ -90,6 +101,37 @@ export function CartItem({ item, onUpdateQuantity, onRemove, compact = false }: 
               </span>
             )}
           </div>
+        )}
+
+        {/* Inventory Warning */}
+        {hasInventoryWarning && (
+          <div className="flex items-center gap-1 mb-2 text-amber-600">
+            <AlertTriangle className="w-3 h-3 flex-shrink-0" />
+            <span className="text-xs font-medium">
+              Only {item.availableInventory} left in stock
+            </span>
+          </div>
+        )}
+
+        {/* Low Stock Indicator (not exceeding, but low) */}
+        {!hasInventoryWarning && isLowStock && (
+          <div className="flex items-center gap-1 mb-2 text-amber-600">
+            <AlertTriangle className="w-3 h-3 flex-shrink-0" />
+            <span className="text-xs">
+              Only {item.availableInventory} left
+            </span>
+          </div>
+        )}
+
+        {/* Save for Later */}
+        {onSaveForLater && (
+          <button
+            onClick={handleSaveForLater}
+            className="flex items-center gap-1 text-xs text-gray-600 hover:text-gray-900 mb-2 transition-colors"
+          >
+            <Heart className="w-3 h-3" />
+            <span>Save for later</span>
+          </button>
         )}
 
         {/* Price and Quantity Controls */}

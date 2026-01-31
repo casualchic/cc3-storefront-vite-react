@@ -9,6 +9,7 @@
  */
 export {
   AlertCircle,
+  AlertTriangle,
   Bell,
   Check,
   CheckCircle,
