@@ -16,7 +16,8 @@
   - Router chunk: 10.94 KB (4.44 KB gzipped)
   - React vendor chunk: 12.22 KB (4.31 KB gzipped)
   - Icons chunk: 5.51 KB (1.51 KB gzipped)
-- **Reduction: 14.4% smaller** (12.76 KB saved)
+- **Reduction from baseline: 9.8% smaller** (8.29 KB saved from original 84.28 KB)
+- **Reduction from broken lazy loading: 14.4%** (12.76 KB saved from 88.75 KB)
 - Proper lazy loading structure implemented
 
 ## Build Output
