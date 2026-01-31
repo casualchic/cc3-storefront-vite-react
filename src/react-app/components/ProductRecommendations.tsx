@@ -33,7 +33,7 @@ export function ProductRecommendations({ products }: ProductRecommendationsProps
             key={product.id}
             className="flex-shrink-0 w-36 bg-gray-50 rounded-lg overflow-hidden"
           >
-            <Link to={`/product/${product.id}`}>
+            <Link to="/products/$id" params={{ id: product.id }}>
               <img
                 src={product.image}
                 alt={product.name}
@@ -43,7 +43,8 @@ export function ProductRecommendations({ products }: ProductRecommendationsProps
 
             <div className="p-2">
               <Link
-                to={`/product/${product.id}`}
+                to="/products/$id"
+                params={{ id: product.id }}
                 className="text-xs font-medium text-gray-900 hover:text-gray-700 line-clamp-2 mb-1"
               >
                 {product.name}

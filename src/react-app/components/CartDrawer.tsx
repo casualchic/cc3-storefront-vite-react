@@ -214,7 +214,7 @@ function CartSummary({ subtotal, discount, shippingEstimate, taxEstimate, total,
 
       {/* Checkout Button */}
       <Link
-        to="/checkout"
+        to="/cart"
         className="block w-full py-3 bg-black text-white text-center rounded-lg font-medium hover:bg-gray-800 transition-colors"
       >
         Proceed to Checkout

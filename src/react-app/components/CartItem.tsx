@@ -80,8 +80,8 @@ export function CartItem({ item, onUpdateQuantity, onRemove, onSaveForLater, com
       <div className="flex-1 min-w-0">
         {/* Product Name */}
         <Link
-          to="/product/$productId"
-          params={{ productId: item.productId }}
+          to="/products/$id"
+          params={{ id: item.productId }}
           className="text-sm font-medium text-gray-900 hover:text-gray-700 line-clamp-2 block mb-1"
         >
           {item.name}
