@@ -125,6 +125,9 @@ const ProductDetailPageComponent = () => {
   const inWishlist = isInWishlist(product.id);
   const relatedProducts = products.filter(p => p.id !== id && p.category === product.category).slice(0, 4);
 
+  // Set maximum quantity based on stock count or reasonable default
+  const MAX_QUANTITY = product.stockCount || 10;
+
   // Check if all required selections are made
   const isAddToCartDisabled =
     !product.inStock ||
@@ -222,12 +225,15 @@ const ProductDetailPageComponent = () => {
     }),
   };
 
+  // Safely serialize JSON for script tags by escaping sequences that could break out
+  const safeJsonLd = JSON.stringify(productJsonLd).replace(/</g, '\\u003c');
+
   return (
     <>
       {/* JSON-LD Structured Data */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd }}
       />
 
       <div className="min-h-screen">
@@ -396,8 +402,9 @@ const ProductDetailPageComponent = () => {
                     </button>
                     <span className="text-lg font-medium w-12 text-center">{quantity}</span>
                     <button
-                      onClick={() => setQuantity(quantity + 1)}
-                      className="p-2 border border-gray-300 dark:border-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
+                      onClick={() => setQuantity(Math.min(MAX_QUANTITY, quantity + 1))}
+                      disabled={quantity >= MAX_QUANTITY}
+                      className="p-2 border border-gray-300 dark:border-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
                       aria-label="Increase quantity"
                     >
                       <Plus className="w-4 h-4" />
