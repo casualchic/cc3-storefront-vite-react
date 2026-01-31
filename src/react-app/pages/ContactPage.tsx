@@ -1,4 +1,4 @@
-import { Mail, Phone, MapPin } from 'lucide-react';
+import { Mail, Phone, MapPin } from '@/lib/icons';
 
 export function ContactPage() {
   const handleSubmit = (e: React.FormEvent) => {

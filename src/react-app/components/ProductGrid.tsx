@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { AlertCircle, PackageX, Loader2 } from 'lucide-react';
+import { AlertCircle, PackageX, Loader2 } from '@/lib/icons';
 import { ProductCard } from './ProductCard';
 import { Product } from '../types';
 

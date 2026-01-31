@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from '@tanstack/react-router';
-import { Heart, Eye, ShoppingCart } from 'lucide-react';
+import { Heart, Eye, ShoppingCart } from '@/lib/icons';
 import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
 import { Product } from '../types';

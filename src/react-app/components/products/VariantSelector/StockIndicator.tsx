@@ -1,4 +1,4 @@
-import { CheckCircle, AlertCircle, XCircle } from 'lucide-react';
+import { CheckCircle, AlertCircle, XCircle } from '@/lib/icons';
 import './StockIndicator.css';
 
 interface StockIndicatorProps {

@@ -1,4 +1,4 @@
-import { X } from 'lucide-react';
+import { X } from '@/lib/icons';
 
 interface SizeGuideModalProps {
   isOpen: boolean;

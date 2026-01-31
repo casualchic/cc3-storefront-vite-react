@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import { ChevronDown, ChevronUp } from '@/lib/icons';
 
 interface ProductDescriptionProps {
   description: string;

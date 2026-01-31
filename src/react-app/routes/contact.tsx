@@ -1,6 +1,7 @@
+// src/react-app/routes/contact.tsx
+
 import { createFileRoute } from '@tanstack/react-router';
-import { ContactPage } from '../pages/ContactPage';
 
 export const Route = createFileRoute('/contact')({
-  component: ContactPage,
+	pendingComponent: () => <div className="flex items-center justify-center min-h-[400px]"><div className="text-gray-600">Loading...</div></div>,
 });

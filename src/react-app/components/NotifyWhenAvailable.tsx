@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Bell, Check, X } from 'lucide-react';
+import { Bell, Check, X } from '@/lib/icons';
 
 interface NotifyWhenAvailableProps {
   productId: string;
