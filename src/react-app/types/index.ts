@@ -55,6 +55,7 @@ export interface CartItem {
   size?: string;
   color?: string;
   quantity: number;
+  availableInventory?: number; // For inventory warnings
 }
 
 export interface WishlistItem {
