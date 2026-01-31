@@ -35,13 +35,15 @@ function renderCartItem(
   onUpdateQuantity: (productId: string, quantity: number, size?: string, color?: string) => void,
   onRemove: (productId: string, size?: string, color?: string) => void,
   item: CartItem = mockCartItem,
-  compact: boolean = false
+  compact: boolean = false,
+  onSaveForLater?: (productId: string, size?: string, color?: string) => void
 ) {
   return render(
     <CartItemComponent
       item={item}
       onUpdateQuantity={onUpdateQuantity}
       onRemove={onRemove}
+      onSaveForLater={onSaveForLater}
       compact={compact}
     />
   );
@@ -225,6 +227,93 @@ describe('CartItem', () => {
 
       // Verify component renders in compact mode
       expect(screen.getByText('Classic Cotton T-Shirt')).toBeInTheDocument();
+    });
+  });
+
+  describe('Inventory Warnings', () => {
+    it('displays inventory warning when quantity exceeds available inventory', () => {
+      const onUpdateQuantity = vi.fn();
+      const onRemove = vi.fn();
+      const itemWithLowStock: CartItem = {
+        ...mockCartItem,
+        quantity: 5,
+        availableInventory: 3,
+      };
+
+      renderCartItem(onUpdateQuantity, onRemove, itemWithLowStock);
+
+      expect(screen.getByText(/Only 3 left in stock/i)).toBeInTheDocument();
+    });
+
+    it('displays low stock indicator when inventory is low but not exceeded', () => {
+      const onUpdateQuantity = vi.fn();
+      const onRemove = vi.fn();
+      const itemWithLowStock: CartItem = {
+        ...mockCartItem,
+        quantity: 2,
+        availableInventory: 4,
+      };
+
+      renderCartItem(onUpdateQuantity, onRemove, itemWithLowStock);
+
+      expect(screen.getByText(/Only 4 left/i)).toBeInTheDocument();
+    });
+
+    it('does not display inventory warning when stock is sufficient', () => {
+      const onUpdateQuantity = vi.fn();
+      const onRemove = vi.fn();
+      const itemWithGoodStock: CartItem = {
+        ...mockCartItem,
+        quantity: 2,
+        availableInventory: 20,
+      };
+
+      renderCartItem(onUpdateQuantity, onRemove, itemWithGoodStock);
+
+      expect(screen.queryByText(/Only.*left/i)).not.toBeInTheDocument();
+    });
+
+    it('does not display inventory warning when availableInventory is undefined', () => {
+      const onUpdateQuantity = vi.fn();
+      const onRemove = vi.fn();
+
+      renderCartItem(onUpdateQuantity, onRemove, mockCartItem);
+
+      expect(screen.queryByText(/Only.*left/i)).not.toBeInTheDocument();
+    });
+  });
+
+  describe('Save for Later', () => {
+    it('displays save for later button when callback provided', () => {
+      const onUpdateQuantity = vi.fn();
+      const onRemove = vi.fn();
+      const onSaveForLater = vi.fn();
+
+      renderCartItem(onUpdateQuantity, onRemove, mockCartItem, false, onSaveForLater);
+
+      expect(screen.getByText(/Save for later/i)).toBeInTheDocument();
+    });
+
+    it('does not display save for later button when callback not provided', () => {
+      const onUpdateQuantity = vi.fn();
+      const onRemove = vi.fn();
+
+      renderCartItem(onUpdateQuantity, onRemove, mockCartItem);
+
+      expect(screen.queryByText(/Save for later/i)).not.toBeInTheDocument();
+    });
+
+    it('calls onSaveForLater when save for later button clicked', () => {
+      const onUpdateQuantity = vi.fn();
+      const onRemove = vi.fn();
+      const onSaveForLater = vi.fn();
+
+      renderCartItem(onUpdateQuantity, onRemove, mockCartItem, false, onSaveForLater);
+
+      const saveButton = screen.getByText(/Save for later/i);
+      fireEvent.click(saveButton);
+
+      expect(onSaveForLater).toHaveBeenCalledWith(mockCartItem.productId, mockCartItem.size, mockCartItem.color);
     });
   });
 });
