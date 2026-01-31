@@ -1,4 +1,3 @@
-import { Link } from '@tanstack/react-router';
 import { products } from '../mocks/products';
 import { categories } from '../mocks/categories';
 
@@ -35,18 +34,18 @@ export function HomePage() {
                 Discover effortlessly elegant pieces that transition seamlessly from day to night, work to weekend.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link
-                  to="/collections/new-arrivals"
+                <a
+                  href="/collections/new-arrivals"
                   className="px-8 py-4 bg-black dark:bg-white text-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-100 rounded-lg font-medium transition-all transform hover:scale-105 text-center shadow-lg"
                 >
                   Shop New Arrivals
-                </Link>
-                <Link
-                  to="/sale"
+                </a>
+                <a
+                  href="/sale"
                   className="px-8 py-4 border-2 border-gray-900 dark:border-white text-gray-900 dark:text-white hover:bg-gray-900 hover:text-white dark:hover:bg-white dark:hover:text-black rounded-lg font-medium transition-all text-center"
                 >
                   Explore Sale
-                </Link>
+                </a>
               </div>
 
               {/* Trust Badges */}
@@ -78,7 +77,7 @@ export function HomePage() {
             {/* Right Column - Featured Image Grid */}
             <div className="hidden lg:grid grid-cols-2 gap-4">
               <div className="space-y-4">
-                <Link to="/category/$slug" params={{ slug: 'dresses' }} className="relative overflow-hidden rounded-2xl bg-gray-200 dark:bg-gray-800 aspect-[3/4] group block">
+                <a href="/category/dresses" className="relative overflow-hidden rounded-2xl bg-gray-200 dark:bg-gray-800 aspect-[3/4] group block">
                   <img
                     src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=600&h=800&fit=crop"
                     alt="Dresses"
@@ -90,8 +89,8 @@ export function HomePage() {
                     <p className="text-white font-semibold text-lg">Dresses</p>
                   </div>
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 z-10"></div>
-                </Link>
-                <Link to="/category/$slug" params={{ slug: 'accessories' }} className="relative overflow-hidden rounded-2xl bg-gray-200 dark:bg-gray-800 aspect-[3/2] group block">
+                </a>
+                <a href="/category/accessories" className="relative overflow-hidden rounded-2xl bg-gray-200 dark:bg-gray-800 aspect-[3/2] group block">
                   <img
                     src="https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=600&h=400&fit=crop"
                     alt="Accessories"
@@ -103,10 +102,10 @@ export function HomePage() {
                     <p className="text-white font-semibold text-lg">Accessories</p>
                   </div>
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 z-10"></div>
-                </Link>
+                </a>
               </div>
               <div className="space-y-4 pt-8">
-                <Link to="/category/$slug" params={{ slug: 'tops' }} className="relative overflow-hidden rounded-2xl bg-gray-200 dark:bg-gray-800 aspect-[3/2] group block">
+                <a href="/category/tops" className="relative overflow-hidden rounded-2xl bg-gray-200 dark:bg-gray-800 aspect-[3/2] group block">
                   <img
                     src="https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=600&h=400&fit=crop"
                     alt="Tops"
@@ -118,8 +117,8 @@ export function HomePage() {
                     <p className="text-white font-semibold text-lg">Tops</p>
                   </div>
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 z-10"></div>
-                </Link>
-                <Link to="/category/$slug" params={{ slug: 'outerwear' }} className="relative overflow-hidden rounded-2xl bg-gray-200 dark:bg-gray-800 aspect-[3/4] group block">
+                </a>
+                <a href="/category/outerwear" className="relative overflow-hidden rounded-2xl bg-gray-200 dark:bg-gray-800 aspect-[3/4] group block">
                   <img
                     src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=600&h=800&fit=crop"
                     alt="Outerwear"
@@ -131,7 +130,7 @@ export function HomePage() {
                     <p className="text-white font-semibold text-lg">Outerwear</p>
                   </div>
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 z-10"></div>
-                </Link>
+                </a>
               </div>
             </div>
           </div>
@@ -149,10 +148,9 @@ export function HomePage() {
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           {categories.map((category) => (
-            <Link
+            <a
               key={category.id}
-              to="/category/$slug"
-              params={{ slug: category.slug }}
+              href={`/category/${category.slug}`}
               className="group relative overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800 aspect-square"
             >
               <img
@@ -166,7 +164,7 @@ export function HomePage() {
                 <h3 className="text-white text-sm font-semibold">{category.name}</h3>
               </div>
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 z-10"></div>
-            </Link>
+            </a>
           ))}
         </div>
       </section>
@@ -182,10 +180,9 @@ export function HomePage() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {featuredProducts.map((product) => (
-            <Link
+            <a
               key={product.id}
-              to="/products/$id"
-              params={{ id: product.id }}
+              href={`/products/${product.id}`}
               className="group"
             >
               <div className="relative overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800 aspect-[4/5] mb-3 transition-transform duration-300 ease-out group-hover:scale-[1.02]">
@@ -219,17 +216,17 @@ export function HomePage() {
                   </>
                 )}
               </div>
-            </Link>
+            </a>
           ))}
         </div>
 
         <div className="text-center mt-12">
-          <Link
-            to="/collections"
+          <a
+            href="/collections"
             className="inline-block px-8 py-3 border-2 border-gray-900 dark:border-white text-gray-900 dark:text-white hover:bg-gray-900 hover:text-white dark:hover:bg-white dark:hover:text-gray-900 rounded-lg font-medium transition-colors"
           >
             View All Products
-          </Link>
+          </a>
         </div>
       </section>
 
@@ -242,12 +239,12 @@ export function HomePage() {
             collections blend comfort with sophistication, offering versatile pieces that transition
             seamlessly from day to night, work to weekend.
           </p>
-          <Link
-            to="/about"
+          <a
+            href="/about"
             className="inline-block px-8 py-3 border-2 border-gray-900 dark:border-white text-gray-900 dark:text-white hover:bg-gray-900 hover:text-white dark:hover:bg-white dark:hover:text-gray-900 rounded-lg font-medium transition-colors"
           >
             Learn More About Us
-          </Link>
+          </a>
         </div>
       </section>
     </div>
