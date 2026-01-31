@@ -31,4 +31,16 @@ export default defineConfig({
 			brotliSize: true,
 		}),
 	],
+	build: {
+		rollupOptions: {
+			output: {
+				manualChunks: {
+					'react-vendor': ['react', 'react-dom'],
+					'router': ['@tanstack/react-router'],
+					'icons': ['lucide-react'],
+				},
+			},
+		},
+		chunkSizeWarningLimit: 100, // KB - warn if any chunk exceeds this
+	},
 });
