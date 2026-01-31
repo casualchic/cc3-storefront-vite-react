@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
-import { RotateCcw, Package, Check, X, Mail } from 'lucide-react';
+import { RotateCcw, Package, Check, X, Mail } from '@/lib/icons';
 
 export const Route = createFileRoute('/returns')({
   component: ReturnsPage,

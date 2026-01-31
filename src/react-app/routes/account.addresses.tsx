@@ -1,7 +1,7 @@
 // src/react-app/routes/account.addresses.tsx
 
 import { createFileRoute } from '@tanstack/react-router';
-import { MapPin, Plus } from 'lucide-react';
+import { MapPin, Plus } from '@/lib/icons';
 
 export const Route = createFileRoute('/account/addresses')({
 	component: AddressesPage,

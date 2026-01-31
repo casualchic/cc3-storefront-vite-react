@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { createFileRoute, Link } from '@tanstack/react-router';
-import { Heart, Truck, RotateCcw, Shield, Minus, Plus } from 'lucide-react';
+import { Heart, Truck, RotateCcw, Shield, Minus, Plus } from '@/lib/icons';
 import { useQuery } from '@tanstack/react-query';
 import { products } from '../mocks/products';
 import { Product } from '../types';

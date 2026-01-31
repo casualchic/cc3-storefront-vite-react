@@ -1,7 +1,7 @@
 // src/react-app/routes/account.orders.tsx
 
 import { createFileRoute } from '@tanstack/react-router';
-import { Package } from 'lucide-react';
+import { Package } from '@/lib/icons';
 
 export const Route = createFileRoute('/account/orders')({
 	component: OrdersPage,

@@ -1,7 +1,7 @@
 // src/react-app/routes/account.wishlist.tsx
 
 import { createFileRoute } from '@tanstack/react-router';
-import { Heart } from 'lucide-react';
+import { Heart } from '@/lib/icons';
 
 export const Route = createFileRoute('/account/wishlist')({
 	component: WishlistPage,

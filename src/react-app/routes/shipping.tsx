@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
-import { Package, Truck, Globe, Clock, MapPin, CreditCard } from 'lucide-react';
+import { Package, Truck, Globe, Clock, MapPin, CreditCard } from '@/lib/icons';
 
 export const Route = createFileRoute('/shipping')({
   component: ShippingPage,

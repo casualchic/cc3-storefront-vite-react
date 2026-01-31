@@ -1,7 +1,7 @@
 // src/react-app/routes/account.tsx
 
 import { createFileRoute, Link, Outlet, redirect } from '@tanstack/react-router';
-import { LogOut, User, MapPin, Package, Heart } from 'lucide-react';
+import { LogOut, User, MapPin, Package, Heart } from '@/lib/icons';
 import { useAuth } from '../context/AuthContext';
 
 export const Route = createFileRoute('/account')({
