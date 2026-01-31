@@ -41,6 +41,7 @@ const ProductDetailPageComponent = () => {
   const [error, setError] = useState<string>('');
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [showSizeGuide, setShowSizeGuide] = useState(false);
+  const [recentlyViewedProducts, setRecentlyViewedProducts] = useState<Product[]>([]);
 
   const { addItem: addToCart } = useCart();
   const { addItem: addToWishlist, isInWishlist, removeItem: removeFromWishlist } = useWishlist();
@@ -67,13 +68,37 @@ const ProductDetailPageComponent = () => {
 
   // Track recently viewed products
   useEffect(() => {
-    if (product) {
-      const recentlyViewed = JSON.parse(localStorage.getItem('recentlyViewed') || '[]');
-      const filtered = recentlyViewed.filter((pid: string) => pid !== product.id);
-      const updated = [product.id, ...filtered].slice(0, 6);
-      localStorage.setItem('recentlyViewed', JSON.stringify(updated));
+    if (product && typeof window !== 'undefined') {
+      try {
+        const recentlyViewed = JSON.parse(localStorage.getItem('recentlyViewed') || '[]');
+        const filtered = recentlyViewed.filter((pid: string) => pid !== product.id);
+        const updated = [product.id, ...filtered].slice(0, 6);
+        localStorage.setItem('recentlyViewed', JSON.stringify(updated));
+      } catch (error) {
+        // Ignore malformed localStorage data
+        console.error('Failed to update recently viewed products:', error);
+      }
     }
   }, [product]);
+
+  // Load recently viewed products for display
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const recentlyViewedIds = JSON.parse(localStorage.getItem('recentlyViewed') || '[]');
+        const viewedProducts = recentlyViewedIds
+          .filter((pid: string) => pid !== id)
+          .map((pid: string) => products.find(p => p.id === pid))
+          .filter((p: Product | undefined): p is Product => Boolean(p))
+          .slice(0, 4);
+        setRecentlyViewedProducts(viewedProducts);
+      } catch (error) {
+        // Ignore malformed localStorage data
+        console.error('Failed to load recently viewed products:', error);
+        setRecentlyViewedProducts([]);
+      }
+    }
+  }, [id]);
 
   if (isLoading) {
     return (
@@ -99,14 +124,6 @@ const ProductDetailPageComponent = () => {
 
   const inWishlist = isInWishlist(product.id);
   const relatedProducts = products.filter(p => p.id !== id && p.category === product.category).slice(0, 4);
-
-  // Get recently viewed products
-  const recentlyViewedIds = JSON.parse(localStorage.getItem('recentlyViewed') || '[]');
-  const recentlyViewedProducts = recentlyViewedIds
-    .filter((pid: string) => pid !== id)
-    .map((pid: string) => products.find(p => p.id === pid))
-    .filter((p: Product | undefined): p is Product => Boolean(p))
-    .slice(0, 4);
 
   // Check if all required selections are made
   const isAddToCartDisabled =
