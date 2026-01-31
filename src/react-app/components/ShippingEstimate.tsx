@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Truck, MapPin } from 'lucide-react';
+import { Truck, MapPin } from '@/lib/icons';
 
 export function ShippingEstimate() {
   const [zipCode, setZipCode] = useState('');

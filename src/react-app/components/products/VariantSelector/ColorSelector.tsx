@@ -1,4 +1,4 @@
-import { Check } from 'lucide-react';
+import { Check } from '@/lib/icons';
 import type { ProductOption } from '../../../types';
 import './ColorSelector.css';
 

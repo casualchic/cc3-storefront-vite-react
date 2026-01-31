@@ -1,4 +1,4 @@
-import { Share2, Facebook, Twitter, Mail, Link as LinkIcon, Check } from 'lucide-react';
+import { Share2, Facebook, Twitter, Mail, LinkIcon, Check } from '@/lib/icons';
 import { useState } from 'react';
 
 interface ShareButtonsProps {

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Star, ThumbsUp, ChevronDown, ChevronUp } from 'lucide-react';
+import { Star, ThumbsUp, ChevronDown, ChevronUp } from '@/lib/icons';
 
 interface Review {
   id: string;

@@ -1,5 +1,5 @@
 import { useState, useRef, useMemo, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, ZoomIn, X, Play } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ZoomIn, X, Play } from '@/lib/icons';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 import type { MediaItem, ProductImageGalleryAllProps } from '../types/media';
 import { useHoverZoom } from '../hooks/useHoverZoom';

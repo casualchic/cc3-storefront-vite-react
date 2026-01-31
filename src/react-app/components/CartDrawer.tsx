@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from '@tanstack/react-router';
-import { X, ShoppingBag, Tag } from 'lucide-react';
+import { X, ShoppingBag, Tag } from '@/lib/icons';
 import FocusTrap from 'focus-trap-react';
 import { useCart } from '../context/CartContext';
 import { CartItem } from './CartItem';

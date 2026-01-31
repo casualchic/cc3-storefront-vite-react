@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router';
-import { Minus, Plus, Trash2 } from 'lucide-react';
+import { Minus, Plus, Trash2 } from '@/lib/icons';
 import { CartItem as CartItemType } from '../types';
 import { SHOP_CONFIG } from '../config/shopConfig';
 import { useEffect, useState } from 'react';
