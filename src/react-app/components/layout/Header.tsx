@@ -1,3 +1,4 @@
+import { Link } from '@tanstack/react-router';
 import { useCart } from '../../context/CartContext';
 import { useTheme } from '../../context/ThemeContext';
 import { CartDrawer } from '../CartDrawer';
@@ -13,14 +14,14 @@ export const Header = () => {
       <header className="header">
         <div className="header-container">
           <div className="header-logo">
-            <a href="/">Casual Chic</a>
+            <Link to="/">Casual Chic</Link>
           </div>
 
           <nav className="header-nav">
-            <a href="/category/women">Women</a>
-            <a href="/category/men">Men</a>
-            <a href="/category/accessories">Accessories</a>
-            <a href="/category/sale">Sale</a>
+            <Link to="/category/$slug" params={{ slug: 'women' }}>Women</Link>
+            <Link to="/category/$slug" params={{ slug: 'men' }}>Men</Link>
+            <Link to="/category/$slug" params={{ slug: 'accessories' }}>Accessories</Link>
+            <Link to="/category/$slug" params={{ slug: 'sale' }}>Sale</Link>
           </nav>
 
           <div className="header-actions">
@@ -32,9 +33,9 @@ export const Header = () => {
               {theme === 'light' ? '🌙' : '☀️'}
             </button>
 
-            <a href="/wishlist" className="icon-button" aria-label="Wishlist">
+            <Link to="/wishlist" className="icon-button" aria-label="Wishlist">
               ❤️
-            </a>
+            </Link>
 
             <button
               onClick={openDrawer}

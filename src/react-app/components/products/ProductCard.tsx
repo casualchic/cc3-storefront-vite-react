@@ -1,3 +1,4 @@
+import { Link } from '@tanstack/react-router';
 import { Product } from '../../types';
 import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
@@ -44,9 +45,9 @@ export const ProductCard = ({ product, viewMode = 'grid' }: ProductCardProps) =>
   return (
     <div className={`product-card product-card-${viewMode}`}>
       <div className="product-image-container">
-        <a href={`/product/${product.id}`}>
+        <Link to="/products/$id" params={{ id: product.id }}>
           <img src={product.image} alt={product.name} className="product-image" />
-        </a>
+        </Link>
         
         {product.isSale && discount > 0 && (
           <span className="product-badge sale-badge">-{discount}%</span>
@@ -70,9 +71,9 @@ export const ProductCard = ({ product, viewMode = 'grid' }: ProductCardProps) =>
       </div>
 
       <div className="product-info">
-        <a href={`/product/${product.id}`} className="product-name">
+        <Link to="/products/$id" params={{ id: product.id }} className="product-name">
           {product.name}
-        </a>
+        </Link>
 
         {viewMode === 'list' && product.description && (
           <p className="product-description">{product.description}</p>
