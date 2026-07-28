@@ -46,14 +46,22 @@ const ProductDetailPageComponent = () => {
   const { addItem: addToCart } = useCart();
   const { addItem: addToWishlist, isInWishlist, removeItem: removeFromWishlist } = useWishlist();
 
-  // Track product view for analytics
+  // Track product view for analytics via Cloudflare Zaraz's Ecommerce API.
   useEffect(() => {
-    if (product) {
-      // In production, send to analytics service
-      console.log('Product viewed:', {
-        productId: product.id,
-        productName: product.name,
-        timestamp: new Date().toISOString(),
+    if (!product) return;
+
+    // Zaraz is loaded by an external script and can initialise without its
+    // Ecommerce API registered, so `window.zaraz.ecommerce` may be undefined.
+    // Optional chaining alone doesn't help here — calling an undefined value
+    // still throws a TypeError. Guard that it's callable so a missing API
+    // no-ops instead of throwing on every product view.
+    if (typeof window.zaraz?.ecommerce === 'function') {
+      window.zaraz.ecommerce('Product Viewed', {
+        product_id: product.id,
+        name: product.name,
+        price: product.price,
+        currency: 'USD',
+        category: product.category,
       });
     }
   }, [product]);
